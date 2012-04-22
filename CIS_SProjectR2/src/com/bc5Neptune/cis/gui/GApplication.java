@@ -24,6 +24,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import static com.bc5Neptune.cis.bll.GlobalObject.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import javax.swing.*;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -33,37 +38,44 @@ public class GApplication extends JFrame {
 
     public static GApplication instance;
 
-    /** Creates new form GApplication */
+    /**
+     * Creates new form GApplication
+     */
     public GApplication() {
+       
 
-
-
-        this.setLocationRelativeTo(null);
         if (instance == null) {
             initComponents();
-            setLayout(new BorderLayout());
             instance = this;
             System.out.println("Initlization application was successfully");
         } else {
             System.out.println("Error: Initlization application");
         }
+         // align cetern for this form
+        Container c = new Container();
+        setLocationRelativeTo(c);
     }
 
     /**
      * add button tab to JTabbedPane
-     * @param nameLabel     a name of tab
-     * @param action        a action when click on it
-     * @param pane          a JPanel that you want add to tab
-     * @param tabPane       a JTabbedPane that you want JPanel add on it
+     *
+     * @param nameLabel a name of tab
+     * @param action a action when click on it
+     * @param pane a JPanel that you want add to tab
+     * @param tabPane a JTabbedPane that you want JPanel add on it
      */
     public void addTab(final String nameLabel, final String action, final JPanel pane, final JTabbedPane tabPane) {
-        /* add JPanel to JTabedPane */
+        /*
+         * add JPanel to JTabedPane
+         */
         for (int i = 0; i < tabPane.getComponentCount(); i++) {
             final JPanel pn = (JPanel) tabPane.getComponent(i);
             if (pn.getName() != null) {
                 if (pn.getName().equals(pane.getName())) {
                     System.out.println("This panel is exist");
-                    /* show to exist tab */
+                    /*
+                     * show to exist tab
+                     */
                     tabPane.setSelectedComponent(pn);
                     return;
                 }
@@ -71,47 +83,72 @@ public class GApplication extends JFrame {
 
         }
         tabPane.add(pane);
-        /* create button to close tab*/
+        /*
+         * create button to close tab
+         */
         final JButton tabCloseButton = new JButton("X");
-        /* set border for button */
-        tabCloseButton.setBorder(new EmptyBorder(2, 2, 2, 2));
-        /* set string for action command*/
+        /*
+         * set border for button
+         */
+        //tabCloseButton.setBorder(new EmptyBorder(2, 2, 2, 2));
+        /*
+         * set string for action command
+         */
         tabCloseButton.setActionCommand(action);
+        tabCloseButton.setBounds(120, 2, 10, 10);
+        tabCloseButton.setForeground(Color.red);
 
-        /* add a button and a label to JPanel (pane) */
-        final JPanel pnlAdd = new JPanel();
+        /*
+         * add a button and a label to JPanel (pane)
+         */
+        JPanel pnlAdd = new JPanel();
+        pnlAdd.setLayout(null);
         pnlAdd.setOpaque(false);
-
-        /* add a label */
+        pnlAdd.setPreferredSize(new Dimension(130, 15));
+        /*
+         * add a label
+         */
         final JLabel lb = new JLabel(nameLabel);
-        // lb.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        //lb.setBorder(new EmptyBorder(0, 0, 0, 0));
+        lb.setPreferredSize(new Dimension(3, 10));
+        lb.setBounds(0, 0, 120, 16);
         pnlAdd.add(lb);
-        /* add a close button */
+        /*
+         * add a close button
+         */
         pnlAdd.add(tabCloseButton);
 
-        /* resize pnlAdd */
-        // pnlAdd.setPreferredSize(new Dimension(lb.getPreferredSize().width + 23, 20));
-
-        /* add JPanel in to tab */
+        /*
+         * add JPanel in to tab
+         */
         tabPane.setTabComponentAt(tabPane.getTabCount() - 1, pnlAdd);
         tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
 
-        /* create Action listener */
+        /*
+         * create Action listener
+         */
         ActionListener al;
         al = new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
                 JButton button = (JButton) e.getSource();
-                /* get action command */
+                /*
+                 * get action command
+                 */
                 final String s1 = button.getActionCommand();
-                /* find current tab and close it */
-                for (int i = 0; i < tabPane.getTabCount(); i++) {
+                /*
+                 * find current tab and close it
+                 */
+                for (int i = 1; i < tabPane.getTabCount(); i++) {
                     final JPanel pnl = (JPanel) tabPane.getTabComponentAt(i);
                     button = (JButton) pnl.getComponent(1); //The zero(0) is a label
                     //the first(1) is a button
                     final String s2 = button.getActionCommand();
-                    /* check action command and close tab */
+                    /*
+                     * check action command and close tab
+                     */
                     if (s1.equals(s2)) {
                         tabPane.removeTabAt(i);
                         break;
@@ -119,24 +156,42 @@ public class GApplication extends JFrame {
                 }
             }
         };
-        /* set action listener for close button */
+        /*
+         * set action listener for close button
+         */
         tabCloseButton.addActionListener(al);
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        jButton2 = new javax.swing.JButton();
         toolbarOpenFolder = new javax.swing.JButton();
-        jToolBar2 = new javax.swing.JToolBar();
+        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jToolBar2 = new javax.swing.JToolBar();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         mainTab = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -161,31 +216,160 @@ public class GApplication extends JFrame {
         menuAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(java.awt.Color.gray);
 
-        jToolBar1.setRollover(true);
+        jToolBar1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jToolBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jToolBar1.setPreferredSize(new java.awt.Dimension(124, 100));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Picture_16x16.png"))); // NOI18N
+        toolbarOpenFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Picture/Picture_24x24.png"))); // NOI18N
+        toolbarOpenFolder.setToolTipText("");
+        toolbarOpenFolder.setFocusable(false);
+        toolbarOpenFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbarOpenFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbarOpenFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbarOpenFolderActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolbarOpenFolder);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Open/Open_24x24.png"))); // NOI18N
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton2);
 
-        toolbarOpenFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Open_16x16.png"))); // NOI18N
-        toolbarOpenFolder.setToolTipText("");
-        toolbarOpenFolder.setFocusable(false);
-        toolbarOpenFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarOpenFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(toolbarOpenFolder);
-
-        jToolBar2.setRollover(true);
-        jToolBar1.add(jToolBar2);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Help_16x16.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Add/Add_24x24.png"))); // NOI18N
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Edit/Edit_24x24.png"))); // NOI18N
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton4);
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Delete/Delete_24x24.png"))); // NOI18N
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton5);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/detect face/detect face 32 x 32.png"))); // NOI18N
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton6);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/face recognition/recognize 24 x 24.png"))); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton1);
+
+        jToolBar2.setRollover(true);
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Stop/Stop_24x24.png"))); // NOI18N
+        jButton7.setFocusable(false);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton7);
+
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Play/Play_24x24.png"))); // NOI18N
+        jButton8.setFocusable(false);
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton8);
+
+        jToolBar1.add(jToolBar2);
+
+        jPanel1.setBackground(java.awt.Color.gray);
+        jPanel1.setForeground(java.awt.Color.white);
+
+        jLabel1.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Tutorials");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("Go through turotials");
+
+        jLabel3.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setText("Overview");
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel4.setForeground(java.awt.Color.white);
+        jLabel4.setText("Get an overview of the features");
+
+        jLabel5.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("About Face Recognition");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel6.setForeground(java.awt.Color.white);
+        jLabel6.setText("Information about this software");
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tutorial/tutorial.png"))); // NOI18N
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/overview/overview.png"))); // NOI18N
+        jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/about/about.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(136, 594, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6))
+                    .addComponent(jLabel7))
+                .addContainerGap(383, Short.MAX_VALUE))
+        );
+
+        mainTab.addTab("Home Page", jPanel1);
 
         jMenu1.setText("File");
 
@@ -344,15 +528,15 @@ public class GApplication extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 994, Short.MAX_VALUE)
-            .addComponent(mainTab, javax.swing.GroupLayout.DEFAULT_SIZE, 994, Short.MAX_VALUE)
+            .addComponent(mainTab)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTab, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE))
+                .addComponent(mainTab, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -435,11 +619,17 @@ public class GApplication extends JFrame {
         addTab("Server", "Open Server", new PServer(), mainTab);
     }//GEN-LAST:event_menuServerActionPerformed
 
+    private void toolbarOpenFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbarOpenFolderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toolbarOpenFolderActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(final String args[]) {
-        /* Set the Nimbus look and feel */
+        /*
+         * Set the Nimbus look and feel
+         */
         try {
             UIManager.setLookAndFeel(new com.nilo.plaf.nimrod.NimRODLookAndFeel());
             final NimRODTheme nt = new NimRODTheme("../CIS_SProjectR2/lib/Snow.theme");
@@ -451,7 +641,9 @@ public class GApplication extends JFrame {
         }
 //        /* Create and display the form */
         JFrame.setDefaultLookAndFeelDecorated(true);
-        /* Create and display the form */
+        /*
+         * Create and display the form
+         */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -462,8 +654,23 @@ public class GApplication extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -471,6 +678,7 @@ public class GApplication extends JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     public static javax.swing.JTabbedPane mainTab;
