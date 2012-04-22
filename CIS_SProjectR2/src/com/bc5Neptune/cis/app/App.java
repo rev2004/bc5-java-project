@@ -8,12 +8,7 @@ import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.bll.Training;
 import com.bc5Neptune.cis.config.Config;
 import com.bc5Neptune.cis.config.ConnectDB2;
-import com.bc5Neptune.cis.gui.GApplication;
-import com.bc5Neptune.cis.gui.GWaittingForm;
-//import com.bc5Neptune.cis.gui.GFaceDetection;
-import com.bc5Neptune.cis.gui.PFaceCustom;
-import com.bc5Neptune.cis.gui.PFaceDetection;
-import com.bc5Neptune.cis.gui.PFaceRecognition;
+import com.bc5Neptune.cis.gui.*;
 import com.googlecode.javacv.cpp.opencv_objdetect.CvHaarClassifierCascade;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,14 +37,12 @@ public class App {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
 		/* init application */
-       // WaitingApp wp = new WaitingApp();
-        //wp.mul();
+        GWaitingApp wp = new GWaitingApp();
+        wp.mul();
         init();
         /* run application */
         run();
-       // wp.exit();
-        
-        //g.setVisible(false);
+        wp.exit();
         
     }
 
@@ -62,7 +55,7 @@ public class App {
         
         /* load training data */
         //Connection connection = ConnectDB2.getConnection();
-       // Training objTrain = new Training("../CIS_SProjectR2/data/facedat/");
+        //Training objTrain = new Training("../CIS_SProjectR2/data/facedat/");
         //objTrain.learn();
         GLReg.loadTraingData();
 
@@ -83,9 +76,9 @@ public class App {
         /* load form face detection */
         String[] runForm = null;
 //        //new GApplication();
-        GApplication.main(runForm);    
+       // GApplication.main(runForm);    
          //GFaceDetection.main(runForm);
-        
+        GLogin.main(runForm);
         //init several form
         GLPCustom = new PFaceCustom();
         GLPReg = new PFaceRecognition();
