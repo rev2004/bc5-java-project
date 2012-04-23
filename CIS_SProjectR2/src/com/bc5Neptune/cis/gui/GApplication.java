@@ -42,7 +42,7 @@ public class GApplication extends JFrame {
      * Creates new form GApplication
      */
     public GApplication() {
-       
+
 
         if (instance == null) {
             initComponents();
@@ -51,7 +51,7 @@ public class GApplication extends JFrame {
         } else {
             System.out.println("Error: Initlization application");
         }
-         // align cetern for this form
+        // align cetern for this form
         Container c = new Container();
         setLocationRelativeTo(c);
     }
@@ -171,16 +171,14 @@ public class GApplication extends JFrame {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        toolbarOpenFolder = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        toolAddNewPerson = new javax.swing.JButton();
+        toolEditPerson = new javax.swing.JButton();
+        toolDeletePerson = new javax.swing.JButton();
+        toolFaceDetection = new javax.swing.JButton();
+        toolFaceRecog = new javax.swing.JButton();
         jToolBar2 = new javax.swing.JToolBar();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        toolStartServer = new javax.swing.JButton();
+        toolStopServer = new javax.swing.JButton();
         mainTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -194,8 +192,8 @@ public class GApplication extends JFrame {
         jLabel9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        menuOpenFile = new javax.swing.JMenuItem();
+        menuOpenFolder = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -222,67 +220,84 @@ public class GApplication extends JFrame {
         jToolBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jToolBar1.setPreferredSize(new java.awt.Dimension(124, 100));
 
-        toolbarOpenFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Picture/Picture_24x24.png"))); // NOI18N
-        toolbarOpenFolder.setToolTipText("");
-        toolbarOpenFolder.setFocusable(false);
-        toolbarOpenFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarOpenFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbarOpenFolder.addActionListener(new java.awt.event.ActionListener() {
+        toolAddNewPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Add/Add_24x24.png"))); // NOI18N
+        toolAddNewPerson.setFocusable(false);
+        toolAddNewPerson.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolAddNewPerson.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolAddNewPerson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolbarOpenFolderActionPerformed(evt);
+                toolAddNewPersonActionPerformed(evt);
             }
         });
-        jToolBar1.add(toolbarOpenFolder);
+        jToolBar1.add(toolAddNewPerson);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Open/Open_24x24.png"))); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
+        toolEditPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Edit/Edit_24x24.png"))); // NOI18N
+        toolEditPerson.setFocusable(false);
+        toolEditPerson.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolEditPerson.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolEditPerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolEditPersonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolEditPerson);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Add/Add_24x24.png"))); // NOI18N
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton3);
+        toolDeletePerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Delete/Delete_24x24.png"))); // NOI18N
+        toolDeletePerson.setFocusable(false);
+        toolDeletePerson.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolDeletePerson.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolDeletePerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolDeletePersonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolDeletePerson);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Edit/Edit_24x24.png"))); // NOI18N
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton4);
+        toolFaceDetection.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/detect face/detect face 32 x 32.png"))); // NOI18N
+        toolFaceDetection.setFocusable(false);
+        toolFaceDetection.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolFaceDetection.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolFaceDetection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolFaceDetectionActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolFaceDetection);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Delete/Delete_24x24.png"))); // NOI18N
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton5);
-
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/detect face/detect face 32 x 32.png"))); // NOI18N
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton6);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/face recognition/recognize 24 x 24.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton1);
+        toolFaceRecog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/face recognition/recognize 24 x 24.png"))); // NOI18N
+        toolFaceRecog.setFocusable(false);
+        toolFaceRecog.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolFaceRecog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolFaceRecog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolFaceRecogActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolFaceRecog);
 
         jToolBar2.setRollover(true);
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Stop/Stop_24x24.png"))); // NOI18N
-        jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton7);
+        toolStartServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Play/Play_24x24.png"))); // NOI18N
+        toolStartServer.setFocusable(false);
+        toolStartServer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolStartServer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolStartServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolStartServerActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(toolStartServer);
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Play/Play_24x24.png"))); // NOI18N
-        jButton8.setFocusable(false);
-        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton8);
+        toolStopServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Stop/Stop_24x24.png"))); // NOI18N
+        toolStopServer.setFocusable(false);
+        toolStopServer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolStopServer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolStopServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolStopServerActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(toolStopServer);
 
         jToolBar1.add(jToolBar2);
 
@@ -366,20 +381,30 @@ public class GApplication extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6))
                     .addComponent(jLabel7))
-                .addContainerGap(383, Short.MAX_VALUE))
+                .addContainerGap(407, Short.MAX_VALUE))
         );
 
         mainTab.addTab("Home Page", jPanel1);
 
         jMenu1.setText("File");
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Picture_16x16.png"))); // NOI18N
-        jMenuItem1.setText("Open File");
-        jMenu1.add(jMenuItem1);
+        menuOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Picture_16x16.png"))); // NOI18N
+        menuOpenFile.setText("Open File");
+        menuOpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOpenFileActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuOpenFile);
 
-        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Open_16x16.png"))); // NOI18N
-        jMenuItem6.setText("Open Folder");
-        jMenu1.add(jMenuItem6);
+        menuOpenFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Open_16x16.png"))); // NOI18N
+        menuOpenFolder.setText("Open Folder");
+        menuOpenFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOpenFolderActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuOpenFolder);
 
         menuLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Log Out_16x16.png"))); // NOI18N
         menuLogout.setText("Logout");
@@ -534,9 +559,9 @@ public class GApplication extends JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainTab, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mainTab, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -619,9 +644,50 @@ public class GApplication extends JFrame {
         addTab("Server", "Open Server", new PServer(), mainTab);
     }//GEN-LAST:event_menuServerActionPerformed
 
-    private void toolbarOpenFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbarOpenFolderActionPerformed
+    private void toolAddNewPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolAddNewPersonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_toolbarOpenFolderActionPerformed
+        addTab("Add New Person", "Open Add New Person", new PNewPerson(), mainTab);
+    }//GEN-LAST:event_toolAddNewPersonActionPerformed
+
+    private void toolEditPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolEditPersonActionPerformed
+        // TODO add your handling code here:
+        addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), mainTab);
+    }//GEN-LAST:event_toolEditPersonActionPerformed
+
+    private void toolDeletePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolDeletePersonActionPerformed
+        // TODO add your handling code here:
+        addTab("Delete Person", "Open Delete Person", new PDeletePerson(), mainTab);
+    }//GEN-LAST:event_toolDeletePersonActionPerformed
+
+    private void toolFaceDetectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolFaceDetectionActionPerformed
+        // TODO add your handling code here:
+        addTab("Face Detection", "Open Face Detection", GLPDetect, mainTab);
+    }//GEN-LAST:event_toolFaceDetectionActionPerformed
+
+    private void toolFaceRecogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolFaceRecogActionPerformed
+        // TODO add your handling code here:
+        addTab("Face Recognition", "Open Face Recognition", GLPReg, mainTab);
+    }//GEN-LAST:event_toolFaceRecogActionPerformed
+
+    private void toolStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolStartServerActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
+    }//GEN-LAST:event_toolStartServerActionPerformed
+
+    private void toolStopServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolStopServerActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
+    }//GEN-LAST:event_toolStopServerActionPerformed
+
+    private void menuOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFileActionPerformed
+        // TODO add your handling code here:
+         JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
+    }//GEN-LAST:event_menuOpenFileActionPerformed
+
+    private void menuOpenFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFolderActionPerformed
+        // TODO add your handling code here:
+         JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
+    }//GEN-LAST:event_menuOpenFolderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -654,14 +720,6 @@ public class GApplication extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -676,8 +734,6 @@ public class GApplication extends JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
@@ -693,9 +749,17 @@ public class GApplication extends JFrame {
     private javax.swing.JMenuItem menuHelp;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
+    private javax.swing.JMenuItem menuOpenFile;
+    private javax.swing.JMenuItem menuOpenFolder;
     private javax.swing.JMenuItem menuSearch;
     private javax.swing.JMenuItem menuServer;
-    private javax.swing.JButton toolbarOpenFolder;
+    private javax.swing.JButton toolAddNewPerson;
+    private javax.swing.JButton toolDeletePerson;
+    private javax.swing.JButton toolEditPerson;
+    private javax.swing.JButton toolFaceDetection;
+    private javax.swing.JButton toolFaceRecog;
+    private javax.swing.JButton toolStartServer;
+    private javax.swing.JButton toolStopServer;
     private javax.swing.JMenuItem viewFaceDetection;
     private javax.swing.JMenuItem viewFaceRecognition;
     // End of variables declaration//GEN-END:variables
