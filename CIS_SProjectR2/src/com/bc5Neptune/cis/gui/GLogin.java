@@ -4,6 +4,8 @@
  */
 package com.bc5Neptune.cis.gui;
 
+import com.bc5Neptune.cis.config.ConnectDB2;
+import com.bc5Neptune.cis.dal.Employee;
 import com.nilo.plaf.nimrod.NimRODLookAndFeel;
 import com.nilo.plaf.nimrod.NimRODTheme;
 import java.awt.Container;
@@ -20,18 +22,13 @@ public class GLogin extends javax.swing.JFrame {
     /**
      * Creates new form GLogin
      */
+    ConnectDB2 obj = new ConnectDB2();
     public GLogin() {
         initComponents();
+        obj.getConnection();
         //set align center screen
         Container c = new Container();
         this.setLocationRelativeTo(c);
-    }
-
-    public Connection connectData() throws ClassNotFoundException, SQLException {
-        Class.forName("com.ibm.db2.jcc.DB2Driver");
-        Connection con = DriverManager.getConnection("jdbc:db2://localhost:50000/CIS", "db2inst1",
-                "bc5@123");
-        return con;
     }
 
     public void checkLogin() {
@@ -40,62 +37,51 @@ public class GLogin extends javax.swing.JFrame {
 
         String username = txfusername.getText();
         String pass = txfpass.getText();
+
+        String dbUsername = null;
+        String dbPass = null;
+        Employee obj2 = new Employee();
         try {
 
-            Statement statement = connectData().createStatement();
-            ResultSet rs = statement.executeQuery("SELECT USERNAME,PASSWORD "
-                    + "FROM EMPLOYEE WHERE USERNAME = '" + username + "' AND PASSWORD = '" + pass + "'");
-            String dbUsername = null;
-            String dbPass = null;
-
-
-            while (rs.next()) {
-                dbUsername = rs.getString("USERNAME");
-                dbPass = rs.getString("PASSWORD");
-
-            }
-
-
-            if (username.equalsIgnoreCase(dbUsername) == true && pass.equalsIgnoreCase(dbPass) == true) {
+            dbUsername = obj2.selectuser(username).getUsername();
+            dbPass = obj2.selectpass(pass).getPassword();
+            if (dbPass != null && dbUsername != null) {
                 new PLogin().setVisible(false);
                 GApplication.instance.addTab("Addministrator", "Open Addministrator",
                         new PAdministrator(),
                         GApplication.instance.mainTab);
                 txfusername.setText(null);
                 txfpass.setText(null);
-            } else if (username.equalsIgnoreCase(dbUsername) == true && pass.equalsIgnoreCase(dbPass) == false) {
+            }
+            if (dbUsername != null && dbPass == null) {
                 txfpass.setText(null);
                 lblcheckpass.setText("Password is incorrect!");
                 return;
-
-            } else if (username.equalsIgnoreCase(dbUsername) == false && pass.equalsIgnoreCase(dbPass) == true) {
+            }
+            if (dbUsername == null && dbPass != null) {
                 txfusername.setText(null);
                 lblcheckuser.setText("Username is incorrect!");
-
                 return;
-            } else if (username.isEmpty() == true) {
+            }
+            if (username.isEmpty() == true) {
                 lblcheckuser.setText("Please enter your username");
-
                 return;
-            } else if (pass.isEmpty() == true) {
+            }
+            if (pass.isEmpty() == true) {
                 lblcheckpass.setText("Please enter your password!");
-
                 return;
-            } else if (pass.isEmpty() == true && username.isEmpty() == true) {
+            }
+            if (pass.isEmpty() == true && username.isEmpty() == true) {
                 lblcheckpass.setText("Please enter your password and username!");
-
                 return;
-
-            } else if (username.equalsIgnoreCase(dbUsername) == false && pass.equalsIgnoreCase(dbPass) == false) {
+            }
+            if (dbPass == null && dbUsername == null) {
                 txfpass.setText(null);
                 txfusername.setText(null);
                 lblcheckpass.setText("Password or username is incorrect!");
                 return;
 
             }
-
-            statement.close();
-            connectData().close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,10 +91,6 @@ public class GLogin extends javax.swing.JFrame {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
 // TODO add your handling code here:
-        int t = evt.getKeyCode();
-        if (t == 27) {
-            System.exit(0);
-        }
     }
     private void close(){
         this.setVisible(false);
@@ -261,7 +243,7 @@ public class GLogin extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 // TODO add your handling code here:
-        //checkLogin();
+        checkLogin();
         close();
         new GApplication().setVisible(true);
     }//GEN-LAST:event_btnSubmitActionPerformed
@@ -275,18 +257,7 @@ public class GLogin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        /*
-         * Set the Nimbus look and feel
-         */
+
         try {
             UIManager.setLookAndFeel(new com.nilo.plaf.nimrod.NimRODLookAndFeel());
             final NimRODTheme nt = new NimRODTheme("../CIS_SProjectR2/lib/Snow.theme");
