@@ -39,7 +39,7 @@ public class Client {
             //connect socket image
             socketImage = new Socket(ip, defaultPort);
 
-            if (socketString == socketImage){
+            if (socketString == socketImage) {
                 System.out.println("I'm gona die");
             }
             String strShow = msg.receive();
@@ -62,7 +62,7 @@ public class Client {
     public void sendImage() {
         ProcessImage img = new ProcessImage();
         BufferedImage image = null;
-        image = img.readImage("/home/enclaveit/server.jpg");
+        image = img.readImage("/home/enclaveit/ngoc2.jpg");
         byte[] byteArray = img.bufferedImageToByteArray(image);
         try {
             ByteMessage msgByte = new ByteMessage(socketImage.getOutputStream(), byteArray);
@@ -93,16 +93,21 @@ class Receive extends Thread {
             try {
                 TextMessage msg = new TextMessage(socketString.getInputStream());
                 String message = msg.receive();
-                System.out.println("Information of this person: " + message);
+                if (message != null) {
+                    System.out.println("Information of this person: " + message);
 
-                ByteMessage msgByte = new ByteMessage(socketImage.getInputStream());
-                byte[] b = msgByte.receive();
-                System.out.println("Waiting for get information again");
-                //write a image to home folder
-                if (b != null) {
-                    BufferedImage bufferedImage = new ProcessImage().byteArrayToBufferedImage(b);
-                    ImageIO.write(bufferedImage, "jpg", new File("/home/enclaveit/picture_from_server.jpg"));
-                    System.out.println("Save Image Sucessfully");
+                    if (message.charAt(0) != '#') {
+                        ByteMessage msgByte = new ByteMessage(socketImage.getInputStream());
+                        byte[] b = msgByte.receive();
+                        // System.out.println("Waiting for get information again");
+
+                        //write a image to home folder
+                        if (b != null) {
+                            BufferedImage bufferedImage = new ProcessImage().byteArrayToBufferedImage(b);
+                            ImageIO.write(bufferedImage, "jpg", new File("/home/enclaveit/picture_from_server.jpg"));
+                            System.out.println("Save Image Sucessfully");
+                        }
+                    }
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);

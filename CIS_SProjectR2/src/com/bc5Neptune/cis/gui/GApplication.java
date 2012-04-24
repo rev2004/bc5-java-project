@@ -562,7 +562,10 @@ public class GApplication extends JFrame {
 
     private void menuChangePasswordActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuChangePasswordActionPerformed
         // TODO add your handling code here:
-        addTab("Change Password", "Open Change Password", new PChangePassword(), mainTab);
+      //  addTab("Change Password", "Open Change Password", new PChangePassword(), mainTab);
+        GChangePassword objPass = new GChangePassword();
+        objPass.setPreferredSize(new Dimension(597, 295));
+        objPass.setVisible(true);
     }//GEN-LAST:event_menuChangePasswordActionPerformed
 
     private void menuHelpActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHelpActionPerformed

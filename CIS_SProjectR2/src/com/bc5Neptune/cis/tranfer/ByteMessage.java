@@ -49,22 +49,21 @@ public class ByteMessage {
         byte[] byteArrayReceive = null;
         try {
             FPSCounter obj = new FPSCounter();
-            int check = is.available(); 
-            if (check > 0) {//check data, if exist then get it
-                while (true) {
-                    obj.BeginCount();
-                    int num = is.available();
-                    if (num > 0) {
-                        byteArrayReceive = new byte[num];
-                        int result = is.read(byteArrayReceive); //Doc du lieu tu inputstream, luu vao mang b, tra so phan tu cua mang cho n
-                        if (result == -1) {
-                            break;
-                        }
+
+            while (true) {
+                obj.BeginCount();
+                int num = is.available();
+                if (num > 0) {
+                    byteArrayReceive = new byte[num];
+                    int result = is.read(byteArrayReceive); //Doc du lieu tu inputstream, luu vao mang b, tra so phan tu cua mang cho n
+                    if (result == -1) {
                         break;
                     }
-                    obj.EndCount();
+                    break;
                 }
+                obj.EndCount();
             }
+
         } catch (IOException ie) {
             System.out.println("Error: get message" + ie);
         }
