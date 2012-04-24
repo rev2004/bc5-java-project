@@ -15,28 +15,23 @@ package com.bc5Neptune.cis.gui;
  * @author phu.huynh
  */
 import com.bc5Neptune.cis.config.ConnectDB2;
+import com.bc5Neptune.cis.dal.PersonDAL;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.TableModel;
 
 public final class PSearch extends javax.swing.JPanel {
 
     /* the object of PDetelePerson */
-    public  PDeletePerson deletePerson = new PDeletePerson();
-    public String[] mang = null;
+   // public PDeletePerson deletePerson = new PDeletePerson();
     RSTableModel elementTable;
-    Connection con;
+    
+    ConnectDB2 obj = new ConnectDB2();
+    PersonDAL a = new PersonDAL();
 
     /** Creates new form PSearch */
     public PSearch() {
-        //connectData();
-        //ConnectDB2 obj = new ConnectDB2();
-        con = ConnectDB2.getConnection();
+        
         initComponents();
-        //deletePerson = new PDeletePerson();
 
     }
 
@@ -241,7 +236,7 @@ public final class PSearch extends javax.swing.JPanel {
                     .addComponent(btnsearch)
                     .addComponent(txfitem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -256,8 +251,8 @@ public final class PSearch extends javax.swing.JPanel {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel3);
@@ -276,46 +271,65 @@ public final class PSearch extends javax.swing.JPanel {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
+        PEditPersonInformation edit=new PEditPersonInformation();
+        edit.txfPid.setText(getPid());
         GApplication.instance.addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), GApplication.mainTab);
+        
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
 
-
-
-        deletePerson.setModel(elementTable);
-        GApplication.instance.addTab("Delete Person", "Open Delete Person", deletePerson, GApplication.mainTab);
-
+      //  deletePerson.setModel(elementTable);
+      //  GApplication.instance.addTab("Delete Person", "Open Delete Person", deletePerson, GApplication.mainTab);
+        String id=getPid();
+        if(deleteByID(id)){
+             JOptionPane.showConfirmDialog(this, "Can not delete this person! Please try again!",
+                    "WARNING", JOptionPane.CLOSED_OPTION,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+            else{
+             JOptionPane.showConfirmDialog(this, "Person is deleted!",
+                    "NOTICE", JOptionPane.CLOSED_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    public void connectData() {
-        try {
-            Class.forName("com.ibm.db2.jcc.DB2Driver");
-            con = DriverManager.getConnection("jdbc:db2://192.168.10.60:50000/CIS", "db2inst1",
-                    "bc5@123");
-        } catch (SQLException ex) {
-            Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    
+    public boolean deleteByID(String id) {
+        boolean result = false;
+        PersonDAL obj2=new PersonDAL();
+//            Statement statement = con.createStatement();
+//
+//            result = statement.execute("DELETE FROM PERSON WHERE PID = '" + id +"'");
 
+            //if (r)
+       String id1=null;
+        id=getPid();
+        //dbUsername = obj2.selectuser(username).getUsername();
+        id1=obj2.deleteID(id).getPid();
+        int i=tblPersonInfor.getSelectedRow();
+        tblPersonInfor.remove(i);
+        tblPersonInfor.repaint();
+        return result;
     }
-
+    
+    
 private void cbxsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxsearchActionPerformed
 // TODO add your handling code here:
-    // cbxitem.removeAllItems();
 }//GEN-LAST:event_cbxsearchActionPerformed
 
 private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
 // TODO add your handling code here:
-
     search();
-
 
 }//GEN-LAST:event_btnsearchActionPerformed
 
     public void search() {
+        obj.getConnection();
         int id = cbxsearch.getSelectedIndex();
         int name = cbxsearch.getSelectedIndex();
         String item = txfitem.getText();
@@ -330,24 +344,18 @@ private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             tblPersonInfor.setModel(elementTable);
         } else if (name == 1) {
             elementTable = searchByName(txfitem.getText());
-             tblPersonInfor.setModel(elementTable);
+            tblPersonInfor.setModel(elementTable);
         }
     }
 
     public RSTableModel searchByID(String id) {
         RSTableModel tableModel = null;
         try {
-
-            Statement statement = con.createStatement();
-
-            ResultSet rs = statement.executeQuery("SELECT PID,FULLNAME,IDENTITY_NUMBER,"
-                    + "DOB FROM PERSON WHERE PID LIKE '%" + id + "%'");
+            ResultSet rs = a.searchid(id);
             tableModel = new RSTableModel(rs);
 
         } catch (Exception e) {
             e.printStackTrace();
-
-
         }
         return tableModel;
 
@@ -356,18 +364,21 @@ private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     public RSTableModel searchByName(String name) {
         RSTableModel tableModel = null;
         try {
-            Statement statement = con.createStatement();
-
-
-            ResultSet rs = statement.executeQuery("SELECT PID,FULLNAME,IDENTITY_NUMBER,"
-                    + "DOB FROM PERSON WHERE FULLNAME LIKE'%" + name + "%'");
-            tableModel = new RSTableModel(rs);
+            ResultSet rs1 = a.searchname(name);
+            tableModel = new RSTableModel(rs1);
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
         return tableModel;
+    }
+    public String getPid(){
+        String id=null;
+        
+        int i=tblPersonInfor.getSelectedRow();
+        id=tblPersonInfor.getValueAt(i, 0).toString();
+        System.out.println(id);
+        return id;
     }
 private void txfitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfitemActionPerformed
 // TODO add your handling code here:
@@ -387,7 +398,7 @@ private void txfitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTable tblPersonInfor;
+    public javax.swing.JTable tblPersonInfor;
     private javax.swing.JTextField txfitem;
     // End of variables declaration//GEN-END:variables
 }
