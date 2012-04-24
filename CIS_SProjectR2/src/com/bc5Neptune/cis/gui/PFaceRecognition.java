@@ -403,7 +403,7 @@ class RecognitionListener extends MouseAdapter {
                                 String pid = tmp.substring(0, 9);
                                 System.out.println("PID! " + pid);
                                 //System.out.println(new PersonDAL().Select(pid).getFULLNAME());
-                                personInfor.txfFullName.setText(new PersonDAL().Select(pid).getFULLNAME());
+                                personInfor.txfFullName.setText(new PersonDAL().Select(pid).getFullname());
                                 personInfor.txfPID.setText(new PersonDAL().Select(pid).getPid());
                                 personInfor.txfDOB.setText(new PersonDAL().Select(pid).getDob().toString());
                                 personInfor.txfhometown.setText(new PersonDAL().Select(pid).getHometown());
