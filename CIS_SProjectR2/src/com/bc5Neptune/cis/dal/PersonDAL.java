@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+//import COM.ibm.db2.app.Blob;
 
 /**
  *
@@ -22,10 +23,16 @@ public class PersonDAL {
     Connection connection = null;
     ResultSet resultSet = null;
     ResultSet resultSetRES = null;
+    ResultSet resultSetid=null;
+    ResultSet resultSetid1=null;
+    ResultSet resultSetname=null;
     Statement statement = null;
     PreparedStatement prstatement = null;
     CallableStatement cstmt = null;
     CallableStatement cstmtRes = null;
+    CallableStatement cstmt_id = null;
+    CallableStatement cstmt_id1=null;
+    CallableStatement cstmt_name = null;
 
     public PersonDAL() {
     }
@@ -50,7 +57,7 @@ public class PersonDAL {
                 p = new PersonEntity();
                 p.setPid(resultSet.getString(1));
                 p.setIdentity_number(resultSet.getString(2));
-                p.setFULLNAME(resultSet.getString(3));
+                p.setFullname(resultSet.getString(3));
                 p.setDob(resultSet.getDate(4));
                 p.setHometown("To "+resultSet.getString("NAMEG")+"- phuong "+resultSet.getString("NAMEW")+"- quan "+resultSet.getString("NAMED")+"- Tp "+resultSet.getString("NAMEP"));
                 //p.setPermanent_residence(resultSet.getString(6));
@@ -78,5 +85,52 @@ public class PersonDAL {
             }
         }
         return p;
+    }
+    public ResultSet searchid(String id){
+        PersonEntity p1 = null;
+        p1=new PersonEntity();
+        connection = ConnectDB2.getConnection();
+        try {
+            cstmt_id = connection.prepareCall("Call SPD_SEARCHBYPID(?)");
+           
+            cstmt_id.setString(1, id);
+            resultSetid=cstmt_id.executeQuery();
+             } catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return resultSetid;   
+        }
+    public ResultSet searchname(String name){
+        PersonEntity p2=null;
+        p2=new PersonEntity();
+        connection=ConnectDB2.getConnection();
+        try {
+            cstmt_name=connection.prepareCall("Call SPD_SEARCHBYNAME(?)");
+            cstmt_name.setString(1, name);
+            resultSetname=cstmt_name.executeQuery();
+             } catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return resultSetname;   
+        }
+    public PersonEntity deleteID(String id){
+        PersonEntity p3 = null;
+        p3=new PersonEntity();
+        connection= ConnectDB2.getConnection();
+        try {
+            cstmt_id1=connection.prepareCall("Call SPD_DELETEBYID(?)");
+            cstmt_id1.setString(1, id);
+            resultSetid1=cstmt_id1.executeQuery();
+    
+                
+                p3.setPid(resultSetid1.getString(1));
+            
+           
+        }catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return p3;
+        
+        
     }
 }
