@@ -30,16 +30,16 @@ public class PersonEntity {
     /**
      * @return the FULLNAME
      */
-    public String getFULLNAME() {
-        return getFullname();
-    }
-
-    /**
-     * @param FULLNAME the FULLNAME to set
-     */
-    public void setFULLNAME(String FULLNAME) {
-        this.setFullname(FULLNAME);
-    }
+//    public String getFULLNAME() {
+//        return fullname;
+//    }
+//
+//    /**
+//     * @param FULLNAME the FULLNAME to set
+//     */
+//    public void setFULLNAME(String fullname) {
+//        this.fullname=fullname;
+//    }
 
     /**
      * @return the pid
