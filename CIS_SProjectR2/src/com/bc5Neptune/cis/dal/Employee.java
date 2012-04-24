@@ -22,8 +22,10 @@ public class Employee {
     ResultSet resultSetPass = null;
     Statement statement = null;
     PreparedStatement prstatement = null;
-    
-    
+    ResultSet resultSetid=null;
+    ResultSet resutSetrolename=null;
+    CallableStatement cstmt_id = null;
+    CallableStatement cstmt_rolename=null;
    
     public Employee(){
         
@@ -98,5 +100,65 @@ public class Employee {
         }
         
         return i;
+    }
+    public int updateRole(String id, int i){
+        int j=0;
+        con=ConnectDB2.getConnection();
+        CallableStatement cstmtrole=null;
+        try {
+            cstmtrole=con.prepareCall("Call SPD_UPDATEROLE(?,?)");
+            cstmtrole.setString(1, id);
+            //cstmtrole.setString(2, id);
+            j=cstmtrole.executeUpdate();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return j;
+    }
+    public ResultSet searchEpid(String id){
+        EmployeeEntity p1 = null;
+        p1=new EmployeeEntity();
+        con = ConnectDB2.getConnection();
+        try {
+            cstmt_id = con.prepareCall("Call SPD_SEARCHID1(?)");
+           
+            cstmt_id.setString(1, id);
+            resultSetid=cstmt_id.executeQuery();
+             } catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return resultSetid;   
+        }
+    public ResultSet searchRolename(String name){
+        EmployeeEntity p2 = null;
+        p2=new EmployeeEntity();
+        con = ConnectDB2.getConnection();
+        try {
+            cstmt_rolename = con.prepareCall("Call SPD_SEARCHROLENAME(?)");
+           
+            cstmt_rolename.setString(1, name);
+            resutSetrolename=cstmt_rolename.executeQuery();
+             } catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return resutSetrolename;   
+        }
+    public EmployeeEntity deletepriority(String id){
+         EmployeeEntity p3 = null;
+        p3=new EmployeeEntity();
+        con= ConnectDB2.getConnection();
+        try {
+            cstmt_id=con.prepareCall("Call SPD_DELETEPRIORITY(?)");
+            cstmt_id.setString(1, id);
+            resultSetid=cstmt_id.executeQuery();
+    
+                
+                p3.setPid(resultSetid.getString(1));
+            
+           
+        }catch (Exception e) {
+            e.printStackTrace();
+        } 
+         return p3;
     }
 }
