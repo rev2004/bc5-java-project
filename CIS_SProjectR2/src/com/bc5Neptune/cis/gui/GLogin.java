@@ -23,6 +23,7 @@ public class GLogin extends javax.swing.JFrame {
      * Creates new form GLogin
      */
     ConnectDB2 obj = new ConnectDB2();
+
     public GLogin() {
         initComponents();
         obj.getConnection();
@@ -43,15 +44,17 @@ public class GLogin extends javax.swing.JFrame {
         Employee obj2 = new Employee();
         try {
 
-            dbUsername = obj2.selectuser(username).getUsername();
-            dbPass = obj2.selectpass(pass).getPassword();
+            dbUsername = obj2.checkLog(username, pass).getUsername();
+
+            dbPass = obj2.checkLog(username, pass).getPassword();
+
+            System.out.println("Db Name" + dbUsername);
+            System.out.println("Db Pass" + dbPass);
             if (dbPass != null && dbUsername != null) {
-//                new PLogin().setVisible(false);
-//              
-//                GApplication.instance.addTab("Addministrator", "Open Addministrator",
-//                        new PAdministrator(),
-//                        GApplication.instance.mainTab);
+                new PLogin().setVisible(false);
                 new GApplication().setVisible(true);
+                int j = obj2.checkLog(dbUsername, dbPass).getRoleid();
+                System.out.println("roleid la: " + j);
                 txfusername.setText(null);
                 txfpass.setText(null);
             }
@@ -94,9 +97,11 @@ public class GLogin extends javax.swing.JFrame {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
 // TODO add your handling code here:
     }
-    private void close(){
+
+    private void close() {
         this.setVisible(false);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,12 +138,12 @@ public class GLogin extends javax.swing.JFrame {
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Username");
 
-        jLabel3.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Abyssinica SIL", 0, 14));
         jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Password");
 
-        lblcheckuser.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-        lblcheckuser.setForeground(java.awt.Color.red);
+        lblcheckuser.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
+        lblcheckuser.setForeground(java.awt.Color.white);
 
         txfpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,8 +151,8 @@ public class GLogin extends javax.swing.JFrame {
             }
         });
 
-        lblcheckpass.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-        lblcheckpass.setForeground(java.awt.Color.red);
+        lblcheckpass.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
+        lblcheckpass.setForeground(java.awt.Color.white);
 
         btnSubmit.setBackground(new java.awt.Color(255, 158, 0));
         btnSubmit.setFont(new java.awt.Font("Abyssinica SIL", 0, 15)); // NOI18N
@@ -182,28 +187,28 @@ public class GLogin extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txfpass)
-                                .addComponent(txfusername)
                                 .addComponent(lblcheckuser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblcheckpass, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnSubmit)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnCancel))
+                                .addComponent(lblcheckpass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txfpass, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                                .addComponent(txfusername, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(74, 74, 74)
                         .addComponent(jLabel5)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(12, 12, 12)
-                .addComponent(txfusername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfusername, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblcheckuser, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
@@ -211,13 +216,15 @@ public class GLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblcheckpass, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblcheckpass, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSubmit)
                     .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCancel, btnSubmit});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -227,7 +234,7 @@ public class GLogin extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -245,10 +252,10 @@ public class GLogin extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 // TODO add your handling code here:
-//        checkLogin();
-        close();
-         new GApplication().setVisible(true);
-        
+        checkLogin();
+        // close();
+        //new GApplication().setVisible(true);
+
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
