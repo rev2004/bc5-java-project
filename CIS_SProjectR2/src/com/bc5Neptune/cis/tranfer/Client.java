@@ -62,7 +62,7 @@ public class Client {
     public void sendImage() {
         ProcessImage img = new ProcessImage();
         BufferedImage image = null;
-        image = img.readImage("/home/enclaveit/ngoc2.jpg");
+        image = img.readImage("/home/enclaveit/server.jpg");
         byte[] byteArray = img.bufferedImageToByteArray(image);
         try {
             ByteMessage msgByte = new ByteMessage(socketImage.getOutputStream(), byteArray);
@@ -97,6 +97,7 @@ class Receive extends Thread {
 
                 ByteMessage msgByte = new ByteMessage(socketImage.getInputStream());
                 byte[] b = msgByte.receive();
+                System.out.println("Waiting for get information again");
                 //write a image to home folder
                 if (b != null) {
                     BufferedImage bufferedImage = new ProcessImage().byteArrayToBufferedImage(b);

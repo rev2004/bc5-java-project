@@ -14,6 +14,7 @@ package com.bc5Neptune.cis.gui;
  *
  * @author phu.huynh
  */
+import com.bc5Neptune.cis.config.ConnectDB2;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,9 @@ public final class PSearch extends javax.swing.JPanel {
 
     /** Creates new form PSearch */
     public PSearch() {
-        connectData();
+        //connectData();
+        //ConnectDB2 obj = new ConnectDB2();
+        con = ConnectDB2.getConnection();
         initComponents();
         //deletePerson = new PDeletePerson();
 
@@ -289,7 +292,7 @@ public final class PSearch extends javax.swing.JPanel {
     public void connectData() {
         try {
             Class.forName("com.ibm.db2.jcc.DB2Driver");
-            con = DriverManager.getConnection("jdbc:db2://localhost:50000/CIS", "db2inst1",
+            con = DriverManager.getConnection("jdbc:db2://192.168.10.60:50000/CIS", "db2inst1",
                     "bc5@123");
         } catch (SQLException ex) {
             Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);

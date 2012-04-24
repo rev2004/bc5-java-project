@@ -76,8 +76,8 @@ public class Server {
 //                TextMessage ms = new TextMessage(client.socketString.getInputStream());
 //                String str = ms.receive();
 //                System.out.println(str);
-//                TextMessage msg = new TextMessage(client.socketString.getOutputStream(), "> Note from server: connect successfully");
-//                msg.send();
+                TextMessage msg = new TextMessage(client.socketString.getOutputStream(), "> Note from server: connect successfully");
+                msg.send();
 
                 TakingImage clientProcess = new TakingImage(client.socketImage);
                 //start

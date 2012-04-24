@@ -46,10 +46,12 @@ public class GLogin extends javax.swing.JFrame {
             dbUsername = obj2.selectuser(username).getUsername();
             dbPass = obj2.selectpass(pass).getPassword();
             if (dbPass != null && dbUsername != null) {
-                new PLogin().setVisible(false);
-                GApplication.instance.addTab("Addministrator", "Open Addministrator",
-                        new PAdministrator(),
-                        GApplication.instance.mainTab);
+//                new PLogin().setVisible(false);
+//              
+//                GApplication.instance.addTab("Addministrator", "Open Addministrator",
+//                        new PAdministrator(),
+//                        GApplication.instance.mainTab);
+                new GApplication().setVisible(true);
                 txfusername.setText(null);
                 txfpass.setText(null);
             }
@@ -243,9 +245,10 @@ public class GLogin extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 // TODO add your handling code here:
-        checkLogin();
+//        checkLogin();
         close();
-        new GApplication().setVisible(true);
+         new GApplication().setVisible(true);
+        
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

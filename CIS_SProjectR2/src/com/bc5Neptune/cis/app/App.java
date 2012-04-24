@@ -56,7 +56,7 @@ public class App {
         /* load training data */
         //Connection connection = ConnectDB2.getConnection();
         //Training objTrain = new Training("../CIS_SProjectR2/data/facedat/");
-        //objTrain.learn();
+       // objTrain.learn();
         GLReg.loadTraingData();
 
         /*
