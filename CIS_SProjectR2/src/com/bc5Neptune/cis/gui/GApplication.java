@@ -176,9 +176,6 @@ public class GApplication extends JFrame {
         toolDeletePerson = new javax.swing.JButton();
         toolFaceDetection = new javax.swing.JButton();
         toolFaceRecog = new javax.swing.JButton();
-        jToolBar2 = new javax.swing.JToolBar();
-        toolStartServer = new javax.swing.JButton();
-        toolStopServer = new javax.swing.JButton();
         mainTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lblTutorial = new javax.swing.JLabel();
@@ -192,15 +189,12 @@ public class GApplication extends JFrame {
         jLabel9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        menuOpenFile = new javax.swing.JMenuItem();
-        menuOpenFolder = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         viewFaceDetection = new javax.swing.JMenuItem();
         viewFaceRecognition = new javax.swing.JMenuItem();
         menuSearch = new javax.swing.JMenuItem();
-        menuLogin = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuAddNewPerson = new javax.swing.JMenuItem();
         menuAdministrator = new javax.swing.JMenuItem();
@@ -275,36 +269,10 @@ public class GApplication extends JFrame {
         });
         jToolBar1.add(toolFaceRecog);
 
-        jToolBar2.setRollover(true);
-
-        toolStartServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Play/Play_24x24.png"))); // NOI18N
-        toolStartServer.setFocusable(false);
-        toolStartServer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolStartServer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolStartServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolStartServerActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(toolStartServer);
-
-        toolStopServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Stop/Stop_24x24.png"))); // NOI18N
-        toolStopServer.setFocusable(false);
-        toolStopServer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolStopServer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolStopServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolStopServerActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(toolStopServer);
-
-        jToolBar1.add(jToolBar2);
-
         jPanel1.setBackground(java.awt.Color.gray);
         jPanel1.setForeground(java.awt.Color.white);
 
-        lblTutorial.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblTutorial.setFont(new java.awt.Font("Cantarell", 1, 18));
         lblTutorial.setForeground(java.awt.Color.white);
         lblTutorial.setText("Tutorials");
         lblTutorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -317,7 +285,7 @@ public class GApplication extends JFrame {
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Go through turotials");
 
-        lblOverview.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblOverview.setFont(new java.awt.Font("Cantarell", 1, 18));
         lblOverview.setForeground(java.awt.Color.white);
         lblOverview.setText("Overview");
         lblOverview.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -330,7 +298,7 @@ public class GApplication extends JFrame {
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Get an overview of the features");
 
-        lblAbout.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblAbout.setFont(new java.awt.Font("Cantarell", 1, 18));
         lblAbout.setForeground(java.awt.Color.white);
         lblAbout.setText("About Face Recognition");
         lblAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -399,24 +367,6 @@ public class GApplication extends JFrame {
 
         jMenu1.setText("File");
 
-        menuOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Picture_16x16.png"))); // NOI18N
-        menuOpenFile.setText("Open File");
-        menuOpenFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuOpenFileActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuOpenFile);
-
-        menuOpenFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Open_16x16.png"))); // NOI18N
-        menuOpenFolder.setText("Open Folder");
-        menuOpenFolder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuOpenFolderActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuOpenFolder);
-
         menuLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Log Out_16x16.png"))); // NOI18N
         menuLogout.setText("Logout");
         menuLogout.addActionListener(new java.awt.event.ActionListener() {
@@ -463,14 +413,6 @@ public class GApplication extends JFrame {
             }
         });
         jMenu2.add(menuSearch);
-
-        menuLogin.setText("Login");
-        menuLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuLoginActionPerformed(evt);
-            }
-        });
-        jMenu2.add(menuLogin);
 
         jMenuBar1.add(jMenu2);
 
@@ -638,11 +580,6 @@ public class GApplication extends JFrame {
         System.exit(1);
     }//GEN-LAST:event_menuExitActionPerformed
 
-    private void menuLoginActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLoginActionPerformed
-        // TODO add your handling code here:
-        addTab("Login", "Open Login", new PLogin(), mainTab);
-    }//GEN-LAST:event_menuLoginActionPerformed
-
     private void menuLogoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
         JOptionPane.showConfirmDialog(this, "Code logout implement here",
@@ -679,26 +616,6 @@ public class GApplication extends JFrame {
         // TODO add your handling code here:
         addTab("Face Recognition", "Open Face Recognition", GLPReg, mainTab);
     }//GEN-LAST:event_toolFaceRecogActionPerformed
-
-    private void toolStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolStartServerActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
-    }//GEN-LAST:event_toolStartServerActionPerformed
-
-    private void toolStopServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolStopServerActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
-    }//GEN-LAST:event_toolStopServerActionPerformed
-
-    private void menuOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFileActionPerformed
-        // TODO add your handling code here:
-         JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
-    }//GEN-LAST:event_menuOpenFileActionPerformed
-
-    private void menuOpenFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFolderActionPerformed
-        // TODO add your handling code here:
-         JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
-    }//GEN-LAST:event_menuOpenFolderActionPerformed
 
     private void lblTutorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTutorialMouseClicked
         // TODO add your handling code here:
@@ -759,7 +676,6 @@ public class GApplication extends JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblAbout;
     private javax.swing.JLabel lblOverview;
     private javax.swing.JLabel lblTutorial;
@@ -773,10 +689,7 @@ public class GApplication extends JFrame {
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenuItem menuExportToDatabase;
     private javax.swing.JMenuItem menuHelp;
-    private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
-    private javax.swing.JMenuItem menuOpenFile;
-    private javax.swing.JMenuItem menuOpenFolder;
     private javax.swing.JMenuItem menuSearch;
     private javax.swing.JMenuItem menuServer;
     private javax.swing.JButton toolAddNewPerson;
@@ -784,8 +697,6 @@ public class GApplication extends JFrame {
     private javax.swing.JButton toolEditPerson;
     private javax.swing.JButton toolFaceDetection;
     private javax.swing.JButton toolFaceRecog;
-    private javax.swing.JButton toolStartServer;
-    private javax.swing.JButton toolStopServer;
     private javax.swing.JMenuItem viewFaceDetection;
     private javax.swing.JMenuItem viewFaceRecognition;
     // End of variables declaration//GEN-END:variables
