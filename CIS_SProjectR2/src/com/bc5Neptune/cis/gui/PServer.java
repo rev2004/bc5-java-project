@@ -298,7 +298,7 @@ public class PServer extends javax.swing.JPanel {
                                         byteMgs.send();
 
                                     } else {
-                                        TextMessage msg = new TextMessage(osString, "> No nearest person, please wait for processing");
+                                        TextMessage msg = new TextMessage(osString, "#No nearest person, please wait for processing");
                                         msg.send();
 
                                         //save a image that could not recogniton in a list

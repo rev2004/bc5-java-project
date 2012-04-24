@@ -37,6 +37,7 @@ public class PAbout extends javax.swing.JPanel {
         setName("About"); // NOI18N
 
         jSplitPane1.setDividerLocation(50);
+        jSplitPane1.setDividerSize(1);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel2.setBackground(java.awt.Color.lightGray);
@@ -62,7 +63,7 @@ public class PAbout extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
+            .addGap(0, 249, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel3);
