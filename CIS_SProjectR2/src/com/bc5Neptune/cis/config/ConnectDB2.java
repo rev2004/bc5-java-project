@@ -31,7 +31,7 @@ public class ConnectDB2 {
             try {
                 Class.forName("com.ibm.db2.jcc.DB2Driver");  //com.ibm.db2.jcc.DB2Driver
                 connection = DriverManager.getConnection(
-                        "jdbc:db2://localhost:50000/CIS", "db2inst1", //jdbc:db2://localhost:50000/TEST
+                        "jdbc:db2://192.168.10.60:50000/CIS", "db2inst1", //jdbc:db2://localhost:50000/TEST
                         "bc5@123");
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ConnectDB2.class.getName()).log(Level.SEVERE, null, ex);
@@ -43,5 +43,9 @@ public class ConnectDB2 {
             }
         }
         return connection;
+    }
+    public static void main(String[] args){
+        getConnection();
+        System.out.println("Connect to database");
     }
 }

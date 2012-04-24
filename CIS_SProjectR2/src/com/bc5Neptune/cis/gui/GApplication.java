@@ -181,11 +181,11 @@ public class GApplication extends JFrame {
         toolStopServer = new javax.swing.JButton();
         mainTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblTutorial = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblOverview = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblAbout = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -304,26 +304,41 @@ public class GApplication extends JFrame {
         jPanel1.setBackground(java.awt.Color.gray);
         jPanel1.setForeground(java.awt.Color.white);
 
-        jLabel1.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
-        jLabel1.setForeground(java.awt.Color.white);
-        jLabel1.setText("Tutorials");
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblTutorial.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblTutorial.setForeground(java.awt.Color.white);
+        lblTutorial.setText("Tutorials");
+        lblTutorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblTutorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblTutorialMouseClicked(evt);
+            }
+        });
 
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Go through turotials");
 
-        jLabel3.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
-        jLabel3.setForeground(java.awt.Color.white);
-        jLabel3.setText("Overview");
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblOverview.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblOverview.setForeground(java.awt.Color.white);
+        lblOverview.setText("Overview");
+        lblOverview.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblOverview.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOverviewMouseClicked(evt);
+            }
+        });
 
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Get an overview of the features");
 
-        jLabel5.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
-        jLabel5.setForeground(java.awt.Color.white);
-        jLabel5.setText("About Face Recognition");
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAbout.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblAbout.setForeground(java.awt.Color.white);
+        lblAbout.setText("About Face Recognition");
+        lblAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAboutMouseClicked(evt);
+            }
+        });
 
         jLabel6.setForeground(java.awt.Color.white);
         jLabel6.setText("Information about this software");
@@ -347,41 +362,37 @@ public class GApplication extends JFrame {
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(136, 594, Short.MAX_VALUE))))
+                    .addComponent(jLabel6)
+                    .addComponent(lblAbout)
+                    .addComponent(lblOverview)
+                    .addComponent(jLabel2)
+                    .addComponent(lblTutorial, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(592, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(lblOverview)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(lblTutorial)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
+                            .addComponent(lblAbout)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6))
                     .addComponent(jLabel7))
-                .addContainerGap(407, Short.MAX_VALUE))
+                .addContainerGap(403, Short.MAX_VALUE))
         );
 
         mainTab.addTab("Home Page", jPanel1);
@@ -554,7 +565,7 @@ public class GApplication extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mainTab)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -689,6 +700,21 @@ public class GApplication extends JFrame {
          JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
     }//GEN-LAST:event_menuOpenFolderActionPerformed
 
+    private void lblTutorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTutorialMouseClicked
+        // TODO add your handling code here:
+        addTab("Help Contents", "Open Help Contents", new PHelp(), mainTab);
+    }//GEN-LAST:event_lblTutorialMouseClicked
+
+    private void lblAboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAboutMouseClicked
+        // TODO add your handling code here:
+        addTab("About", "Open About", new PAbout(), mainTab);
+    }//GEN-LAST:event_lblAboutMouseClicked
+
+    private void lblOverviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOverviewMouseClicked
+        // TODO add your handling code here:
+        addTab("Overview", "Open Overview", new POverview(), mainTab);
+    }//GEN-LAST:event_lblOverviewMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -720,11 +746,8 @@ public class GApplication extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -737,6 +760,9 @@ public class GApplication extends JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JLabel lblAbout;
+    private javax.swing.JLabel lblOverview;
+    private javax.swing.JLabel lblTutorial;
     public static javax.swing.JTabbedPane mainTab;
     private javax.swing.JMenuItem menuAbout;
     private javax.swing.JMenuItem menuAddNewPerson;
