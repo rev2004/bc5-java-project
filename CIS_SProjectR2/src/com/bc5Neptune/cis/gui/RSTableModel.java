@@ -41,6 +41,7 @@ public class RSTableModel extends AbstractTableModel {
         }
     }
 
+
     public int getColumnCount() {
         return colHeaders.size();
     }
@@ -54,6 +55,9 @@ public class RSTableModel extends AbstractTableModel {
         return rowData.elementAt(column);
     }
 
+    public void removeRow(int index) {
+        tbData.remove(index);
+    }
     @Override
     public String getColumnName(int column) {
         return (String) (colHeaders.elementAt(column));
