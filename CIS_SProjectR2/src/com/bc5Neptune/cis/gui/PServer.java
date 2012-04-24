@@ -85,18 +85,49 @@ public class PServer extends javax.swing.JPanel {
         lstCustomFaces.addMouseListener(new CustomFaceListener());
     }
 
+    public void renderNoFaceRecog() {
+        int size = noRecogArr.size();
+        if (size > 0) {
+            noRegIconArr.add(new IconList("No Recognition", noRecogArr.get(size - 1), 92, 112));
+        }
+        //add on list
+        lstFaceNotRecog = new JList(noRegIconArr.toArray());
+        //create render
+        VerticalIconRender ren = new VerticalIconRender();
+        lstFaceNotRecog.setCellRenderer(ren);
+        //set view
+        scrollFaceNotRecog.setViewportView(lstFaceNotRecog);
+         lstFaceNotRecog.revalidate();//clean
+        lstFaceNotRecog.repaint();//repainta
+        //right click menu for no recognition
+        lstFaceNotRecog.addMouseListener(new NoRecognitionListener());
+    }
+
     /** Creates new form PServer */
     public PServer() {
         //init image to draw
 
         initComponents();
+        //invisible btnStop button
+        btnStop.setEnabled(false);
         //show custom face
         pnlShow.setLayout(new BoxLayout(pnlShow, BoxLayout.PAGE_AXIS));
         pnlShow.repaint(); //repaint a image
         pnlShow.revalidate(); //clear
         objCustomFace = new PCustomFaceServer();
         pnlShow.add(objCustomFace);
+        btnStop.addActionListener(new ActionListener(){
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+                 btnStart.setEnabled(true);
+                 btnStop.setEnabled(false);
+                 server.stop();
+                 
+            }
+            
+        });
         btnStart.addActionListener(new ActionListener() {
 
             @Override
@@ -107,6 +138,7 @@ public class PServer extends javax.swing.JPanel {
                 } else {
                     //don't have permission when click a lots
                     btnStart.setEnabled(false);
+                    btnStop.setEnabled(true);
                     final int port = Integer.parseInt(txtPort.getText());
                     final String ip = txtHost.getText();
                     server = new Server(port, ip);
@@ -273,20 +305,9 @@ public class PServer extends javax.swing.JPanel {
                                         //wait for a person custom face then recognition again
                                         noRecogArr.add(imgServer);
                                         //show it into list
-                                        //IconList iconArr = new
-                                        int size = noRecogArr.size();
-                                        noRegIconArr.add(new IconList("No Recognition", noRecogArr.get(size - 1), 92, 112));
-                                        //add on list
-                                        lstFaceNotRecog = new JList(noRegIconArr.toArray());
-                                        //create render
-                                        VerticalIconRender ren = new VerticalIconRender();
-                                        lstFaceNotRecog.setCellRenderer(ren);
-                                        //set view
-                                        scrollFaceNotRecog.setViewportView(lstFaceNotRecog);
-                                        //right click menu for no recognition
-                                        lstFaceNotRecog.addMouseListener(new NoRecognitionListener());
-
+                                        renderNoFaceRecog();
                                         //save client
+                                        System.out.println("Add client to recognize face again");
                                         clientSaveArr.add(clientCon);
 
                                     }
@@ -329,6 +350,8 @@ public class PServer extends javax.swing.JPanel {
                 public void actionPerformed(ActionEvent e) {
                     final int index = PServer.lstFaceNotRecog.getSelectedIndex();
                     if (index >= 0) {
+                        PServer.noRecogArr.remove(index);
+                        renderNoFaceRecog();
                     }
                 }
             });
@@ -343,10 +366,12 @@ public class PServer extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    final int index = PServer.lstFaceNotRecog.getSelectedIndex();
-                    if (index >= 0) {
+                    int count = noRecogArr.size();
+                    while (count > 0) {
+                        noRecogArr.remove(0);
+                        count = noRecogArr.size();
                     }
-
+                    renderNoFaceRecog();
                 }
             });
             rightMenu.add(deleteAllOfFace);
@@ -424,6 +449,7 @@ public class PServer extends javax.swing.JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     final int index = PServer.lstCustomFaces.getSelectedIndex();
+                    PServer.lstFaceNotRecog.setSelectedIndex(0);
                     final int indexImage = PServer.lstFaceNotRecog.getSelectedIndex();
                     if (index >= 0) {
                         final BufferedImage image = PServer.customFaceArr.get(index).getImage();
@@ -431,26 +457,42 @@ public class PServer extends javax.swing.JPanel {
 
                             @Override
                             public void run() {
-                                GLReg.recognizeFile(image);
-                                ArrayList<String> faceNearest = new ArrayList<String>();
-                                faceNearest = GLReg.getNearestPerson();
-                                for (int j = 0; j < faceNearest.size(); j++) {
-                                    System.out.println("nearest face: " + faceNearest.get(j));
-                                }
-                                int size = faceNearest.size();
-                                if (faceNearest.size() > 0) {
-                                    //send infor to client
-                                    System.out.println("------------index of client-----------------" + indexImage);
-                                    ClientInfor clientInfo = clientSaveArr.get(indexImage - 1);
-                                    try {
-                                        TextMessage msg = new TextMessage(clientInfo.socketString.getOutputStream(),
-                                                faceNearest.get(size - 1));
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
+                                if (PServer.noRecogArr.size() > 0) {
+                                    GLReg.recognizeFile(image);
+                                    ArrayList<String> faceNearest = new ArrayList<String>();
+                                    faceNearest = GLReg.getNearestPerson();
+                                    for (int j = 0; j < faceNearest.size(); j++) {
+                                        System.out.println("nearest face: " + faceNearest.get(j));
                                     }
+                                    int size = faceNearest.size();
+                                    if (faceNearest.size() > 0) {
+                                        //send infor to client
+                                        System.out.println("------------index of client-----------------" + indexImage);
+                                        if (clientSaveArr.size() > 0) {
+                                            
+                                            ClientInfor clientInfo = clientSaveArr.get(indexImage);
 
+                                            try {
+                                                Server.log += "---------SEND TO CLIENT AGAIN ----------\n";
+                                                TextMessage msg = new TextMessage(clientInfo.socketString.getOutputStream(),
+                                                        faceNearest.get(size - 1));
+                                                Server.log += "The information to client:" + faceNearest.get(size - 1);
+                                                msg.send();
+                                                
+                                                //send a image to client
+                                                
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+
+                                    } else {
+                                        System.out.println("Could not found nearest person");
+                                    }
                                 } else {
-                                    System.out.println("Could not found nearest person");
+                                    JOptionPane.showConfirmDialog(null,
+                                            "Could not detect a client to recognize again",
+                                            "Warning", JOptionPane.CLOSED_OPTION);
                                 }
                             }
                         }.start();
@@ -463,36 +505,43 @@ public class PServer extends javax.swing.JPanel {
              * Detelete This Image
              */
             JMenuItem deleteFace = new JMenuItem("Detelete This Image");
-            deleteFace.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
-            deleteFace.addActionListener(new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    final int index = PServer.lstFaceNotRecog.getSelectedIndex();
-                    if (index >= 0) {
-                    }
-                }
-            });
+            deleteFace.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+            deleteFace.addActionListener(
+                    new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            final int index = PServer.lstCustomFaces.getSelectedIndex();
+                            if (index >= 0) {
+                                customFaceArr.remove(index);
+                                PServer.renderCustomFace();
+                            }
+                        }
+                    });
             rightMenu.add(deleteFace);
 
             /*
              * Delete All of Images
              */
             JMenuItem deleteAllOfFace = new JMenuItem("Delete All of Images");
+
             deleteAllOfFace.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
-            deleteAllOfFace.addActionListener(new ActionListener() {
+            deleteAllOfFace.addActionListener(
+                    new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    final int index = PServer.lstFaceNotRecog.getSelectedIndex();
-                    if (index >= 0) {
-                    }
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            int count = customFaceArr.size();
+                            while (count > 0) {
+                                customFaceArr.remove(0);
+                                count = customFaceArr.size();
+                            }
+                            PServer.renderCustomFace();
 
-                }
-            });
+                        }
+                    });
             rightMenu.add(deleteAllOfFace);
-
-
         }
         /*
          * set icon for right click menu
@@ -554,6 +603,7 @@ public class PServer extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtPort = new javax.swing.JTextField();
         btnStart = new javax.swing.JButton();
+        btnStop = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel4 = new javax.swing.JPanel();
@@ -576,6 +626,7 @@ public class PServer extends javax.swing.JPanel {
         txtLog = new javax.swing.JTextArea();
 
         jSplitPane1.setDividerLocation(50);
+        jSplitPane1.setDividerSize(1);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jLabel2.setText("Host");
@@ -591,7 +642,9 @@ public class PServer extends javax.swing.JPanel {
 
         txtPort.setText("2411");
 
-        btnStart.setText("Start");
+        btnStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Play/Play_16x16.png"))); // NOI18N
+
+        btnStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Stop/Stop_16x16.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -608,7 +661,9 @@ public class PServer extends javax.swing.JPanel {
                 .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnStart)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnStop)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -619,7 +674,8 @@ public class PServer extends javax.swing.JPanel {
                         .addComponent(txtHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3)
                         .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnStart))
+                        .addComponent(btnStart)
+                        .addComponent(btnStop))
                     .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -627,6 +683,7 @@ public class PServer extends javax.swing.JPanel {
         jSplitPane1.setTopComponent(jPanel2);
 
         jSplitPane2.setDividerLocation(250);
+        jSplitPane2.setDividerSize(1);
 
         scrollFaceServer.setViewportView(lstFaceServer);
 
@@ -658,7 +715,7 @@ public class PServer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addGap(2, 2, 2)
-                .addComponent(scrollFaceNotRecog, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
+                .addComponent(scrollFaceNotRecog, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
         );
 
         jSplitPane2.setLeftComponent(jPanel4);
@@ -670,7 +727,7 @@ public class PServer extends javax.swing.JPanel {
         pnlShow.setLayout(pnlShowLayout);
         pnlShowLayout.setHorizontalGroup(
             pnlShowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 493, Short.MAX_VALUE)
+            .addGap(0, 498, Short.MAX_VALUE)
         );
         pnlShowLayout.setVerticalGroup(
             pnlShowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -687,11 +744,11 @@ public class PServer extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollCustomFaces, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+            .addComponent(scrollCustomFaces, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollCustomFaces, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+            .addComponent(scrollCustomFaces, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Custom Faces", jPanel1);
@@ -704,11 +761,11 @@ public class PServer extends javax.swing.JPanel {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Log", jPanel7);
@@ -717,11 +774,11 @@ public class PServer extends javax.swing.JPanel {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
         );
 
         jSplitPane3.setRightComponent(jPanel6);
@@ -730,11 +787,11 @@ public class PServer extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel5);
@@ -747,7 +804,7 @@ public class PServer extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel3);
@@ -766,8 +823,10 @@ public class PServer extends javax.swing.JPanel {
 
     private void txtHostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHostActionPerformed
     }//GEN-LAST:event_txtHostActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnStart;
+    private javax.swing.JButton btnStop;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -36,6 +36,7 @@ public class Server {
     public static ArrayList<ClientInfor> clientArr = new ArrayList<ClientInfor>();
 
     public Server() {
+        
         try {
             net = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
@@ -65,7 +66,7 @@ public class Server {
                 //= new Socket(); //create new socket
                 client.socketString = ss.accept(); //wait for a client connecting
                 client.socketImage = ss.accept();
-                
+
                 //add client into client array
                 clientArr.add(client);
                 //process for client
@@ -112,7 +113,16 @@ public class Server {
     //stop server
 
     public void stop() {
-        this.stop();
+        try {
+            ss.close();
+            System.out.println("Server stoped");
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void destroy() {
+       
     }
 
     public void exit() {
