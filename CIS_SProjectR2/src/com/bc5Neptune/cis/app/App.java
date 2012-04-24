@@ -80,9 +80,8 @@ public class App {
          //GFaceDetection.main(runForm);
         GLogin.main(runForm);
         //init several form
-        GLPCustom = new PFaceCustom();
-        GLPReg = new PFaceRecognition();
-        GLPDetect = new PFaceDetection();
+        System.out.println("Run Application");
+       
         
     }
 

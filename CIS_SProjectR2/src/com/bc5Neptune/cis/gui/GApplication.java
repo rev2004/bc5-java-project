@@ -37,7 +37,9 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class GApplication extends JFrame {
 
     public static GApplication instance;
-
+    public static String userNameAccess;
+     /* 1: administratro, 2 employee , 3: user*/
+    public static int role = 3;//user
     /**
      * Creates new form GApplication
      */
@@ -585,9 +587,10 @@ public class GApplication extends JFrame {
 
     private void menuLogoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showConfirmDialog(this, "Code logout implement here",
-                "Warning", JOptionPane.CLOSED_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+        this.setVisible(false);
+        GApplication.instance = null;
+        new GLogin().setVisible(true);
+        
     }//GEN-LAST:event_menuLogoutActionPerformed
 
     private void menuServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuServerActionPerformed

@@ -12,6 +12,7 @@ import java.awt.Container;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import static com.bc5Neptune.cis.bll.GlobalObject.*;
 
 /**
  *
@@ -51,10 +52,19 @@ public class GLogin extends javax.swing.JFrame {
             System.out.println("Db Name" + dbUsername);
             System.out.println("Db Pass" + dbPass);
             if (dbPass != null && dbUsername != null) {
-                new PLogin().setVisible(false);
+
+                GApplication.role = obj2.checkLog(dbUsername, dbPass).getRoleid();//get role
+                System.out.println("roleid la: " + GApplication.role);
+                GApplication.userNameAccess = dbUsername;//get username from database
+                System.out.println("Login user name befor --" + GApplication.userNameAccess);
+                //the impotant to run application
+                this.setVisible(false);
                 new GApplication().setVisible(true);
-                int j = obj2.checkLog(dbUsername, dbPass).getRoleid();
-                System.out.println("roleid la: " + j);
+                GLPCustom = new PFaceCustom();
+                GLPReg = new PFaceRecognition();
+                GLPDetect = new PFaceDetection();
+
+
                 txfusername.setText(null);
                 txfpass.setText(null);
             }
@@ -263,7 +273,6 @@ public class GLogin extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */
