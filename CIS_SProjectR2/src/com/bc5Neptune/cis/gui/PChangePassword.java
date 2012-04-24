@@ -10,20 +10,18 @@
  */
 package com.bc5Neptune.cis.gui;
 
-
+import com.bc5Neptune.cis.config.ConnectDB2;
+import com.bc5Neptune.cis.dal.Employee;
 import java.sql.*;
 
-
-
-/**
- *
- * @author phu.huynh
- */
 public class PChangePassword extends javax.swing.JPanel {
+
+    ConnectDB2 obj = new ConnectDB2();
 
     /** Creates new form PChangePassword */
     public PChangePassword() {
         initComponents();
+        obj.getConnection();
     }
 
     /** This method is called from within the constructor to
@@ -70,6 +68,9 @@ public class PChangePassword extends javax.swing.JPanel {
 
         jSplitPane1.setTopComponent(jPanel2);
 
+        jPanel3.setBackground(new java.awt.Color(255, 194, 0));
+
+        jPanel17.setBackground(new java.awt.Color(255, 194, 0));
         jPanel17.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
         pwfnewpass.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +102,7 @@ public class PChangePassword extends javax.swing.JPanel {
         jLabel6.setText("Confirm password:");
 
         btnreset.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
+        btnreset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/reset2.jpg"))); // NOI18N
         btnreset.setText("Reset");
         btnreset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,7 +113,7 @@ public class PChangePassword extends javax.swing.JPanel {
         lblnotice.setFont(new java.awt.Font("Abyssinica SIL", 0, 18));
         lblnotice.setForeground(java.awt.Color.red);
 
-        btnOK.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        btnOK.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         btnOK.setText("Change");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,10 +143,10 @@ public class PChangePassword extends javax.swing.JPanel {
                         .addGap(229, 229, 229)
                         .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52)
-                        .addComponent(btnreset, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(btncancel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))
+                        .addComponent(btnreset, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(btncancel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
                     .addGroup(jPanel17Layout.createSequentialGroup()
                         .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(pwfnewpass, javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,86 +223,63 @@ public class PChangePassword extends javax.swing.JPanel {
 
 private void pwfnewpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwfnewpassActionPerformed
 // TODO add your handling code here:
-  btnOKActionPerformed(evt);
+    btnOKActionPerformed(evt);
 }//GEN-LAST:event_pwfnewpassActionPerformed
 
 private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
 // TODO add your handling code here:
-   changePassword();
+    changePassword();
 
 }//GEN-LAST:event_btnOKActionPerformed
-public Connection connectData() throws ClassNotFoundException, SQLException{
-    Class.forName("com.ibm.db2.jcc.DB2Driver");
-    Connection con = DriverManager.getConnection("jdbc:db2://localhost:50000/CIS", "db2inst1",
-                    "bc5@123");
-    return con;
-}
 
-public void changePassword(){
-     
-    lblnotice.setText(null);
-    String newpass = pwfnewpass.getText();
-    String existpass = pwfcurpass.getText();
-    String confpass=pwfconfirmpass.getText();
-    
-     if (newpass.equals(confpass)==false){
-                 lblnotice.setText("You enter password wrong!");
-                 pwfconfirmpass.setText(null);
-                 pwfcurpass.setText(null);
-                 pwfnewpass.setText(null);
+    public void changePassword() {
+
+        lblnotice.setText(null);
+        String newpass = pwfnewpass.getText();
+        String existpass = pwfcurpass.getText();
+        String confpass = pwfconfirmpass.getText();
+        int i = 0;
+        Employee obj = new Employee();
+        String dbPass = null;
+        if (newpass.equals(confpass) == false) {
+            lblnotice.setText("You enter password wrong!");
+            pwfconfirmpass.setText(null);
+            pwfcurpass.setText(null);
+            pwfnewpass.setText(null);
             return;
-             }
-    try {
-            
-            Statement statement = connectData().createStatement();
-            int rs = statement.executeUpdate("UPDATE EMPLOYEE SET PASSWORD='" 
-                    + newpass + "'WHERE PASSWORD = '" + existpass + "'"); 
-            
-             ResultSet rs1 = statement.executeQuery("SELECT PASSWORD "
-                    + "FROM EMPLOYEE WHERE PASSWORD = '" + existpass + "'");
-          
-            String dbPass = null;
+        }
+        try {
 
-            while (rs1.next()) {
-               
-                dbPass = rs1.getString("PASSWORD");
-
-            }
-            
-            if(rs==1){
+            dbPass = obj.selectpass(existpass).getPassword();
+            System.out.println(dbPass);
+            i = obj.updatepass(newpass, existpass);
+            System.out.println(i);
+            if (i == -1) {
                 lblnotice.setText("Changed password!");
                 return;
-                
+
+            } else if (newpass.isEmpty() == true) {
+                lblnotice.setText("Please enter new password!");
+                return;
+            } else if (existpass.isEmpty() == true) {
+                lblnotice.setText("Please enter current password!");
+                return;
+            } else if (confpass.isEmpty() == true) {
+                lblnotice.setText("Please enter confirm password!");
+                return;
+            } else if (existpass.equalsIgnoreCase(dbPass) == false) {
+                lblnotice.setText("Password does not exist in database! Please try again!");
+                pwfconfirmpass.setText(null);
+                pwfcurpass.setText(null);
+                pwfnewpass.setText(null);
+                return;
             }
-            
-            else if (newpass.isEmpty()==true){
-                 lblnotice.setText("Please enter new password!");
-            return;
-             }
-             else if(existpass.isEmpty()==true){
-                  lblnotice.setText("Please enter current password!");
-            return;
-             }
-             else if(confpass.isEmpty()==true){
-                  lblnotice.setText("Please enter confirm password!");
-            return;
-             }
-             
-             else if(existpass.equalsIgnoreCase(dbPass)==false){
-                 lblnotice.setText("Password does not exist in database! Please try again!");
-                 pwfconfirmpass.setText(null);
-                 pwfcurpass.setText(null);
-                 pwfnewpass.setText(null);
-            return;                             
-             }
-           statement.close();
-            connectData().close();
-    
-     } catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
-        
+
         }
-}
+    }
 
 private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
 // TODO add your handling code here:
@@ -308,7 +287,7 @@ private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     pwfnewpass.setText(null);
     pwfconfirmpass.setText(null);
     pwfcurpass.setText(null);
-   
+
 }//GEN-LAST:event_btnresetActionPerformed
 
 private void pwfcurpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwfcurpassActionPerformed
@@ -318,14 +297,13 @@ private void pwfcurpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
 private void pwfconfirmpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwfconfirmpassActionPerformed
 // /TODO add your handling code here:
-   btnOKActionPerformed(evt);
+    btnOKActionPerformed(evt);
 }//GEN-LAST:event_pwfconfirmpassActionPerformed
 
 private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed
 // TODO add your handling code here:
     System.exit(0);
 }//GEN-LAST:event_btncancelActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btncancel;
@@ -342,6 +320,4 @@ private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JPasswordField pwfcurpass;
     private javax.swing.JPasswordField pwfnewpass;
     // End of variables declaration//GEN-END:variables
-
-    
 }
