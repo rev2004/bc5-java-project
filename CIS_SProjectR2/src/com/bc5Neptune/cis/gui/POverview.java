@@ -34,6 +34,8 @@ public class POverview extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
+        setName("Overview"); // NOI18N
+
         jSplitPane1.setDividerLocation(50);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -69,12 +71,10 @@ public class POverview extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 728, Short.MAX_VALUE)
             .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 448, Short.MAX_VALUE)
             .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents

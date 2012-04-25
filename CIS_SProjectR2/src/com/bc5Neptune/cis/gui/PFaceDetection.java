@@ -45,8 +45,8 @@ public class PFaceDetection extends JPanel {
     public PFaceDetection() {
         initComponents();
         //show a person who access
-        System.out.println("Login username " + GApplication.userNameAccess);
-        lblNameAccess.setText(GApplication.userNameAccess);
+        System.out.println("Login username " + GLogin.userNameAccess);
+        lblNameAccess.setText(GLogin.userNameAccess);
        
     }
 
@@ -66,7 +66,6 @@ public class PFaceDetection extends JPanel {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         lblNameAccess = new javax.swing.JLabel();
-        btnOpenFolder1 = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel21 = new javax.swing.JPanel();
@@ -140,23 +139,14 @@ public class PFaceDetection extends JPanel {
         lblNameAccess.setForeground(java.awt.Color.red);
         lblNameAccess.setText("Administrator");
 
-        btnOpenFolder1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Picture/Picture_32x32.png"))); // NOI18N
-        btnOpenFolder1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOpenFolder1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnOpenFolder1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOpenFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 612, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 650, Short.MAX_VALUE)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
@@ -175,9 +165,7 @@ public class PFaceDetection extends JPanel {
                 .addComponent(jButton1))
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnOpenFolder, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOpenFolder1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(btnOpenFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -212,7 +200,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPanelThumb, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+            .addComponent(scrollPanelThumb, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
@@ -294,7 +282,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(splMain1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+            .addComponent(splMain1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
         );
 
         jSplitPane4.setRightComponent(jPanel25);
@@ -307,7 +295,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+            .addComponent(jSplitPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
         );
 
         jTabbedPane3.addTab("Image Brower", jPanel21);
@@ -331,8 +319,8 @@ public class PFaceDetection extends JPanel {
         );
         jPanel40Layout.setVerticalGroup(
             jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTrainFace, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
-            .addComponent(jScrollBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+            .addComponent(scrollTrainFace, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+            .addComponent(jScrollBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
         );
 
         jPanel41.setBorder(javax.swing.BorderFactory.createTitledBorder("Person ID"));
@@ -554,7 +542,7 @@ public class PFaceDetection extends JPanel {
                 .addGroup(jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jSplitPane6.setRightComponent(jPanel42);
@@ -567,7 +555,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel38Layout.setVerticalGroup(
             jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+            .addComponent(jSplitPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
@@ -591,7 +579,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
         );
 
         jSplitPane3.setRightComponent(jPanel20);
@@ -606,9 +594,9 @@ public class PFaceDetection extends JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 614, Short.MAX_VALUE)
+            .addGap(0, 615, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane3))
+                .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -755,15 +743,8 @@ public class PFaceDetection extends JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnOpenFolder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenFolder1ActionPerformed
-
-        JOptionPane.showConfirmDialog(this, "Please implement here", "Modify", JOptionPane.CLOSED_OPTION);
-        //TODO: Open file in here
-    }//GEN-LAST:event_btnOpenFolder1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenFolder;
-    private javax.swing.JButton btnOpenFolder1;
     private javax.swing.JButton btnSave;
     public javax.swing.JComboBox cmbTrainFace;
     private javax.swing.JFileChooser fileChooseFolder;

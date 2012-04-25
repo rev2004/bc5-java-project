@@ -20,6 +20,9 @@ import static com.bc5Neptune.cis.bll.GlobalObject.*;
  */
 public class GLogin extends javax.swing.JFrame {
 
+    public static String userNameAccess;
+    /* 1: administratro, 2 employee */
+    public static int role = 2;//employee
     /**
      * Creates new form GLogin
      */
@@ -53,13 +56,15 @@ public class GLogin extends javax.swing.JFrame {
             System.out.println("Db Pass" + dbPass);
             if (dbPass != null && dbUsername != null) {
 
-                GApplication.role = obj2.checkLog(dbUsername, dbPass).getRoleid();//get role
-                System.out.println("roleid la: " + GApplication.role);
-                GApplication.userNameAccess = dbUsername;//get username from database
-                System.out.println("Login user name befor --" + GApplication.userNameAccess);
+                GLogin.role = obj2.checkLog(dbUsername, dbPass).getRoleid();//get role
+                System.out.println("roleid la: " + GLogin.role);
+                GLogin.userNameAccess = dbUsername;//get username from database
+                System.out.println("Login user name befor --" + GLogin.userNameAccess);
                 //the impotant to run application
+                //close login form and run application
                 this.setVisible(false);
                 new GApplication().setVisible(true);
+
                 GLPCustom = new PFaceCustom();
                 GLPReg = new PFaceRecognition();
                 GLPDetect = new PFaceDetection();
