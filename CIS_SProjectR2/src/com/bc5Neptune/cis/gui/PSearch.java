@@ -14,24 +14,55 @@ package com.bc5Neptune.cis.gui;
  *
  * @author phu.huynh
  */
+import static com.googlecode.javacv.cpp.opencv_core.*;
+import static com.googlecode.javacv.cpp.opencv_imgproc.*;
+import static com.googlecode.javacv.cpp.opencv_highgui.*;
+import com.bc5Neptune.cis.bll.HorizontalIconRender;
+import com.bc5Neptune.cis.bll.FaceDetection;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import com.bc5Neptune.cis.bll.IconList;
+import com.bc5Neptune.cis.bll.ProcessFile;
+import com.bc5Neptune.cis.bll.ProcessImage;
+import com.bc5Neptune.cis.bll.VerticalIconRender;
 import com.bc5Neptune.cis.config.ConnectDB2;
 import com.bc5Neptune.cis.dal.PersonDAL;
+import com.googlecode.javacv.cpp.opencv_core.IplImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
+import com.googlecode.javacv.cpp.opencv_core.IplImage;
+import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 
 public final class PSearch extends javax.swing.JPanel {
 
     /* the object of PDetelePerson */
-   // public PDeletePerson deletePerson = new PDeletePerson();
+    // public PDeletePerson deletePerson = new PDeletePerson();
     RSTableModel elementTable;
-    
     ConnectDB2 obj = new ConnectDB2();
     PersonDAL a = new PersonDAL();
+    public ArrayList<IconList> iconArr = new ArrayList<IconList>();
 
     /** Creates new form PSearch */
     public PSearch() {
-        
+
         initComponents();
+        pnlEdit.setVisible(false);
         pnlResult.setVisible(false);
 
     }
@@ -45,25 +76,54 @@ public final class PSearch extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        pnlResult = new javax.swing.JPanel();
-        btnDelete = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblPersonInfor = new javax.swing.JTable();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jPanel5 = new javax.swing.JPanel();
+        jSplitPane3 = new javax.swing.JSplitPane();
+        jPanel7 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txfitem = new javax.swing.JTextField();
         cbxsearch = new javax.swing.JComboBox();
         btnsearch = new javax.swing.JButton();
+        pnlResult = new javax.swing.JPanel();
+        btnDelete = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblPersonInfor = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        pnlEdit = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txfResidence = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        txfHometown = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        txfReligion = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txfEthnic = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txfIdentifyNumber = new javax.swing.JTextField();
+        txfDob = new javax.swing.JTextField();
+        txfFullname = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        btnRestore = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        lblImage = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        scrollListFace = new javax.swing.JScrollPane();
+        lstFace = new javax.swing.JList();
 
         setName("Information Searching"); // NOI18N
 
         jSplitPane1.setDividerLocation(50);
-        jSplitPane1.setDividerSize(1);
+        jSplitPane1.setDividerSize(2);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel2.setBackground(java.awt.Color.gray);
@@ -72,14 +132,46 @@ public final class PSearch extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 726, Short.MAX_VALUE)
+            .addGap(0, 886, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 22, Short.MAX_VALUE)
+            .addGap(0, 29, Short.MAX_VALUE)
         );
 
         jSplitPane1.setTopComponent(jPanel2);
+
+        jSplitPane2.setDividerLocation(470);
+        jSplitPane2.setDividerSize(2);
+        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        jSplitPane3.setDividerLocation(400);
+        jSplitPane3.setDividerSize(2);
+
+        jPanel4.setBorder(null);
+
+        jLabel2.setText("Search Type:");
+
+        txfitem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txfitemActionPerformed(evt);
+            }
+        });
+
+        cbxsearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Name" }));
+        cbxsearch.setToolTipText("");
+        cbxsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxsearchActionPerformed(evt);
+            }
+        });
+
+        btnsearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Search/Search_16x16.png"))); // NOI18N
+        btnsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchActionPerformed(evt);
+            }
+        });
 
         pnlResult.setBorder(null);
 
@@ -122,7 +214,7 @@ public final class PSearch extends javax.swing.JPanel {
             .addGroup(pnlResultLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(pnlResultLayout.createSequentialGroup()
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -135,39 +227,13 @@ public final class PSearch extends javax.swing.JPanel {
         pnlResultLayout.setVerticalGroup(
             pnlResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlResultLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
-
-        jPanel4.setBackground(java.awt.Color.lightGray);
-        jPanel4.setBorder(null);
-
-        jLabel2.setText("Search Type:");
-
-        txfitem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txfitemActionPerformed(evt);
-            }
-        });
-
-        cbxsearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Name" }));
-        cbxsearch.setToolTipText("");
-        cbxsearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxsearchActionPerformed(evt);
-            }
-        });
-
-        btnsearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Search/Search_16x16.png"))); // NOI18N
-        btnsearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnsearchActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -175,48 +241,224 @@ public final class PSearch extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txfitem, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(408, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(3, 3, 3)
-                    .addComponent(jLabel2)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(cbxsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(466, Short.MAX_VALUE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(7, 7, 7)
+                        .addComponent(cbxsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(txfitem, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
+            .addComponent(pnlResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txfitem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnsearch))
-                .addGap(20, 20, 20))
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(cbxsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(54, Short.MAX_VALUE)))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnsearch)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cbxsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfitem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(pnlResult, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jSplitPane3.setLeftComponent(jPanel7);
+
+        pnlEdit.setBackground(java.awt.Color.gray);
+        pnlEdit.setBorder(null);
+
+        txfResidence.setColumns(10);
+        txfResidence.setRows(3);
+        txfResidence.setTabSize(5);
+        jScrollPane8.setViewportView(txfResidence);
+
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setText("Full name:");
+
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Identity number:");
+
+        txfHometown.setColumns(10);
+        txfHometown.setRows(3);
+        txfHometown.setTabSize(5);
+        jScrollPane9.setViewportView(txfHometown);
+
+        jLabel4.setForeground(java.awt.Color.white);
+        jLabel4.setText("Hometown:");
+
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("Birthday:");
+
+        jLabel6.setForeground(java.awt.Color.white);
+        jLabel6.setText("Ethnic:");
+
+        jLabel7.setForeground(java.awt.Color.white);
+        jLabel7.setText("Place of residence:");
+
+        jLabel8.setForeground(java.awt.Color.white);
+        jLabel8.setText("Religion:");
+
+        btnRestore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Undo/Undo_16x16.png"))); // NOI18N
+        btnRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestoreActionPerformed(evt);
+            }
+        });
+
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Save/Save_16x16.png"))); // NOI18N
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        lblImage.setForeground(java.awt.Color.white);
+
+        javax.swing.GroupLayout pnlEditLayout = new javax.swing.GroupLayout(pnlEdit);
+        pnlEdit.setLayout(pnlEditLayout);
+        pnlEditLayout.setHorizontalGroup(
+            pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEditLayout.createSequentialGroup()
+                        .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(jLabel6)
+                            .addComponent(txfEthnic, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfReligion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txfIdentifyNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel4)
+                            .addComponent(txfDob, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(jLabel5)
+                            .addComponent(txfFullname, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)))
+                    .addGroup(pnlEditLayout.createSequentialGroup()
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlEditLayout.setVerticalGroup(
+            pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditLayout.createSequentialGroup()
+                .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlEditLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addGap(12, 12, 12)
+                        .addComponent(txfEthnic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txfReligion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlEditLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfIdentifyNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addGap(11, 11, 11)
+                        .addComponent(txfDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addGap(14, 14, 14)
+                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRestore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jSplitPane3.setRightComponent(jPanel8);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+        );
+
+        jSplitPane2.setTopComponent(jPanel5);
+
+        lstFace.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
+        lstFace.setVisibleRowCount(1);
+        scrollListFace.setViewportView(lstFace);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollListFace, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollListFace, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+        );
+
+        jSplitPane2.setRightComponent(jPanel6);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -236,66 +478,121 @@ public final class PSearch extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
-        PEditPersonInformation edit = new PEditPersonInformation();
-        //set id
-        edit.setId(getPid());
-        //load data
-        edit.loadData();
-        GApplication.instance.addTab("Edit Person Information", "Open Edit Person Information", edit, GApplication.mainTab);
-        
+       //visible pnlEdit
+        pnlEdit.setVisible(true);
+        //load data to edit
+        loadData(getPid());
+
     }//GEN-LAST:event_btnEditActionPerformed
 
+    public void loadData(String id) {
+        try {
+            PersonDAL objPersonDAL = new PersonDAL();
+
+            //txfPid.setText(obj2.getPid());
+
+            //    String id = txfPid.getText();
+            //   System.out.println("id la "+id);
+            System.out.println("Id of person: " + id);
+
+            String dob = objPersonDAL.selectID(id).getDob().toString();
+            txfDob.setText(dob);
+            String identifyNumber = objPersonDAL.selectID(id).getIdentity_number();
+            txfIdentifyNumber.setText(identifyNumber);
+
+            String ethnic = objPersonDAL.selectID(id).getEthnic();
+            txfEthnic.setText(ethnic);
+            String name = objPersonDAL.selectID(id).getFullname();
+            txfFullname.setText(name);
+            String hometown = objPersonDAL.selectID(id).getHometown();
+            txfHometown.setText(hometown);
+            String religion = objPersonDAL.selectID(id).getReligion();
+            txfReligion.setText(religion);
+            String res = objPersonDAL.selectID(id).getPermanent_residence();
+            txfResidence.setText(res);
+            //load image
+            BufferedImage bufferedImage = ImageIO.read(new PersonDAL().selectID(id).getImage().getBinaryStream());
+            bufferedImage = new ProcessImage().resize(bufferedImage, 240, 200);
+            lblImage.setIcon(new ImageIcon(bufferedImage));
+
+            //load face data
+            loadFaceData();
+        } catch (SQLException ex) {
+            Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
 
-      //  deletePerson.setModel(elementTable);
-      //  GApplication.instance.addTab("Delete Person", "Open Delete Person", deletePerson, GApplication.mainTab);
-        String id=getPid();
-        if(deleteByID(id)){
-             JOptionPane.showConfirmDialog(this, "Can not delete this person! Please try again!",
+        //  deletePerson.setModel(elementTable);
+        //  GApplication.instance.addTab("Delete Person", "Open Delete Person", deletePerson, GApplication.mainTab);
+        String id = getPid();
+        if (deleteByID(id)) {
+            JOptionPane.showConfirmDialog(this, "Can not delete this person! Please try again!",
                     "WARNING", JOptionPane.CLOSED_OPTION,
                     JOptionPane.ERROR_MESSAGE);
             return;
-        }
-            else{
-             JOptionPane.showConfirmDialog(this, "Person is deleted!",
+        } else {
+            JOptionPane.showConfirmDialog(this, "Person is deleted!",
                     "NOTICE", JOptionPane.CLOSED_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    
     public boolean deleteByID(String id) {
         boolean result = false;
-        PersonDAL obj2=new PersonDAL();
-//            Statement statement = con.createStatement();
-//
-//            result = statement.execute("DELETE FROM PERSON WHERE PID = '" + id +"'");
-
-            //if (r)
-       String id1=null;
-        id=getPid();
-        //dbUsername = obj2.selectuser(username).getUsername();
-        id1=obj2.deleteID(id).getPid();
-        int i=tblPersonInfor.getSelectedRow();
+        PersonDAL obj2 = new PersonDAL();
+        obj2.deleteID(id);
+        //remove at table
+        int i = tblPersonInfor.getSelectedRow();
         tblPersonInfor.remove(i);
         tblPersonInfor.repaint();
         return result;
     }
-    
-    
+
+    public void loadFaceData() {
+        ProcessFile objFile = new ProcessFile();
+        iconArr.clear(); //ensure empty
+        String id = txfIdentifyNumber.getText();
+        for (int i = 0; i < 10; i++) {
+            BufferedImage imageIcon = objFile.loadBufferedFace("../CIS_SProjectR2/data/facedat/",
+                    id, i);
+            iconArr.add(new IconList(id, imageIcon, 92, 112));
+
+        }
+        updateFaceCellRender();
+    }
+
+    public void updateFaceCellRender() {
+        // iconArr[0] = new IconList("Recognition", imageIcon, 20, 30);
+        lstFace = new JList(iconArr.toArray());
+
+        HorizontalIconRender render = new HorizontalIconRender();
+
+        lstFace.setCellRenderer(render);
+        lstFace.setFixedCellHeight(120);
+        //set sell width
+        lstFace.setFixedCellWidth(200);
+        scrollListFace.setViewportView(lstFace);
+        lstFace.addMouseListener(new ListFaceDataListener(this));
+    }
+
 private void cbxsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxsearchActionPerformed
 // TODO add your handling code here:
 }//GEN-LAST:event_cbxsearchActionPerformed
@@ -351,11 +648,12 @@ private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         }
         return tableModel;
     }
-    public String getPid(){
-        String id=null;
-        
-        int i=tblPersonInfor.getSelectedRow();
-        id=tblPersonInfor.getValueAt(i, 0).toString();
+
+    public String getPid() {
+        String id = null;
+
+        int i = tblPersonInfor.getSelectedRow();
+        id = tblPersonInfor.getValueAt(i, 0).toString();
         System.out.println(id);
         return id;
     }
@@ -363,20 +661,192 @@ private void txfitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 // TODO add your handling code here:
     btnsearchActionPerformed(evt);
 }//GEN-LAST:event_txfitemActionPerformed
+
+    private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
+        // TODO add your handling code here:
+        pnlEdit.setVisible(false);
+        iconArr.clear();
+        updateFaceCellRender();
+    }//GEN-LAST:event_btnRestoreActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        //save to dat file
+        int NUM_ARRAY = 10;
+        System.out.println("click save");
+        BufferedImage[] imagesArr = new BufferedImage[NUM_ARRAY];
+        if (iconArr.size() == 10) {
+            ProcessFile proFile = new ProcessFile();
+            //IconList[] iconArr = lstTrainFace.getCellRenderer();
+
+            for (int i = 0; i < NUM_ARRAY; i++) {
+                IconList icon = iconArr.get(i);
+                imagesArr[i] = icon.getImage();
+            }
+            //change to gray image
+            ProcessImage proImage = new ProcessImage();
+            //create folder tmp
+            proFile.createFolder("../CIS_SProjectR2/data/tmp/");
+            for (int i = 0; i < NUM_ARRAY; i++) {
+                IplImage cvImage = new IplImage();
+                cvImage = IplImage.createFrom(imagesArr[i]);
+                cvImage = proImage.setGray(cvImage);
+                cvSaveImage("../CIS_SProjectR2/data/tmp/" + (i + 1) + ".pgm", cvImage);
+            }
+            //for(int i = 0; i <)
+            proFile.createDatFile(txfIdentifyNumber.getText());
+            proFile.deleteFolder("../CIS_SProjectR2/data/tmp/");
+
+            //proFile.saveBuffImageToDAT(imagesArr, txtID.getText(),"../CIS_SProjectR2/data/facedat/");
+            System.out.println("Save array of images to dat successfully");
+        } else {
+            JOptionPane.showConfirmDialog(null, "The number of face is wrong",
+                    "Warning",
+                    JOptionPane.CLOSED_OPTION);
+        }
+
+
+        //please implement save to database in here
+
+    }//GEN-LAST:event_btnSaveActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnRestore;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnsearch;
     private javax.swing.JComboBox cbxsearch;
+    public javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JSplitPane jSplitPane3;
+    private javax.swing.JLabel lblImage;
+    public javax.swing.JList lstFace;
+    private javax.swing.JPanel pnlEdit;
     private javax.swing.JPanel pnlResult;
+    private javax.swing.JScrollPane scrollListFace;
     public javax.swing.JTable tblPersonInfor;
+    private javax.swing.JTextField txfDob;
+    private javax.swing.JTextField txfEthnic;
+    private javax.swing.JTextField txfFullname;
+    private javax.swing.JTextArea txfHometown;
+    public javax.swing.JTextField txfIdentifyNumber;
+    private javax.swing.JTextField txfReligion;
+    private javax.swing.JTextArea txfResidence;
     private javax.swing.JTextField txfitem;
     // End of variables declaration//GEN-END:variables
+}
+
+class ListFaceDataListener extends MouseAdapter {
+
+    JPopupMenu rightMenu = new JPopupMenu("Right menu");
+    PSearch searchForm;
+    String tempPath = null;
+
+    public ListFaceDataListener(final PSearch searchForm) {
+        this.searchForm = searchForm;
+        JMenuItem deleteItem = new JMenuItem("Delete this face");
+        //addMenu.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        deleteItem.addActionListener(
+                new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("right me1");
+                        int a = searchForm.lstFace.getSelectedIndex();
+                        if (a >= 0) {
+                            searchForm.iconArr.remove(a);
+                            searchForm.updateFaceCellRender();
+                        }
+                    }
+                });
+
+
+        rightMenu.add(deleteItem);
+
+        JMenuItem AddItem = new JMenuItem("Add face");
+        AddItem.addActionListener(
+                new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        searchForm.jFileChooser1.setDialogTitle("Choose a file");
+                        searchForm.add(searchForm.jFileChooser1);
+                        searchForm.jFileChooser1.setVisible(true);
+                        int returnVal = searchForm.jFileChooser1.showOpenDialog(null);
+
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = searchForm.jFileChooser1.getSelectedFile();
+                            tempPath = selectedFile.getAbsolutePath();
+                            int ind = tempPath.lastIndexOf(".");
+                            if (ind == -1) { // no file type
+                                JOptionPane.showConfirmDialog(searchForm,
+                                        "Please choose .pgm type!", "Warning",
+                                        JOptionPane.CLOSED_OPTION,
+                                        JOptionPane.WARNING_MESSAGE);
+                                return;
+                            }
+                            String tmp = tempPath.substring(ind);
+                            if (tmp.equalsIgnoreCase(".pgm") == false) {
+                                JOptionPane.showConfirmDialog(searchForm,
+                                        "Please choose pgm type!", "Warning",
+                                        JOptionPane.CLOSED_OPTION,
+                                        JOptionPane.WARNING_MESSAGE);
+                                return;
+                            }
+                        }
+                        if (tempPath != null) {
+                            IplImage ipltemp = cvLoadImage(tempPath);
+                            BufferedImage bf = ipltemp.getBufferedImage();
+                            IconList ic = new IconList(searchForm.txfIdentifyNumber.getText(), bf, 92, 112);
+                            searchForm.iconArr.add(ic);
+                            searchForm.updateFaceCellRender();
+                        }
+                    }
+                });
+        rightMenu.add(AddItem);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        switch (e.getModifiers()) {
+            case InputEvent.BUTTON1_MASK: {
+                if (e.getClickCount() == 2) {
+                    System.out.println("double me");
+                }
+                break;
+            }
+            case InputEvent.BUTTON2_MASK: {
+
+                System.out.println("That's the MIDDLE button");
+
+                break;
+            }
+            case InputEvent.BUTTON3_MASK: {
+                System.out.println("That's the RIGHT button");
+                //rightMenu.pack();
+                rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                break;
+            }
+        }
+    }
 }
