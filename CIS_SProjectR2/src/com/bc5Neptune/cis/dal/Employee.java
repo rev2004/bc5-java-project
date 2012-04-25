@@ -73,10 +73,13 @@ public class Employee {
 			cstmtPass.setString(1, password);
 			resultSetPass = cstmtPass.executeQuery();
 			em1 = new EmployeeEntity();
+                        if (resultSetPass!=null){
 			if (resultSetPass.next()) {
 
 				em1.setPassword(resultSetPass.getString(4));
-			} else if (resultSetPass.wasNull() == true) {
+			} 
+                        }
+                        else{
 				em1.setPassword(null);
 			}
 
@@ -111,11 +114,6 @@ public class Employee {
 				objEmployee.setUsername(null);
 				objEmployee.setPassword(null);
 			}
-//			if (resultSet.wasNull() == true) {
-//				objEmployee.setUsername(null);
-//				objEmployee.setPassword(null);
-//			}
-		//	System.out.println("Employee Db pass" + resultSet.getString(4));
 
 		} catch (Exception e) {
 			e.printStackTrace();
