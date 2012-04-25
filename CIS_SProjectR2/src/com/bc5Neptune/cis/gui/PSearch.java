@@ -246,8 +246,11 @@ public final class PSearch extends javax.swing.JPanel {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        PEditPersonInformation edit=new PEditPersonInformation();
-        edit.txfPid.setText(getPid());
+        PEditPersonInformation edit = new PEditPersonInformation();
+        //set id
+        edit.setId(getPid());
+        //load data
+        edit.loadData();
         GApplication.instance.addTab("Edit Person Information", "Open Edit Person Information", edit, GApplication.mainTab);
         
     }//GEN-LAST:event_btnEditActionPerformed
