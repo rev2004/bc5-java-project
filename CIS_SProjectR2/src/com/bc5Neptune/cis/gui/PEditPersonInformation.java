@@ -576,7 +576,7 @@ class EditPersonListener extends MouseAdapter {
 
                         IplImage ipltemp = cvLoadImage(tempPath);
                         BufferedImage bf = ipltemp.getBufferedImage();
-                        IconList ic = new IconList("205507915", bf, 92, 112);
+                        IconList ic = new IconList("205507914", bf, 92, 112);
                         editPerson.objSmall.add(ic);
                         editPerson.updateList();
                     }
