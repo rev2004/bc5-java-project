@@ -5,13 +5,21 @@
 package com.bc5Neptune.cis.dal;
 
 import com.bc5Neptune.cis.config.ConnectDB2;
+import com.bc5Neptune.cis.entity.DistrictEntity;
 import com.bc5Neptune.cis.entity.PersonEntity;
+import com.bc5Neptune.cis.entity.ProvinceEntity;
 import com.bc5Neptune.cis.gui.PPersonInformation;
 import java.beans.Statement;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import COM.ibm.db2.app.Blob;
 
 /**
@@ -130,7 +138,7 @@ public class PersonDAL {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
 
 
     }
@@ -159,7 +167,7 @@ public class PersonDAL {
                 p.setPermanent_residence(resultSet1.getString(6));
                 p.setImage(resultSet1.getBlob("IMAGE"));
                 p.setIdentity_number(resultSet1.getString("IDENTITY_NUMBER"));
-                
+
                 //cstmtRes.setString(1, resultSet.getString(6));
                 // resultSetRES=cstmtRes.executeQuery();
                 // if(resultSetRES.next()){
@@ -175,5 +183,64 @@ public class PersonDAL {
             e.printStackTrace();
         }
         return p;
+    }
+
+    public List<ProvinceEntity> getListProvince() {
+        List<ProvinceEntity> listCountry = new ArrayList<ProvinceEntity>();
+        String sql = "select * from PROVINCE order by PROVINCEID asc";
+        ResultSet rs = null;
+        try {
+            connection = ConnectDB2.getConnection();
+            prstatement = connection.prepareStatement(sql);
+            rs = prstatement.executeQuery();
+            ProvinceEntity Province = null;
+            while (rs.next()) {
+                Province = new ProvinceEntity();
+                Province.setProvinceID(rs.getString("ProvinceID"));
+                Province.setNameP(rs.getString("NameP"));
+                listCountry.add(Province);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                prstatement.close();
+                //connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+        }
+
+        return listCountry;
+    }
+
+    public HashSet<DistrictEntity> getListDistrict(String ProvinceID) {
+        HashSet<DistrictEntity> listDistrict = null;
+        try {
+            listDistrict = new HashSet<DistrictEntity>();
+            String sql = "select * from DISTRICT where PROVINCEID =? order by NAMED asc";
+            ResultSet rs = null;
+
+            connection = ConnectDB2.getConnection();
+            prstatement = connection.prepareStatement(sql);
+            prstatement.setString(1, ProvinceID);
+            rs = prstatement.executeQuery();
+            DistrictEntity DisE = null;
+            while (rs.next()) {
+                DisE = new DistrictEntity();
+                DisE.setDistricID(rs.getString("DISTRICTID"));
+                DisE.setNameD(rs.getString("NAMED"));
+                DisE.setProvinceID(rs.getString("PROVINCEID"));
+                listDistrict.add(DisE);
+            }
+
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listDistrict;
     }
 }
