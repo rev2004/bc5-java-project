@@ -57,6 +57,8 @@ public class GApplication extends JFrame {
         // align cetern for this form
         Container c = new Container();
         setLocationRelativeTo(c);
+        //show user who is login
+        btnLogout.setText(GLogin.userNameAccess + "  ");
     }
 
     //if user is admin: the permision is all of function 
@@ -222,6 +224,10 @@ public class GApplication extends JFrame {
         toolSearch = new javax.swing.JButton();
         toolChangePassword = new javax.swing.JButton();
         toolServer = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
         mainTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lblTutorial = new javax.swing.JLabel();
@@ -351,6 +357,30 @@ public class GApplication extends JFrame {
             }
         });
         jToolBar1.add(toolServer);
+        jToolBar1.add(filler1);
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel3.setFont(new java.awt.Font("Cantarell", 2, 15));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Hello: ");
+        jLabel3.setFocusable(false);
+        jPanel2.add(jLabel3);
+
+        btnLogout.setForeground(java.awt.Color.red);
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Log Out/Log Out_24x24.png"))); // NOI18N
+        btnLogout.setText("Plato   ");
+        btnLogout.setFocusable(false);
+        btnLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnLogout.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnLogout);
+
+        jToolBar1.add(jPanel2);
 
         jPanel1.setBackground(java.awt.Color.gray);
         jPanel1.setForeground(java.awt.Color.white);
@@ -445,7 +475,7 @@ public class GApplication extends JFrame {
                             .addComponent(jLabel2)
                             .addComponent(lblTutorial, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))))
-                .addContainerGap(592, Short.MAX_VALUE))
+                .addContainerGap(604, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,7 +505,7 @@ public class GApplication extends JFrame {
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addContainerGap(332, Short.MAX_VALUE))
         );
 
         mainTab.addTab("Home Page", jPanel1);
@@ -642,15 +672,15 @@ public class GApplication extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
-            .addComponent(mainTab, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 897, Short.MAX_VALUE)
+            .addComponent(mainTab, javax.swing.GroupLayout.DEFAULT_SIZE, 897, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainTab, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainTab, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE))
         );
 
         pack();
@@ -716,9 +746,13 @@ public class GApplication extends JFrame {
 
     private void menuLogoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        GApplication.instance = null;
-        new GLogin().setVisible(true);
+        int check = JOptionPane.showConfirmDialog(menuLogout, "Do you want to logout?", "Question",
+                JOptionPane.YES_NO_OPTION);
+        if (check == 0) {
+            this.setVisible(false);
+            GApplication.instance = null;
+            new GLogin().setVisible(true);
+        }
 
     }//GEN-LAST:event_menuLogoutActionPerformed
 
@@ -807,6 +841,17 @@ public class GApplication extends JFrame {
         addTab("Tutorials", "Open Tutorials", new PTutorials(), mainTab);
     }//GEN-LAST:event_menuTutorialsActionPerformed
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        int check = JOptionPane.showConfirmDialog(menuLogout, "Do you want to logout?", "Question",
+                JOptionPane.YES_NO_OPTION);
+        if (check == 0) {
+            this.setVisible(false);
+            GApplication.instance = null;
+            new GLogin().setVisible(true);
+        }
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -838,9 +883,12 @@ public class GApplication extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -852,6 +900,7 @@ public class GApplication extends JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblAbout;
     private javax.swing.JLabel lblHelp;
