@@ -85,11 +85,18 @@ public class IconList {
      * get image array buffer
      */
 
-    public ImageIcon getIcon() {
+    public ImageIcon getIconResize() {
         /*
          * scale a image
          */
         image = GLImage.resize(image, width, height);
+        /*
+         * convert from bufferdimage to imageicon
+         */
+        icon = new ImageIcon(image);
+        return icon;
+    }
+    public ImageIcon getIcon() {
         /*
          * convert from bufferdimage to imageicon
          */

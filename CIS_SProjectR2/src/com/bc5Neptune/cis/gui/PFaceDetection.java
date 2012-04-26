@@ -35,19 +35,20 @@ public class PFaceDetection extends JPanel {
     /*
      * control disable or enable region
      */
+
     final int SORT_INCREASE = 1;
     boolean toggleRegion = false;
     /* save icon for list render */
     public ArrayList<IconList> iconTrainArr = new ArrayList<IconList>();
     /* save 10 faces to insert to database */
     public ArrayList<IconList> iconTempArr = new ArrayList<IconList>();
-    
+
     public PFaceDetection() {
         initComponents();
         //show a person who access
         System.out.println("Login username " + GLogin.userNameAccess);
         lblNameAccess.setText(GLogin.userNameAccess);
-       
+
     }
 
     /**
@@ -623,9 +624,9 @@ public class PFaceDetection extends JPanel {
             new Thread() {
 
                 public void run() {
-                    GLImageList.cvload();
+                    //GLImageList.cvload();
                     //resize image 90 X 120
-                    int length = GLImageList.getLength(); //length of array images
+                    int length = GLImageList.getLength(); //length of name of files
                     if (length > 0) {
                         IconList[] iconList = new IconList[length];
                         /*
@@ -633,10 +634,12 @@ public class PFaceDetection extends JPanel {
                          * listbox
                          */
                         for (int i = 0; i < length; i++) {
-                            iconList[i] = new IconList(GLImageList.getFileNames(i), //name of a image
-                                    GLImageList.getImageList(i),//buffer of a image
-                                    120, //width
-                                    90); //height
+                            GLImageList.load(i);
+                            iconList[i] = new IconList();
+                            //resize befor add to list
+                            ProcessImage proImg = new ProcessImage();
+                            BufferedImage tmpImg = proImg.resize(GLImageList.getImage(), 92, 112);
+                            iconList[i].setImage(tmpImg);
                         }
 
                         /*
@@ -660,9 +663,10 @@ public class PFaceDetection extends JPanel {
                      * add jlist on scrollPanel
                      */
                     scrollPanelThumb.setViewportView(lstThumbnails);
-                    
+
                     /* init face region */
                     GLPCustom.positionArr = new FaceRegion[GLImageList.getLength()];
+                    GLPCustom.index = 0;
                     interrupt();
                 }
                 /*
@@ -680,12 +684,12 @@ public class PFaceDetection extends JPanel {
         // TODO add your handling code here:
         //empty arrTemplist
         iconTempArr.clear();
-        
+
         System.out.println("You chose me" + cmbTrainFace.getSelectedItem());
         String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
-        for(int i = 0 ; i < iconTrainArr.size(); i++){
+        for (int i = 0; i < iconTrainArr.size(); i++) {
             IconList icon = iconTrainArr.get(i);
-            if (icon.getName().equalsIgnoreCase(currentNameSelect)){
+            if (icon.getName().equalsIgnoreCase(currentNameSelect)) {
                 iconTempArr.add(icon);
             }
         }
@@ -703,7 +707,7 @@ public class PFaceDetection extends JPanel {
         // TODO add your handling code here:
         System.out.println(lstThumbnails.getSelectedIndex());
         //set cellrender again
-        
+
     }//GEN-LAST:event_lstThumbnailsMouseClicked
 
     private void lstThumbnailsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstThumbnailsValueChanged
@@ -716,33 +720,32 @@ public class PFaceDetection extends JPanel {
         int NUM_ARRAY = 10;
         System.out.println("click save");
         BufferedImage[] imagesArr = new BufferedImage[NUM_ARRAY];
-        if (iconTempArr.size() == 10){
+        if (iconTempArr.size() == 10) {
             ProcessFile proFile = new ProcessFile();
             //IconList[] iconArr = lstTrainFace.getCellRenderer();
-            
-           for(int i = 0; i < NUM_ARRAY; i++){
-               IconList icon = iconTempArr.get(i);
-               imagesArr[i] = icon.getImage();
-           }
-           //change to gray image
-           ProcessImage proImage = new ProcessImage();
-           //create folder tmp
-           proFile.createFolder("../CIS_SProjectR2/data/tmp/");
-           for(int i = 0; i < NUM_ARRAY; i++){
-               IplImage cvImage = new IplImage();
-               cvImage = IplImage.createFrom(imagesArr[i]);
-               cvImage = proImage.setGray(cvImage);
-               cvSaveImage("../CIS_SProjectR2/data/tmp/" + (i + 1) + ".pgm", cvImage);
-           }
-           //for(int i = 0; i <)
-           proFile.createDatFile(txtID.getText());
-           proFile.deleteFolder("../CIS_SProjectR2/data/tmp/");
-           
-           //proFile.saveBuffImageToDAT(imagesArr, txtID.getText(),"../CIS_SProjectR2/data/facedat/");
-           System.out.println("Save array of images to dat successfully");
+
+            for (int i = 0; i < NUM_ARRAY; i++) {
+                IconList icon = iconTempArr.get(i);
+                imagesArr[i] = icon.getImage();
+            }
+            //change to gray image
+            ProcessImage proImage = new ProcessImage();
+            //create folder tmp
+            proFile.createFolder("../CIS_SProjectR2/data/tmp/");
+            for (int i = 0; i < NUM_ARRAY; i++) {
+                IplImage cvImage = new IplImage();
+                cvImage = IplImage.createFrom(imagesArr[i]);
+                cvImage = proImage.setGray(cvImage);
+                cvSaveImage("../CIS_SProjectR2/data/tmp/" + (i + 1) + ".pgm", cvImage);
+            }
+            //for(int i = 0; i <)
+            proFile.createDatFile(txtID.getText());
+            proFile.deleteFolder("../CIS_SProjectR2/data/tmp/");
+
+            //proFile.saveBuffImageToDAT(imagesArr, txtID.getText(),"../CIS_SProjectR2/data/facedat/");
+            System.out.println("Save array of images to dat successfully");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenFolder;
     private javax.swing.JButton btnSave;
@@ -812,15 +815,19 @@ class ListImageListener extends MouseAdapter {
          * Enable Region menu
          */
         JMenuItem enableRegion = new JMenuItem("Enable Region");
-        //addMenu.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //addMenu.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         enableRegion.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Enable Region");
-                GLPDetect.toggleRegion = true;
-                GLPDetect.pnlShowImage.revalidate();
-                GLPDetect.pnlShowImage.repaint();
+                int index = GLPDetect.lstThumbnails.getSelectedIndex();
+                if (index >= 0) {
+                    System.out.println("Enable Region");
+
+                    GLPDetect.toggleRegion = true;
+                    GLPDetect.pnlShowImage.revalidate();
+                    GLPDetect.pnlShowImage.repaint();
+                }
             }
         });
 
@@ -830,15 +837,18 @@ class ListImageListener extends MouseAdapter {
          * Disable Region menu
          */
         JMenuItem disableRegion = new JMenuItem("Disable Region");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         disableRegion.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                GLPDetect.toggleRegion = false;
-                GLPDetect.pnlShowImage.revalidate();
-                GLPDetect.pnlShowImage.repaint();
-                System.out.println("Disable Region");
+                int index = GLPDetect.lstThumbnails.getSelectedIndex();
+                if (index >= 0) {
+                    GLPDetect.toggleRegion = false;
+                    GLPDetect.pnlShowImage.revalidate();
+                    GLPDetect.pnlShowImage.repaint();
+                    System.out.println("Disable Region");
+                }
 
             }
         });
@@ -848,7 +858,7 @@ class ListImageListener extends MouseAdapter {
          * Detect This Face menu
          */
         JMenuItem detectFace = new JMenuItem("Detect This Image");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         detectFace.addActionListener(new ActionListener() {
 
             @Override
@@ -860,7 +870,8 @@ class ListImageListener extends MouseAdapter {
                         @Override
                         public void run() {
                             FaceDetection objDetect = new FaceDetection();
-                            IplImage image = GLImageList.cvImagesArr[index];
+                            GLImageList.load(index);
+                            IplImage image = GLImageList.getCVImage();
                             objDetect.detectFace(image, index);
                             System.out.println("Detect This Face");
                             GLPCustom.updateListFace();
@@ -877,7 +888,7 @@ class ListImageListener extends MouseAdapter {
          * Detect All Faces menu
          */
         JMenuItem detectAllFaces = new JMenuItem("Detect All of Images");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         detectAllFaces.addActionListener(new ActionListener() {
 
             @Override
@@ -888,11 +899,14 @@ class ListImageListener extends MouseAdapter {
 
                         @Override
                         public void run() {
-                          
+
                             System.out.println("Detect All Face Start");
                             FaceDetection objDetect = new FaceDetection();
-                            IplImage[] images = GLImageList.cvImagesArr;
-                            objDetect.detectFaces(images);
+                            for (int i = 0; i < GLImageList.getLength(); i++) {
+                                GLImageList.load(index);
+                                IplImage image = GLImageList.getCVImage();
+                                objDetect.detectFace(image, i);
+                            }
 
                             GLPCustom.updateListFace();
                             System.out.println("Detect All Face Finished");
@@ -905,7 +919,7 @@ class ListImageListener extends MouseAdapter {
             }
         });
         rightMenu.add(detectAllFaces);
-        
+
 
     }
     /*
@@ -925,17 +939,18 @@ class ListImageListener extends MouseAdapter {
                     /*
                      * double click
                      */
-                    if ( GLImageList.getLength() > 0) {
+                    if (GLImageList.getLength() > 0) {
                         int index = 0;
 
                         ProcessImage objImg = new ProcessImage();
-                       index = GLPDetect.lstThumbnails.getSelectedIndex();
-                       BufferedImage image = objImg.resize(
-                                GLImageList.getImageList(index),
+                        index = GLPDetect.lstThumbnails.getSelectedIndex();
+                        GLImageList.load(index);
+                        BufferedImage image = objImg.resize(
+                                GLImageList.getImage(),
                                 GLPDetect.pnlShowImage.getWidth(),
                                 GLPDetect.pnlShowImage.getHeight());
 
-                        
+
                         /*
                          * check region on a image
                          */
@@ -943,7 +958,7 @@ class ListImageListener extends MouseAdapter {
                             /*
                              * if not exist
                              */
-                           GLPCustom.positionArr[index] = new FaceRegion();
+                            GLPCustom.positionArr[index] = new FaceRegion();
                         }
                         /*
                          * if exist
@@ -952,7 +967,7 @@ class ListImageListener extends MouseAdapter {
                         GLPCustom.image = image;
                         GLPCustom.fileName = GLImageList.getFileNames(index);
 
-                        
+
                         GLPDetect.pnlShowImage.setLayout(new BoxLayout(GLPDetect.pnlShowImage, BoxLayout.PAGE_AXIS));
 
                         GLPDetect.pnlShowImage.repaint(); //repaint a image
@@ -971,7 +986,10 @@ class ListImageListener extends MouseAdapter {
             case InputEvent.BUTTON3_MASK: {
                 System.out.println("That's the RIGHT button");
                 //rightMenu.pack();
-                rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                int index = GLPDetect.lstThumbnails.getSelectedIndex();
+                if (index >= 0) {
+                    rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
                 break;
             }
         }

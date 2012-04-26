@@ -96,7 +96,7 @@ public class PFaceCustom extends javax.swing.JPanel {
 
                 positionArr[index].points2[positionArr[index].pointCount] = ev.getPoint();
                 positionArr[index].pointCount++;
-                
+
                 positionArr[index].rect.setFrameFromDiagonal(positionArr[index].start,
                         positionArr[index].start);
                 updateListFace();
@@ -170,7 +170,7 @@ public class PFaceCustom extends javax.swing.JPanel {
             // Draw lines between points in arrays.
             g2.setPaint(Color.blue);
             Rectangle r = new Rectangle();
-            
+
             for (int i = 0; i < positionArr[index].pointCount; i++) {
                 r.setFrameFromDiagonal(positionArr[index].points[i], positionArr[index].points2[i]);
                 // g2.fill(r);
@@ -251,7 +251,7 @@ class FaceListListener extends MouseAdapter {
          * information menu
          */
         JMenuItem addMenu = new JMenuItem("Add Information");
-        //addMenu.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //addMenu.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         addMenu.addActionListener(new ActionListener() {
 
             @Override
@@ -311,24 +311,25 @@ class FaceListListener extends MouseAdapter {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int i = 0;
-                int count = GLPCustom.getLength();
-                while (count > 0) {
-                    GLPCustom.faceListArr.remove(0);
-                    count = GLPCustom.getLength();
-                    GLPCustom.iconListArr.remove(0);
+                int index = GLPDetect.lstFaceImages.getSelectedIndex();
+                if (index >= 0) {
+                    int count = GLPCustom.getLength();
+                    while (count > 0) {
+                        GLPCustom.faceListArr.remove(0);
+                        count = GLPCustom.getLength();
+                        GLPCustom.iconListArr.remove(0);
+                    }
+                    /*
+                     * after delete a face then update list face
+                     */
+                    GLPCustom.updateListFace();
+                    /*
+                     * reduce counting of face
+                     */
+                    GLPCustom.countFaces = 0;
+                    //PDrawPanel.getInstance().position[index].pointCount = 0;
+                    System.out.println("Delete All of faces");
                 }
-                /*
-                 * after delete a face then update list face
-                 */
-                GLPCustom.updateListFace();
-                /*
-                 * reduce counting of face
-                 */
-                GLPCustom.countFaces = 0;
-                //PDrawPanel.getInstance().position[index].pointCount = 0;
-                System.out.println("Delete All of faces");
-
             }
         });
         rightMenu.add(deleteAllMenu);
@@ -344,30 +345,26 @@ class FaceListListener extends MouseAdapter {
                 /*
                  * update list face
                  */
-//                int index =GLPDetect
-//                        .lstFaceImages.getSelectedIndex();
+                int index = GLPDetect.lstFaceImages.getSelectedIndex();
+                if (index >= 0) {
+                    IconList objSmallImage = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
 
+                    GLPReg.objSmall.add(objSmallImage);
 
-//                objReg.listFace.add(PDrawPanel
-//                        .getInstance().faceImages.get(index));
-                IconList objSmallImage = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
+                    /*
+                     * update list face
+                     */
+                    GLPReg.updateListFace();
+                    /*
+                     * open new recognition tab
+                     */
+                    System.out.println("recognition face");
+                    GApplication.instance.addTab("Face Recognition",
+                            "Open Face Recognition",
+                            GLPReg,
+                            GApplication.instance.mainTab);
 
-                GLPReg.objSmall.add(objSmallImage);
-
-                /*
-                 * update list face
-                 */
-                GLPReg.updateListFace();
-                /*
-                 * open new recognition tab
-                 */
-                System.out.println("recognition face");
-                GApplication.instance.addTab("Face Recognition",
-                        "Open Face Recognition",
-                        GLPReg,
-                        GApplication.instance.mainTab);
-
-
+                }
             }
         });
         rightMenu.add(recogMenu);
@@ -382,39 +379,41 @@ class FaceListListener extends MouseAdapter {
             public void actionPerformed(ActionEvent e) {
                 /* click add to traning face */
                 int index = GLPDetect.lstFaceImages.getSelectedIndex();
-                IconList icon = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
-                // you must type the id number for face image
+                if (index >= 0) {
+                    IconList icon = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
+                    // you must type the id number for face image
 
-                //if (!"unknow".equals(icon.getName())) {
-                GLPDetect.iconTrainArr.add(icon);
-                //after add to traning face then remove face at index
-                GLPCustom.iconListArr.remove(index);
-                GLPCustom.faceListArr.remove(index);
-                GLPCustom.countFaces--;
-                GLPCustom.updateListFace();
+                    //if (!"unknow".equals(icon.getName())) {
+                    GLPDetect.iconTrainArr.add(icon);
+                    //after add to traning face then remove face at index
+                    GLPCustom.iconListArr.remove(index);
+                    GLPCustom.faceListArr.remove(index);
+                    GLPCustom.countFaces--;
+                    GLPCustom.updateListFace();
 
-                // setcell render for traning list face
-                GLPDetect.lstTrainFace = new JList(GLPDetect.iconTrainArr.toArray());
-                VerticalIconRender render = new VerticalIconRender();
-                GLPDetect.lstTrainFace.setCellRenderer(render);
-                GLPDetect.scrollTrainFace.setViewportView(GLPDetect.lstTrainFace);
+                    // setcell render for traning list face
+                    GLPDetect.lstTrainFace = new JList(GLPDetect.iconTrainArr.toArray());
+                    VerticalIconRender render = new VerticalIconRender();
+                    GLPDetect.lstTrainFace.setCellRenderer(render);
+                    GLPDetect.scrollTrainFace.setViewportView(GLPDetect.lstTrainFace);
 
-                //update list of combobox
-                int exist = 0;//the item still exist
-                String cmbNewName = icon.getName();
-                for (int i = 0; i < GLPDetect.cmbTrainFace.getItemCount(); i++) {
-                    String oldName = (String) GLPDetect.cmbTrainFace.getItemAt(i);
-                    if (cmbNewName.equalsIgnoreCase(oldName)) {
-                        exist++;
+                    //update list of combobox
+                    int exist = 0;//the item still exist
+                    String cmbNewName = icon.getName();
+                    for (int i = 0; i < GLPDetect.cmbTrainFace.getItemCount(); i++) {
+                        String oldName = (String) GLPDetect.cmbTrainFace.getItemAt(i);
+                        if (cmbNewName.equalsIgnoreCase(oldName)) {
+                            exist++;
+                        }
                     }
-                }
-                if (exist == 0) { //not exist then add it to combobox
-                    GLPDetect.cmbTrainFace.addItem(cmbNewName);
-                    //  }
+                    if (exist == 0) { //not exist then add it to combobox
+                        GLPDetect.cmbTrainFace.addItem(cmbNewName);
+                        //  }
 
-                    //}else{
-                    //icon.setName("");
-                    System.out.println("you must change a name to add to traning face");
+                        //}else{
+                        //icon.setName("");
+                        System.out.println("you must change a name to add to traning face");
+                    }
                 }
             }
         });
@@ -437,21 +436,21 @@ class FaceListListener extends MouseAdapter {
                 if (e.getClickCount() == 2) {
                     PEditRegion objEdit = new PEditRegion();
                     int index = GLPDetect.lstFaceImages.getSelectedIndex();
+                    if (index >= 0) {
+                        BufferedImage[] objBuffered = GLPCustom.getFaceImages();
+                        ImageIcon icon = new ImageIcon(objBuffered[index]);
 
-                    BufferedImage[] objBuffered = GLPCustom.getFaceImages();
-                    ImageIcon icon = new ImageIcon(objBuffered[index]);
+                        objEdit.lblFace.setIcon(icon);
+                        IconList objSmall = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
+                        objEdit.tblEditRegion.setValueAt(objSmall.getName(), 0, 0);
+                        /*
+                         * set position to show window
+                         */
 
-                    objEdit.lblFace.setIcon(icon);
-                    IconList objSmall = (IconList) GLPDetect.lstFaceImages.getSelectedValue();
-                    objEdit.tblEditRegion.setValueAt(objSmall.getName(), 0, 0);
-                    /*
-                     * set position to show window
-                     */
-
-                    popupInfo.removeAll();
-                    popupInfo.add(objEdit);
-                    popupInfo.show(e.getComponent(), e.getX(), e.getY());
-
+                        popupInfo.removeAll();
+                        popupInfo.add(objEdit);
+                        popupInfo.show(e.getComponent(), e.getX(), e.getY());
+                    }
 
                     //objSmall.setFileImage("Double click at me");
 
@@ -468,7 +467,10 @@ class FaceListListener extends MouseAdapter {
             case InputEvent.BUTTON3_MASK: {
                 System.out.println("That's the RIGHT button");
                 //rightMenu.pack();
-                rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                int index = GLPDetect.lstFaceImages.getSelectedIndex();
+                if (index >= 0) {
+                    rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
 
                 break;
             }
