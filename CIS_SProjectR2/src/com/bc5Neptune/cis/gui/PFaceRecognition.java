@@ -18,6 +18,7 @@ import com.bc5Neptune.cis.bll.VerticalIconRender;
 import com.bc5Neptune.cis.bll.ReadFolder;
 import com.bc5Neptune.cis.bll.IconList;
 import com.bc5Neptune.cis.bll.ProcessFile;
+import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.config.Config;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.dal.PersonDAL;
@@ -28,6 +29,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,10 +39,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
@@ -93,6 +97,56 @@ public class PFaceRecognition extends JPanel {
         // SmallImage objSmall = new SmallImage(TOOL_TIP_TEXT_KEY, null, WIDTH, WIDTH)
     }
 
+    public void loadImage() {
+        String tempPath = new String();
+
+
+        fileChooseFolder.setDialogTitle("Choose a file");
+        //this.getContentPane().add(fileChooseFolder);
+        fileChooseFolder.setVisible(true);
+        int returnVal = fileChooseFolder.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooseFolder.getSelectedFile();
+            tempPath = selectedFile.getAbsolutePath();
+            int ind = tempPath.lastIndexOf(".");
+            if (ind == -1) { // no file type
+                JOptionPane.showConfirmDialog(this,
+                        "Please choose .jpg or .jpeg type!", "Warning",
+                        JOptionPane.CLOSED_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String tmp = tempPath.substring(ind);
+            if (tmp.equalsIgnoreCase(".JPG") == false // .jpg or jpeg
+                    || tmp.equalsIgnoreCase(".JPEG")) {
+                JOptionPane.showConfirmDialog(this,
+                        "Please choose .jpg or .jpeg type!", "Warning",
+                        JOptionPane.CLOSED_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            try {
+                System.out.println(tempPath);
+                File file = new File(tempPath);
+                BufferedImage img = ImageIO.read(file);
+
+                if (img != null) {
+                    ProcessImage objImp = new ProcessImage();
+                    img = objImp.resize(img, 92, 112);
+                    IconList icon = new IconList(selectedFile.getName(), img, 92, 112);
+                    objSmall.add(icon);
+                    updateListFace();
+                }else{
+                    System.out.println("Could not read a image");
+                }
+            } catch (IOException e) {
+                Logger.getLogger(PFaceRecognition.class.getName()).log(Level.SEVERE, null);
+            }
+        }
+
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -102,10 +156,10 @@ public class PFaceRecognition extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileChooseFolder = new javax.swing.JFileChooser();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnLoadImage = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel3 = new javax.swing.JPanel();
@@ -118,36 +172,39 @@ public class PFaceRecognition extends JPanel {
         setName("Face Recognition"); // NOI18N
 
         jSplitPane1.setDividerLocation(50);
+        jSplitPane1.setDividerSize(1);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel1.setBackground(java.awt.Color.lightGray);
 
-        jButton1.setText("Import Faces");
+        btnLoadImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Picture/Picture_32x32.png"))); // NOI18N
+        btnLoadImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadImageActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(685, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(813, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                .addContainerGap()
+                .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jSplitPane1.setTopComponent(jPanel1);
 
-        jSplitPane2.setDividerLocation(200);
+        jSplitPane2.setDividerLocation(150);
+        jSplitPane2.setDividerSize(1);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -159,29 +216,22 @@ public class PFaceRecognition extends JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jSplitPane2.setLeftComponent(jPanel3);
@@ -194,13 +244,11 @@ public class PFaceRecognition extends JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
+            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(tabFaceNearist, javax.swing.GroupLayout.PREFERRED_SIZE, 671, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -209,11 +257,11 @@ public class PFaceRecognition extends JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -222,17 +270,22 @@ public class PFaceRecognition extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
+        // TODO add your handling code here:
+        loadImage();
+    }//GEN-LAST:event_btnLoadImageActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLoadImage;
+    private javax.swing.JFileChooser fileChooseFolder;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -240,7 +293,6 @@ public class PFaceRecognition extends JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JTextField jTextField1;
     public javax.swing.JList lstFace;
     private javax.swing.JScrollPane scrollPane;
     public javax.swing.JTabbedPane tabFaceNearist;
