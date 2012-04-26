@@ -10,6 +10,9 @@
  */
 package com.bc5Neptune.cis.gui;
 
+import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import com.bc5Neptune.cis.dal.PersonDAL;
 import com.bc5Neptune.cis.bll.HorizontalIconRender;
 import java.awt.event.InputEvent;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
@@ -33,6 +36,7 @@ import com.bc5Neptune.cis.bll.FaceDetection;
 import com.bc5Neptune.cis.bll.IconList;
 import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.bll.VerticalIconRender;
+import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.tranfer.ByteMessage;
 import com.bc5Neptune.cis.tranfer.FPSCounter;
 import com.bc5Neptune.cis.tranfer.Server;
@@ -86,10 +90,7 @@ public class PServer extends javax.swing.JPanel {
     }
 
     public void renderNoFaceRecog() {
-        int size = noRecogArr.size();
-        if (size > 0) {
-            noRegIconArr.add(new IconList("No Recognition", noRecogArr.get(size - 1), 92, 112));
-        }
+
         //add on list
         lstFaceNotRecog = new JList(noRegIconArr.toArray());
         //create render
@@ -97,7 +98,7 @@ public class PServer extends javax.swing.JPanel {
         lstFaceNotRecog.setCellRenderer(ren);
         //set view
         scrollFaceNotRecog.setViewportView(lstFaceNotRecog);
-         lstFaceNotRecog.revalidate();//clean
+        lstFaceNotRecog.revalidate();//clean
         lstFaceNotRecog.repaint();//repainta
         //right click menu for no recognition
         lstFaceNotRecog.addMouseListener(new NoRecognitionListener());
@@ -116,17 +117,16 @@ public class PServer extends javax.swing.JPanel {
         pnlShow.revalidate(); //clear
         objCustomFace = new PCustomFaceServer();
         pnlShow.add(objCustomFace);
-        btnStop.addActionListener(new ActionListener(){
+        btnStop.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 //throw new UnsupportedOperationException("Not supported yet.");
-                 btnStart.setEnabled(true);
-                 btnStop.setEnabled(false);
-                 server.stop();
-                 
+                btnStart.setEnabled(true);
+                btnStop.setEnabled(false);
+                server.stop();
+
             }
-            
         });
         btnStart.addActionListener(new ActionListener() {
 
@@ -284,7 +284,40 @@ public class PServer extends javax.swing.JPanel {
                                     OutputStream osString = clientCon.socketString.getOutputStream();
 
                                     if (faceNearest.size() > 0) {
-                                        TextMessage msg = new TextMessage(osString, faceNearest.get(length - 1));
+                                        //get information from database
+                                        PersonDAL objDAL = new PersonDAL();
+                                        PersonEntity objPerson = new PersonEntity();
+                                        String identity_nearest = faceNearest.get(length - 1);
+                                        objPerson = objDAL.Select(identity_nearest);
+
+                                        String identity = objPerson.getIdentity_number();
+                                        String fullName = objPerson.getFullname();
+                                        String date = objPerson.getDate().toString();
+                                        String homeTown = objPerson.getHometown();
+                                        //get image
+                                        BufferedImage sendImage = null;
+                                        try {
+                                            sendImage = ImageIO.read(new PersonDAL().Select(identity_nearest).getImage().getBinaryStream());
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        String residence = objPerson.getPermanent_residence();
+                                        String ethnic = objPerson.getEthnic();
+                                        String religion = objPerson.getReligion();
+                                        String characteristic = objPerson.getCharacteristic();
+                                        //send to client
+                                        String sendMessage =
+                                                identity + "#" //identity number
+                                                + fullName + "#" //full name
+                                                + date + "#" //date
+                                                + homeTown + "#" //home town
+                                                + residence + "#"
+                                                + ethnic + "#" //ethnic
+                                                + religion + "#" //relision
+                                                + characteristic; //characteristic
+
+
+                                        TextMessage msg = new TextMessage(osString, sendMessage);
                                         msg.send();//begin send message
                                         System.out.println("Send Information");
                                         server.log += faceNearest.get(length - 1) + "\n";
@@ -292,7 +325,7 @@ public class PServer extends javax.swing.JPanel {
                                         //send image
                                         server.log += "> Send Image\n";
 
-                                        byte[] byteImage = new ProcessImage().bufferedImageToByteArray(bufferedImg);
+                                        byte[] byteImage = new ProcessImage().bufferedImageToByteArray(sendImage);
 
                                         ByteMessage byteMgs = new ByteMessage(clientCon.socketImage.getOutputStream(), byteImage);
                                         byteMgs.send();
@@ -305,6 +338,8 @@ public class PServer extends javax.swing.JPanel {
                                         //wait for a person custom face then recognition again
                                         noRecogArr.add(imgServer);
                                         //show it into list
+                                        
+                                        noRegIconArr.add(new IconList("No Recognition", imgServer, 92, 112));
                                         renderNoFaceRecog();
                                         //save client
                                         System.out.println("Add client to recognize face again");
@@ -348,9 +383,14 @@ public class PServer extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    final int index = PServer.lstFaceNotRecog.getSelectedIndex();
+                    int index = PServer.lstFaceNotRecog.getSelectedIndex();
                     if (index >= 0) {
+                        //delete list
                         PServer.noRecogArr.remove(index);
+                        noRegIconArr.remove(index);
+                        //delete client connect
+                        clientSaveArr.remove(index);
+                        //set new render
                         renderNoFaceRecog();
                     }
                 }
@@ -368,9 +408,14 @@ public class PServer extends javax.swing.JPanel {
                 public void actionPerformed(ActionEvent e) {
                     int count = noRecogArr.size();
                     while (count > 0) {
+                        //delete all of faces
                         noRecogArr.remove(0);
+                        noRegIconArr.remove(0);
+                        //delete all of clien conect
+                        clientSaveArr.remove(0);
                         count = noRecogArr.size();
                     }
+                    //set new render
                     renderNoFaceRecog();
                 }
             });
@@ -469,18 +514,64 @@ public class PServer extends javax.swing.JPanel {
                                         //send infor to client
                                         System.out.println("------------index of client-----------------" + indexImage);
                                         if (clientSaveArr.size() > 0) {
-                                            
+
                                             ClientInfor clientInfo = clientSaveArr.get(indexImage);
 
                                             try {
                                                 Server.log += "---------SEND TO CLIENT AGAIN ----------\n";
-                                                TextMessage msg = new TextMessage(clientInfo.socketString.getOutputStream(),
-                                                        faceNearest.get(size - 1));
-                                                Server.log += "The information to client:" + faceNearest.get(size - 1);
-                                                msg.send();
-                                                
+//                                                TextMessage msg = new TextMessage(clientInfo.socketString.getOutputStream(),
+//                                                        faceNearest.get(size - 1));
+//                                                Server.log += "The information to client:" + faceNearest.get(size - 1);
+//                                                msg.send();
+                                                //get information from database
+                                                PersonDAL objDAL = new PersonDAL();
+                                                PersonEntity objPerson = new PersonEntity();
+                                                int length = faceNearest.size();
+                                                String identity_nearest = faceNearest.get(length - 1);
+                                                objPerson = objDAL.Select(identity_nearest);
+
+                                                String identity = objPerson.getIdentity_number();
+                                                String fullName = objPerson.getFullname();
+                                                String date = objPerson.getDate().toString();
+                                                String homeTown = objPerson.getHometown();
+                                                //get image
+                                                BufferedImage sendImage = null;
+                                                try {
+                                                    sendImage = ImageIO.read(new PersonDAL().Select(identity_nearest).getImage().getBinaryStream());
+                                                } catch (SQLException ex) {
+                                                    Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                                String residence = objPerson.getPermanent_residence();
+                                                String ethnic = objPerson.getEthnic();
+                                                String religion = objPerson.getReligion();
+                                                String characteristic = objPerson.getCharacteristic();
+                                                //send to client
+                                                String sendMessage =
+                                                        identity + "#" //identity number
+                                                        + fullName + "#" //full name
+                                                        + date + "#" //date
+                                                        + homeTown + "#" //home town
+                                                        + residence + "#"
+                                                        + ethnic + "#" //ethnic
+                                                        + religion + "#" //relision
+                                                        + characteristic; //characteristic
+
+
+                                                TextMessage msg = new TextMessage(clientInfo.socketString.getOutputStream(), sendMessage);
+                                                msg.send();//begin send message
+                                                System.out.println("Send Information");
+                                                Server.log += faceNearest.get(length - 1) + "\n";
+
+                                                //send image
+                                                Server.log += "> Send Image\n";
+
+                                                byte[] byteImage = new ProcessImage().bufferedImageToByteArray(sendImage);
+
+                                                ByteMessage byteMgs = new ByteMessage(clientInfo.socketImage.getOutputStream(), byteImage);
+                                                byteMgs.send();
+
                                                 //send a image to client
-                                                
+
                                             } catch (IOException ex) {
                                                 Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
                                             }
@@ -823,7 +914,6 @@ public class PServer extends javax.swing.JPanel {
 
     private void txtHostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHostActionPerformed
     }//GEN-LAST:event_txtHostActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnStart;
     private javax.swing.JButton btnStop;
