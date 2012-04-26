@@ -166,8 +166,7 @@ public class ReadFolder {
 //        return ext.equalsIgnoreCase(GIF) || ext.equalsIgnoreCase(PNG) ||
 //                ext.equalsIgnoreCase(JPG) || ext.equalsIgnoreCase(BMP) ||
 //                ext.equalsIgnoreCase(JPEG);
-            if (ext.equalsIgnoreCase(JPG) || ext.equalsIgnoreCase(JPEG)||
-                    ext.equalsIgnoreCase(PGM)) {
+            if (ext.equalsIgnoreCase(JPG) || ext.equalsIgnoreCase(JPEG)) {
                 result = true;
             } else {
                 result = false;

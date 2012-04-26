@@ -224,7 +224,7 @@ public class PServer extends javax.swing.JPanel {
                             //detect face for this image
                             FaceDetection objDetect = new FaceDetection();
                             ArrayList<BufferedImage> faceArr = new ArrayList<BufferedImage>();
-                            faceArr = objDetect.detectFace(bufferedImg);
+                            faceArr = objDetect.serverDetectFace(bufferedImg);
 
 
                             //show faces that detected into JList
@@ -488,7 +488,7 @@ public class PServer extends javax.swing.JPanel {
              * Recognize This Image
              */
             JMenuItem recogFace = new JMenuItem("Recognize This Image");
-            //recogFace.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+            //recogFace.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
             recogFace.addActionListener(new ActionListener() {
 
                 @Override

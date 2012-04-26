@@ -337,7 +337,7 @@ class RecognitionListener extends MouseAdapter {
          * Enable Region menu
          */
         JMenuItem enableRegion = new JMenuItem("Recognition this face");
-        //addMenu.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //addMenu.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
 
         enableRegion.addActionListener(
                 new ActionListener() {
@@ -439,7 +439,7 @@ class RecognitionListener extends MouseAdapter {
          * Disable Region menu
          */
         JMenuItem disableRegion = new JMenuItem("Recognition all of faces");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
 
         disableRegion.addActionListener(
                 new ActionListener() {
@@ -457,7 +457,7 @@ class RecognitionListener extends MouseAdapter {
          * Detect This Face menu
          */
         JMenuItem detectFace = new JMenuItem("Delete this image");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
 
         detectFace.addActionListener(
                 new ActionListener() {
@@ -481,7 +481,7 @@ class RecognitionListener extends MouseAdapter {
          * Detect All Faces menu
          */
         JMenuItem detectAllFaces = new JMenuItem("Delete All of faces");
-        //disableRegion.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
 
         detectAllFaces.addActionListener(
                 new ActionListener() {
