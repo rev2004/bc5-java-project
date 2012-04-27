@@ -27,6 +27,9 @@ import static com.bc5Neptune.cis.bll.GlobalObject.*;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -59,6 +62,22 @@ public class GApplication extends JFrame {
         setLocationRelativeTo(c);
         //show user who is login
         btnLogout.setText(GLogin.userNameAccess + "  ");
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher()  
+       {  
+         @Override  
+        public boolean dispatchKeyEvent(KeyEvent ke)  
+        {  
+            if (ke.getKeyCode() == KeyEvent.VK_PRINTSCREEN)  
+            {  
+                //do whatever i want to...  
+                System.out.println("Double click JFrame Title bar");
+                return true;  
+            }  
+                          
+            return false;  
+        } 
+         
+       });  
     }
 
     //if user is admin: the permision is all of function 
@@ -698,7 +717,8 @@ public class GApplication extends JFrame {
 
     private void menuAddNewPersonActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddNewPersonActionPerformed
         // TODO add your handling code here:
-        addTab("Add New Person", "Open Add New Person", new PNewPerson(), mainTab);
+        //addTab("Add New Person", "Open Add New Person", new PNewPerson(), mainTab);
+        addTab("Face Detection", "Open Face Detection", GLPDetect, mainTab);
     }//GEN-LAST:event_menuAddNewPersonActionPerformed
 
     private void menuAdministratorActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAdministratorActionPerformed
@@ -708,12 +728,14 @@ public class GApplication extends JFrame {
 
     private void menuEditPersonInformationActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditPersonInformationActionPerformed
         // TODO add your handling code here:
-        addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), mainTab);
+        //addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), mainTab);
+        addTab("Information Searching", "Open Information Searching", new PSearch(), mainTab);
     }//GEN-LAST:event_menuEditPersonInformationActionPerformed
 
     private void menuDeletePersonActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeletePersonActionPerformed
         // TODO add your handling code here:
-        addTab("Delete Person", "Open Delete Person", new PDeletePerson(), mainTab);
+        //addTab("Delete Person", "Open Delete Person", new PDeletePerson(), mainTab);
+        addTab("Information Searching", "Open Information Searching", new PSearch(), mainTab);
     }//GEN-LAST:event_menuDeletePersonActionPerformed
 
     private void menuSearchActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSearchActionPerformed
@@ -763,17 +785,21 @@ public class GApplication extends JFrame {
 
     private void toolAddNewPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolAddNewPersonActionPerformed
         // TODO add your handling code here:
-        addTab("Add New Person", "Open Add New Person", new PNewPerson(), mainTab);
+        //addTab("Add New Person", "Open Add New Person", new PNewPerson(), mainTab);
+        addTab("Face Detection", "Open Face Detection", GLPDetect, mainTab);
+        //GLPDetect.
     }//GEN-LAST:event_toolAddNewPersonActionPerformed
 
     private void toolEditPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolEditPersonActionPerformed
         // TODO add your handling code here:
-        addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), mainTab);
+        //addTab("Edit Person Information", "Open Edit Person Information", new PEditPersonInformation(), mainTab);
+        addTab("Information Searching", "Open Information Searching", new PSearch(), mainTab);
     }//GEN-LAST:event_toolEditPersonActionPerformed
 
     private void toolDeletePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolDeletePersonActionPerformed
         // TODO add your handling code here:
-        addTab("Delete Person", "Open Delete Person", new PDeletePerson(), mainTab);
+       // addTab("Delete Person", "Open Delete Person", new PDeletePerson(), mainTab);
+       addTab("Information Searching", "Open Information Searching", new PSearch(), mainTab);
     }//GEN-LAST:event_toolDeletePersonActionPerformed
 
     private void toolFaceDetectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolFaceDetectionActionPerformed
