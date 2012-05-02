@@ -23,6 +23,7 @@ import com.bc5Neptune.cis.bll.VerticalIconRender;
 import com.bc5Neptune.cis.dal.PersonDAL;
 import com.bc5Neptune.cis.entity.DistrictEntity;
 import com.bc5Neptune.cis.entity.ProvinceEntity;
+import com.bc5Neptune.cis.entity.WardEntity;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -43,9 +44,13 @@ public class PFaceDetection extends JPanel {
 
     final int SORT_INCREASE = 1;
     boolean toggleRegion = false;
-    /* save icon for list render */
+    /*
+     * save icon for list render
+     */
     public ArrayList<IconList> iconTrainArr = new ArrayList<IconList>();
-    /* save 10 faces to insert to database */
+    /*
+     * save 10 faces to insert to database
+     */
     public ArrayList<IconList> iconTempArr = new ArrayList<IconList>();
 
     public PFaceDetection() {
@@ -761,7 +766,9 @@ public class PFaceDetection extends JPanel {
                      */
                     scrollPanelThumb.setViewportView(lstThumbnails);
 
-                    /* init face region */
+                    /*
+                     * init face region
+                     */
                     GLPCustom.positionArr = new FaceRegion[GLImageList.getLength()];
                     GLPCustom.index = 0;
                     interrupt();
@@ -812,7 +819,7 @@ public class PFaceDetection extends JPanel {
         System.out.println("Hele");
     }//GEN-LAST:event_lstThumbnailsValueChanged
 
-        private void initialInformationForm() {
+    private void initialInformationForm() {
         //initialize list entity of CountryEntity
         PersonDAL prsDal = new PersonDAL();
         List<ProvinceEntity> listEntity = prsDal.getListProvince();
@@ -821,12 +828,13 @@ public class PFaceDetection extends JPanel {
             cbbResidencePrv.addItem(Province);
         }
     }
+    HashSet<DistrictEntity> listDistrict = null;
 
     private void FilterProvinceHtown(java.awt.event.ActionEvent evt) {
         System.out.println("===========");
         PersonDAL prsDal = new PersonDAL();
         List<ProvinceEntity> listProvince = null;
-        HashSet<DistrictEntity> listDistrict = null;
+
         listProvince = prsDal.getListProvince();
         //set with each entity country corresponds province.
         for (ProvinceEntity Province : listProvince) {
@@ -845,25 +853,23 @@ public class PFaceDetection extends JPanel {
             }
         }
     }
+
     private void FilterDisHtown(java.awt.event.ActionEvent evt) {
-        System.out.println("===========");
-        PersonDAL prsDal = new PersonDAL();
-        List<ProvinceEntity> listProvince = null;
-        HashSet<DistrictEntity> listDistrict = null;
-        listProvince = prsDal.getListProvince();
         //set with each entity country corresponds province.
-        for (ProvinceEntity Province : listProvince) {
-            if (cbbHTownPrv.getSelectedIndex() == 0) {
-                cbbHTownDis.removeAllItems();
-                cbbHTownDis.addItem("--Select District--");
+        PersonDAL prsDal = new PersonDAL();
+        HashSet<WardEntity> listward = null;
+        for (DistrictEntity District : listDistrict) {
+            if (cbbHTownDis.getSelectedIndex() == 0) {
+                cbbHTownWrd.removeAllItems();
+                cbbHTownWrd.addItem("--Select Ward--");
                 break;
             } else {
-                ProvinceEntity province = null;
-                Province = (ProvinceEntity) cbbHTownPrv.getSelectedItem();
-                listDistrict = prsDal.getListDistrict(Province.getProvinceID());
-                cbbHTownDis.removeAllItems();
-                for (DistrictEntity district : listDistrict) {
-                    cbbHTownDis.addItem(district);
+                //District district = null;
+                District = (DistrictEntity) cbbHTownDis.getSelectedItem();
+                listward = prsDal.getListward(District.getProvinceID());
+                cbbHTownWrd.removeAllItems();
+                for (WardEntity ward : listward) {
+                    cbbHTownDis.addItem(ward);
                 }
             }
         }
@@ -891,6 +897,7 @@ public class PFaceDetection extends JPanel {
             }
         }
     }
+
     private void FilterDisRes(java.awt.event.ActionEvent evt) {
         System.out.println("===========");
         PersonDAL prsDal = new PersonDAL();
@@ -964,7 +971,6 @@ private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//G
 // TODO add your handling code here:
     FilterDisRes(evt);
 }//GEN-LAST:event_cbbResidenceDisActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenFolder;
     private javax.swing.JButton btnSave;
