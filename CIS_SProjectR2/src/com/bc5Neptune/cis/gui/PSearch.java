@@ -492,7 +492,7 @@ public final class PSearch extends javax.swing.JPanel {
        //visible pnlEdit
         pnlEdit.setVisible(true);
         //load data to edit
-        loadData(getPid());
+        loadData(getIdentityNumber());
 
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -506,23 +506,23 @@ public final class PSearch extends javax.swing.JPanel {
             //   System.out.println("id la "+id);
             System.out.println("Id of person: " + id);
 
-            String dob = objPersonDAL.selectID(id).getDob().toString();
+            String dob = objPersonDAL.Select(id).getDob().toString();
             txfDob.setText(dob);
-            String identifyNumber = objPersonDAL.selectID(id).getIdentity_number();
+            String identifyNumber = objPersonDAL.Select(id).getIdentity_number();
             txfIdentifyNumber.setText(identifyNumber);
 
-            String ethnic = objPersonDAL.selectID(id).getEthnic();
+            String ethnic = objPersonDAL.Select(id).getEthnic();
             txfEthnic.setText(ethnic);
-            String name = objPersonDAL.selectID(id).getFullname();
+            String name = objPersonDAL.Select(id).getFullname();
             txfFullname.setText(name);
-            String hometown = objPersonDAL.selectID(id).getHometown();
+            String hometown = objPersonDAL.Select(id).getHometown();
             txfHometown.setText(hometown);
-            String religion = objPersonDAL.selectID(id).getReligion();
+            String religion = objPersonDAL.Select(id).getReligion();
             txfReligion.setText(religion);
-            String res = objPersonDAL.selectID(id).getPermanent_residence();
+            String res = objPersonDAL.Select(id).getPermanent_residence();
             txfResidence.setText(res);
             //load image
-            BufferedImage bufferedImage = ImageIO.read(new PersonDAL().selectID(id).getImage().getBinaryStream());
+            BufferedImage bufferedImage = ImageIO.read(new PersonDAL().Select(id).getImage().getBinaryStream());
             bufferedImage = new ProcessImage().resize(bufferedImage, 240, 200);
             lblImage.setIcon(new ImageIcon(bufferedImage));
 
@@ -534,6 +534,14 @@ public final class PSearch extends javax.swing.JPanel {
             Logger.getLogger(PSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+     public String getIdentityNumber() {
+        String identity = null;
+
+        int i = tblPersonInfor.getSelectedRow();
+        identity = tblPersonInfor.getValueAt(i, 2).toString();
+        System.out.println(identity);
+        return identity;
     }
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:

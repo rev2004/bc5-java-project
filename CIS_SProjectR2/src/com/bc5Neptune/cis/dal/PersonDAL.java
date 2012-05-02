@@ -49,7 +49,7 @@ public class PersonDAL {
     }
 
     public PersonEntity Select(String pid) {
-        PersonEntity p = null;
+        PersonEntity p = new PersonEntity();
 
         connection = ConnectDB2.getConnection();
         //CallableStatement cstmtInsert =null;
@@ -65,7 +65,8 @@ public class PersonDAL {
             //resultSet = statement  
             //      .executeQuery("SELECT * FROM NOAH");  
             if (resultSet.next()) {
-                p = new PersonEntity();
+                System.out.println("Get data");
+                //p = new PersonEntity();
                 p.setPid(resultSet.getString(1));
                 p.setIdentity_number(resultSet.getString(2));
                 p.setFullname(resultSet.getString(3));
@@ -82,7 +83,7 @@ public class PersonDAL {
                 p.setReligion(resultSet.getString(9));
                 p.setCharacteristic(resultSet.getString(10));
                 p.setDate(resultSet.getDate(11));
-                p.setActive(resultSet.getString(12));
+               // p.setActive(resultSet.getString(12));
             }
         } catch (Exception e) {
             e.printStackTrace();

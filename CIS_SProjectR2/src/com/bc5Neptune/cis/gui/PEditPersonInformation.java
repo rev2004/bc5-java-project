@@ -525,7 +525,7 @@ class EditPersonListener extends MouseAdapter {
     public EditPersonListener(final PEditPersonInformation editPerson) {
         this.editPerson = editPerson;
         JMenuItem deleteItem = new JMenuItem("Delete this face");
-        //addMenu.setIcon(getIcon("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+        //addMenu.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
         deleteItem.addActionListener(
                 new ActionListener() {
 

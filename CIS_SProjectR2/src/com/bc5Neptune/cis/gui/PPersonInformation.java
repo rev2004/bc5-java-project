@@ -10,19 +10,76 @@
  */
 package com.bc5Neptune.cis.gui;
 
+import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.dal.PersonDAL;
+import java.awt.image.BufferedImage;
 import javax.swing.JOptionPane;
+import java.io.*;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.*;
 
 /**
  *
  * @author phu.huynh
  */
 public class PPersonInformation extends javax.swing.JPanel {
+    /* image to export to pdf */
+
+    public BufferedImage bufferedImage;
 
     /** Creates new form PPersonInformation */
     public PPersonInformation() {
         initComponents();
+    }
+
+    public boolean exportToPDF() {
+        boolean result = false;
+        try {
+
+            Document document = new Document();
+            FileOutputStream fos = new FileOutputStream("/home/enclaveit/header-footer.pdf");
+            PdfWriter writer = PdfWriter.getInstance(document, fos);
+            document.open();
+            ProcessImage proImg = new ProcessImage();
+            Image image1 = Image.getInstance(proImg.bufferedImageToByteArray(bufferedImage));
+            image1.setAbsolutePosition(0, 600);
+
+            // PdfContentByte byte1 = writer.getDirectContent();
+            // PdfTemplate tp1 = byte1.createTemplate(600, 150);
+            // tp1.addImage(image1);
+
+
+
+            // byte1.addTemplate(tp1, 0, 500);
+
+            Phrase phrase1 = new Phrase("Face Recognition", FontFactory.getFont(FontFactory.TIMES_ROMAN, 7, Font.NORMAL));
+            //Phrase phrase2 = new Phrase("BC5-Neptune group, 08CNTT-DHSP", FontFactory.getFont(FontFactory.TIMES_ROMAN, 7, Font.NORMAL));
+
+            HeaderFooter header = new HeaderFooter(phrase1, true);
+            header.setAlignment(Element.ALIGN_CENTER);
+            document.setHeader(header);
+            
+            //HeaderFooter footer = new HeaderFooter(phrase2, phrase1);
+           // document.setHeader(header);
+            //document.setFooter(footer);
+            //add image to pdf
+            document.add(image1);
+            document.addHeader("Test header", "test header");
+            
+            Paragraph indentity = new Paragraph();
+            indentity.setSpacingBefore(300.0f);
+            indentity.add(txfPID.getText());
+            document.add(indentity );
+            document.close();
+            result = true;
+            System.out.println("File is created successfully showing header and footer.");
+        } catch (Exception ex) {
+            result = false;
+            System.out.println(ex);
+
+        }
+        return result;
     }
 
     /** This method is called from within the constructor to
@@ -304,10 +361,13 @@ public class PPersonInformation extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Next Version","This function will enable in next version! Thanks!!!",1, null);
-        
-    }//GEN-LAST:event_jButton7ActionPerformed
+        if (exportToPDF()) {
+            JOptionPane.showMessageDialog(this, "Export to PDF sucessfuly", "Information", 1, null);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error when export to PDF please try again", "Information", 1, null);
+        }
 
+    }//GEN-LAST:event_jButton7ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;

@@ -82,7 +82,7 @@ public class App {
         //init several form
         System.out.println("Run Application");
        
-        
+       
     }
 
     /**
