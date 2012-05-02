@@ -22,6 +22,7 @@ import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.config.Config;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.dal.PersonDAL;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,6 +66,7 @@ public class PFaceRecognition extends JPanel {
     /* vertical cell render */
     private VerticalIconRender render;
 
+
     /** Creates new form PFaceRecognition */
     public PFaceRecognition() {
         initComponents();
@@ -97,6 +100,8 @@ public class PFaceRecognition extends JPanel {
         // SmallImage objSmall = new SmallImage(TOOL_TIP_TEXT_KEY, null, WIDTH, WIDTH)
     }
 
+    
+
     public void loadImage() {
         String tempPath = new String();
 
@@ -126,7 +131,7 @@ public class PFaceRecognition extends JPanel {
                         JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
+
             try {
                 System.out.println(tempPath);
                 File file = new File(tempPath);
@@ -138,7 +143,7 @@ public class PFaceRecognition extends JPanel {
                     IconList icon = new IconList(selectedFile.getName(), img, 92, 112);
                     objSmall.add(icon);
                     updateListFace();
-                }else{
+                } else {
                     System.out.println("Could not read a image");
                 }
             } catch (IOException e) {
@@ -147,6 +152,7 @@ public class PFaceRecognition extends JPanel {
         }
 
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -282,7 +288,6 @@ public class PFaceRecognition extends JPanel {
         // TODO add your handling code here:
         loadImage();
     }//GEN-LAST:event_btnLoadImageActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoadImage;
     private javax.swing.JFileChooser fileChooseFolder;
@@ -445,35 +450,57 @@ class RecognitionListener extends MouseAdapter {
                             @Override
                             public void mouseClicked(MouseEvent ev) {
                                 if (ev.getClickCount() == 2) {
-                            try {
-                                int a = personInfor.listNearestPerson.getSelectedIndex();
-                                System.out.println("index" + a);
-                                String tmp = GLReg.listNearestPerson.get(a).toString();
-                                //IconList icon = (IconList) personInfor.listNearestPerson.getSelectedValue();
-                                //System.out.println("icon .. " + icon.getName());
-                                System.out.println("Double me!" + tmp);
-                                String pid = tmp.substring(0, 9);
-                                System.out.println("PID! " + pid);
-                                //System.out.println(new PersonDAL().Select(pid).getFULLNAME());
-                                personInfor.txfFullName.setText(new PersonDAL().Select(pid).getFullname());
-                                personInfor.txfPID.setText(new PersonDAL().Select(pid).getPid());
-                                personInfor.txfDOB.setText(new PersonDAL().Select(pid).getDob().toString());
-                                personInfor.txfhometown.setText(new PersonDAL().Select(pid).getHometown());
-                                personInfor.txfResidence.setText(new PersonDAL().Select(pid).getPermanent_residence());
-                                personInfor.txfEthnic.setText(new PersonDAL().Select(pid).getEthnic());
-                                personInfor.txfReligion.setText(new PersonDAL().Select(pid).getReligion());
-                                personInfor.lblImage.setIcon(new ImageIcon(ImageIO.read(new PersonDAL().Select(pid).getImage().getBinaryStream())));
+                                    try {
+                                        int a = personInfor.listNearestPerson.getSelectedIndex();
+                                        System.out.println("index" + a);
+                                        String tmp = GLReg.listNearestPerson.get(a).toString();
+                                        //IconList icon = (IconList) personInfor.listNearestPerson.getSelectedValue();
+                                        //System.out.println("icon .. " + icon.getName());
+                                        System.out.println("Double me!" + tmp);
+                                        String pid = tmp.substring(0, 9);
+                                        System.out.println("PID! " + pid);
+                                        //System.out.println(new PersonDAL().Select(pid).getFULLNAME());
+                                        personInfor.txfFullName.setText(new PersonDAL().Select(pid).getFullname());
+                                        personInfor.txfPID.setText(new PersonDAL().Select(pid).getPid());
+                                        personInfor.txfDOB.setText(new PersonDAL().Select(pid).getDob().toString());
+                                        personInfor.txfhometown.setText(new PersonDAL().Select(pid).getHometown());
+                                        personInfor.txfResidence.setText(new PersonDAL().Select(pid).getPermanent_residence());
+                                        personInfor.txfEthnic.setText(new PersonDAL().Select(pid).getEthnic());
+                                        personInfor.txfReligion.setText(new PersonDAL().Select(pid).getReligion());
+                                        personInfor.bufferedImage = ImageIO.read(new PersonDAL().Select(pid).getImage().getBinaryStream());
+                                        //resize a image
+                                        int width = personInfor.bufferedImage.getWidth();
+                                        int height = personInfor.bufferedImage.getHeight();
+                                        boolean resize = false;
+                                        if (width > 300)
+                                        {
+                                            width = 300;
+                                            resize = true;
+                                        }
+                                        if (height > 200){
+                                            resize = true;
+                                            height = 200;
+                                        }
+                                        if (resize){
+                                            ProcessImage proImg = new ProcessImage();
+                                            personInfor.bufferedImage = proImg.resize(
+                                                    personInfor.bufferedImage, //image
+                                                    width, //width
+                                                    height); //height
+                                                  
+                                        }
+                                        personInfor.lblImage.setIcon(new ImageIcon( personInfor.bufferedImage));
 //                                JFrame f = new JFrame();
 //                                JLabel lbl = new JLabel();
 //                                lbl.setIcon(new ImageIcon(ImageIO.read(new PersonDAL().Select(pid).getImage().getBinaryStream())));
 //                                f.add(lbl);
 //                                f.setVisible(true);
 //                                f.setSize(1000,1000);                                
-                            } catch (IOException ex) {
-                                Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
 
                                 }
                             }
