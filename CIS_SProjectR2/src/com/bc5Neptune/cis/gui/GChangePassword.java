@@ -30,10 +30,10 @@ public class GChangePassword extends javax.swing.JFrame {
         Container c = new Container();
         this.setResizable(false);
         this.setLocationRelativeTo(c);
-        
+
         //connect database
         obj.getConnection();
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -71,15 +71,15 @@ public class GChangePassword extends javax.swing.JFrame {
 
         pwfcurpass.setVerifyInputWhenFocusTarget(false);
 
-        jLabel5.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText("New password:");
 
-        jLabel6.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         jLabel6.setForeground(java.awt.Color.white);
         jLabel6.setText("Confirm password:");
 
-        btnreset.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        btnreset.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         btnreset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Redo/Redo_16x16.png"))); // NOI18N
         btnreset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,10 +87,10 @@ public class GChangePassword extends javax.swing.JFrame {
             }
         });
 
-        lblnotice.setFont(new java.awt.Font("Abyssinica SIL", 0, 18)); // NOI18N
+        lblnotice.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         lblnotice.setForeground(java.awt.Color.red);
 
-        btnOK.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        btnOK.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         btnOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Save/Save_16x16.png"))); // NOI18N
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +98,7 @@ public class GChangePassword extends javax.swing.JFrame {
             }
         });
 
-        btncancel.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        btncancel.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         btncancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/001_05.png"))); // NOI18N
         btncancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +106,7 @@ public class GChangePassword extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Abyssinica SIL", 1, 15)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Abyssinica SIL", 1, 15));
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Current password:");
 
@@ -209,56 +209,52 @@ public class GChangePassword extends javax.swing.JFrame {
         // TODO add your handling code here: 
         this.setVisible(false);
         GApplication.instance.setEnabled(true);
-       
+
     }
 
     public void changePassword() {
-
         lblnotice.setText(null);
-        String newpass = pwfnewpass.getText();
-        String existpass = pwfcurpass.getText();
-        String confpass = pwfconfirmpass.getText();
-        int i = 0;
-        Employee obj = new Employee();
-        String dbPass = null;
-        if (newpass.equals(confpass) == false) {
-            lblnotice.setText("You enter password wrong!");
-            pwfconfirmpass.setText(null);
-            pwfcurpass.setText(null);
-            pwfnewpass.setText(null);
+        String newPass = pwfnewpass.getText();
+        String currentPass = pwfcurpass.getText();
+        String confirmPass = pwfconfirmpass.getText();
+
+        if (currentPass.equals("")) {
+            lblnotice.setText("Please enter current password!");
             return;
-        }
-        try {
 
-            dbPass = obj.selectpass(existpass).getPassword();
-            System.out.println(dbPass);
-            i = obj.updatepass(newpass, existpass);
-            System.out.println(i);
-            if (i == -1) {
-                lblnotice.setText("Changed password!");
-                return;
-
-            } else if (newpass.isEmpty() == true) {
-                lblnotice.setText("Please enter new password!");
-                return;
-            } else if (existpass.isEmpty() == true) {
-                lblnotice.setText("Please enter current password!");
-                return;
-            } else if (confpass.isEmpty() == true) {
-                lblnotice.setText("Please enter confirm password!");
-                return;
-            } else if (existpass.equalsIgnoreCase(dbPass) == false) {
-                lblnotice.setText("Password does not exist in database! Please try again!");
-                pwfconfirmpass.setText(null);
-                pwfcurpass.setText(null);
-                pwfnewpass.setText(null);
+        } else if (newPass.equals("")) {
+            lblnotice.setText("Please enter new password!");
+            return;
+        } else if (confirmPass.equals("")) {
+            lblnotice.setText("Please enter confirm password!");
+            return;
+        } else {
+            //check newpass and confirm pass
+            if (!newPass.equals(confirmPass)) {
+                lblnotice.setText("New password and confirm password different!");
                 return;
             }
+            //getpassword from database
+            Employee obj = new Employee();
+            String dbPass = null;
+            dbPass = obj.selectpass(GLogin.userNameAccess).getPassword();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            //String 
+            if (!dbPass.equalsIgnoreCase(currentPass)) {
+                lblnotice.setText("Current password wrong!");
+                return;
+            } else {
+                //update password
+                int checkChange = obj.updatepass(GLogin.userNameAccess, newPass);
+                lblnotice.setText("Password changed!");
+
+            }
 
         }
+        //empty  textbox 
+        pwfconfirmpass.setText(null);
+        pwfcurpass.setText(null);
+        pwfnewpass.setText(null);
     }
 
     /**
