@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import com.bc5Neptune.cis.tranfer.ClientInfor;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import com.bc5Neptune.cis.bll.FaceDetection;
@@ -170,7 +171,7 @@ public class PServer extends javax.swing.JPanel {
             @Override
             public void run() {
                 FPSCounter obj = new FPSCounter();
-                obj.setFPS(60);
+                obj.setFPS(1000);
                 String message = null;
                 while (true) {
                     obj.BeginCount();
@@ -287,7 +288,8 @@ public class PServer extends javax.swing.JPanel {
                                         //get information from database
                                         PersonDAL objDAL = new PersonDAL();
                                         PersonEntity objPerson = new PersonEntity();
-                                        String identity_nearest = faceNearest.get(length - 1);
+                                        String identity_nearest = faceNearest.get(faceNearest.size() - 1);
+                                        System.out.println("%&%#@^%@#"+ identity_nearest);
                                         objPerson = objDAL.Select(identity_nearest);
 
                                         String identity = objPerson.getIdentity_number();
@@ -296,24 +298,25 @@ public class PServer extends javax.swing.JPanel {
                                         String homeTown = objPerson.getHometown();
                                         //get image
                                         BufferedImage sendImage = null;
-                                        try {
-                                            sendImage = ImageIO.read(new PersonDAL().Select(identity_nearest).getImage().getBinaryStream());
-                                        } catch (SQLException ex) {
-                                            Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+                                        //try {
+                                            //sendImage = ImageIO.read(new PersonDAL().Select(identity_nearest).getImage().getBinaryStream());
+                                        	sendImage = ImageIO.read((new File("/home/noah/Downloads/Release1/CIS_SProjectR1/test images/1.jpg")));
+//                                        } catch (SQLException ex) {
+//                                            Logger.getLogger(PServer.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                         String residence = objPerson.getPermanent_residence();
                                         String ethnic = objPerson.getEthnic();
                                         String religion = objPerson.getReligion();
                                         String characteristic = objPerson.getCharacteristic();
                                         //send to client
                                         String sendMessage =
-                                                identity + "#" //identity number
-                                                + fullName + "#" //full name
-                                                + date + "#" //date
-                                                + homeTown + "#" //home town
-                                                + residence + "#"
-                                                + ethnic + "#" //ethnic
-                                                + religion + "#" //relision
+                                                identity + "$" //identity number
+                                                + fullName + "$" //full name
+                                                + date + "$" //date
+                                                + homeTown + "$" //home town
+                                                + residence + "$"
+                                                + ethnic + "$" //ethnic
+                                                + religion + "$" //relision
                                                 + characteristic; //characteristic
 
 
@@ -547,13 +550,13 @@ public class PServer extends javax.swing.JPanel {
                                                 String characteristic = objPerson.getCharacteristic();
                                                 //send to client
                                                 String sendMessage =
-                                                        identity + "#" //identity number
-                                                        + fullName + "#" //full name
-                                                        + date + "#" //date
-                                                        + homeTown + "#" //home town
-                                                        + residence + "#"
-                                                        + ethnic + "#" //ethnic
-                                                        + religion + "#" //relision
+                                                        identity + "$" //identity number
+                                                        + fullName + "$" //full name
+                                                        + date + "$" //date
+                                                        + homeTown + "$" //home town
+                                                        + residence + "$"
+                                                        + ethnic + "$" //ethnic
+                                                        + religion + "$" //relision
                                                         + characteristic; //characteristic
 
 

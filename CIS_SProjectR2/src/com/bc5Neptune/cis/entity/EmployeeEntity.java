@@ -3,9 +3,6 @@
  * and open the template in the editor.
  */
 package com.bc5Neptune.cis.entity;
-
-import java.util.Date;
-
 /**
  *
  * @author thu.doan

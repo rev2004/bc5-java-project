@@ -1,5 +1,4 @@
 package com.bc5Neptune.cis.tranfer;
-
 import com.bc5Neptune.cis.bll.ProcessImage;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

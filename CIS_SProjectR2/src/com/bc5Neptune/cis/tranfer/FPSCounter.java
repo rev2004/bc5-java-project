@@ -16,7 +16,7 @@ public class FPSCounter {
 
     public long end = 0;
     /* frame per second */
-    public int FPS = 100;
+    public int FPS = 1000;
     /* start miliseconde */
     public long start = 0;
     /* current frame */

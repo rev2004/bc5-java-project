@@ -202,6 +202,7 @@ class TakingImage extends Thread {
                     Server.log += "---------GET A IMAGE FORM CLIENT---------\n";
                     Server.log += "> Took a image from a client\n";
                     // System.out.println("Save a image to home folder");
+                    break;
 
                 }
             } catch (IOException ex) {

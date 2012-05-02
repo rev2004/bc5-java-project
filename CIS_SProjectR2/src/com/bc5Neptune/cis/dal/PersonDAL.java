@@ -8,6 +8,7 @@ import com.bc5Neptune.cis.config.ConnectDB2;
 import com.bc5Neptune.cis.entity.DistrictEntity;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.entity.ProvinceEntity;
+import com.bc5Neptune.cis.entity.WardEntity;
 import com.bc5Neptune.cis.gui.PPersonInformation;
 import java.beans.Statement;
 import java.sql.CallableStatement;
@@ -242,5 +243,32 @@ public class PersonDAL {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listDistrict;
+    }
+    public HashSet<WardEntity> getListward(String DistrictID) {
+        HashSet<WardEntity> listWard = null;
+        try {
+            listWard = new HashSet<WardEntity>();
+            String sql = "select * from WARD where WARDID =? order by WARDW asc";
+            ResultSet rs = null;
+
+            connection = ConnectDB2.getConnection();
+            prstatement = connection.prepareStatement(sql);
+            prstatement.setString(1, DistrictID);
+            rs = prstatement.executeQuery();
+            WardEntity WrdE = null;
+            while (rs.next()) {
+                WrdE = new WardEntity();
+                WrdE.setWardID(rs.getString("WARDID"));
+                WrdE.setNameW(rs.getString("NAMEW"));
+                WrdE.setDistrictID(rs.getString("DISTRICTID"));
+                listWard.add(WrdE);
+            }
+
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listWard;
     }
 }
