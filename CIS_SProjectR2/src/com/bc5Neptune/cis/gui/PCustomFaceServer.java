@@ -11,6 +11,7 @@
 package com.bc5Neptune.cis.gui;
 
 import com.bc5Neptune.cis.bll.IconList;
+import com.bc5Neptune.cis.bll.ProcessImage;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -80,6 +81,7 @@ public class PCustomFaceServer extends javax.swing.JPanel {
                 r.setFrameFromDiagonal(start, end);
                 BufferedImage bufferedImage = image
                         .getSubimage(r.x, r.y, r.width, r.height);
+                bufferedImage = new ProcessImage().resize(bufferedImage, 92, 112);
                 IconList icon = new IconList("Custom Face",bufferedImage, 92, 112);
                 PServer.customFaceArr.add(icon);
                 PServer.renderCustomFace();

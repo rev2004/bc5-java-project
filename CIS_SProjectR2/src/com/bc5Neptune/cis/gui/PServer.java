@@ -341,7 +341,7 @@ public class PServer extends javax.swing.JPanel {
                                         //wait for a person custom face then recognition again
                                         noRecogArr.add(imgServer);
                                         //show it into list
-                                        
+                                        imgServer = new ProcessImage().resize(imgServer, 92, 112);
                                         noRegIconArr.add(new IconList("No Recognition", imgServer, 92, 112));
                                         renderNoFaceRecog();
                                         //save client

@@ -23,6 +23,7 @@ import com.bc5Neptune.cis.config.Config;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.dal.PersonDAL;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -197,7 +198,7 @@ public class PFaceRecognition extends JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(813, Short.MAX_VALUE))
+                .addContainerGap(636, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,7 +227,7 @@ public class PFaceRecognition extends JPanel {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -250,11 +251,11 @@ public class PFaceRecognition extends JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+            .addComponent(tabFaceNearist, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -263,11 +264,11 @@ public class PFaceRecognition extends JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -276,11 +277,11 @@ public class PFaceRecognition extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -308,74 +309,99 @@ class RecognitionListener extends MouseAdapter {
 
     JPopupMenu rightMenu = new JPopupMenu("Right menu");
 
-    /**
+     /**
      * add button tab to JTabbedPane
-     * @param nameLabel     a name of tab
-     * @param action        a action when click on it
-     * @param pane          a JPanel that you want add to tab
-     * @param tabPane       a JTabbedPane that you want JPanel add on it
+     *
+     * @param nameLabel a name of tab
+     * @param action a action when click on it
+     * @param pane a JPanel that you want add to tab
+     * @param tabPane a JTabbedPane that you want JPanel add on it
      */
-    public void addTab(final String nameLabel,
-            final String action,
-            final JPanel pane,
-            final JTabbedPane tabPane) {
-        /* add JPanel to JTabedPane */
+    public void addTab(final String nameLabel, final String action, final JPanel pane, final JTabbedPane tabPane) {
+        /*
+         * add JPanel to JTabedPane
+         */
         for (int i = 0; i < tabPane.getComponentCount(); i++) {
             final JPanel pn = (JPanel) tabPane.getComponent(i);
             if (pn.getName() != null) {
                 if (pn.getName().equals(pane.getName())) {
                     System.out.println("This panel is exist");
-                    /* show to exist tab */
+                    /*
+                     * show to exist tab
+                     */
                     tabPane.setSelectedComponent(pn);
                     return;
                 }
             }
 
         }
-
         tabPane.add(pane);
-        /* create button to close tab*/
+        /*
+         * create button to close tab
+         */
         final JButton tabCloseButton = new JButton("X");
-        /* set border for button */
-        tabCloseButton.setBorder(new EmptyBorder(0, 0, 0, 0));
-        /* set string for action command*/
+        /*
+         * set border for button
+         */
+        //tabCloseButton.setBorder(new EmptyBorder(2, 2, 2, 2));
+        /*
+         * set string for action command
+         */
         tabCloseButton.setActionCommand(action);
+        tabCloseButton.setBounds(120, 2, 10, 10);
+        tabCloseButton.setForeground(Color.red);
 
-        /* add a button and a label to JPanel (pane) */
-        final JPanel pnlAdd = new JPanel();
-        pnlAdd.setPreferredSize(new Dimension(100, 20));
+        /*
+         * add a button and a label to JPanel (pane)
+         */
+        JPanel pnlAdd = new JPanel();
+        pnlAdd.setLayout(null);
         pnlAdd.setOpaque(false);
-
-        /* add a label */
+        pnlAdd.setPreferredSize(new Dimension(130, 15));
+        /*
+         * add a label
+         */
         final JLabel lb = new JLabel(nameLabel);
-        lb.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        //lb.setBorder(new EmptyBorder(0, 0, 0, 0));
+        lb.setPreferredSize(new Dimension(3, 10));
+        lb.setBounds(0, 0, 120, 16);
         pnlAdd.add(lb);
-        /* add a close button */
+        /*
+         * add a close button
+         */
         pnlAdd.add(tabCloseButton);
 
-        /* resize pnlAdd */
-        // pnlAdd.setPreferredSize(new Dimension(lb.getPreferredSize().width + 23, 20));
-
-        /* add JPanel in to tab */
+        /*
+         * add JPanel in to tab
+         */
         tabPane.setTabComponentAt(tabPane.getTabCount() - 1, pnlAdd);
         tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
 
-        /* create Action listener */
+        /*
+         * create Action listener
+         */
         ActionListener al;
         al = new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
                 JButton button = (JButton) e.getSource();
-                /* get action command */
+                /*
+                 * get action command
+                 */
                 final String s1 = button.getActionCommand();
-                /* find current tab and close it */
+                /*
+                 * find current tab and close it
+                 */
                 for (int i = 0; i < tabPane.getTabCount(); i++) {
                     final JPanel pnl = (JPanel) tabPane.getTabComponentAt(i);
                     button = (JButton) pnl.getComponent(1); //The zero(0) is a label
                     //the first(1) is a button
                     final String s2 = button.getActionCommand();
-                    /* check action command and close tab */
+                    /*
+                     * check action command and close tab
+                     */
                     if (s1.equals(s2)) {
                         tabPane.removeTabAt(i);
                         break;
@@ -383,9 +409,12 @@ class RecognitionListener extends MouseAdapter {
                 }
             }
         };
-        /* set action listener for close button */
+        /*
+         * set action listener for close button
+         */
         tabCloseButton.addActionListener(al);
     }
+
 
     public RecognitionListener() {
 
@@ -419,6 +448,7 @@ class RecognitionListener extends MouseAdapter {
 
                         System.out.println(".................." + str);
                         final PPersonInformation personInfor = new PPersonInformation();
+                        personInfor.pnlShowInfor.setVisible(false);
                         // add infor into list
                         //Object obj = GLReg.listIDPicture.toArray();
                         personInfor.listNearestPerson.setListData(GLReg.listNearestPerson.toArray());
@@ -429,11 +459,13 @@ class RecognitionListener extends MouseAdapter {
                         IconList[] iconArr = new IconList[length];
                         for (int i = 0; i < length; i++) {
                             String name = GLReg.listNearestPerson.get(i);
+                            float confidence = GLReg.listConfidence.get(i);
                             int idPicture = GLReg.listIDPicture.get(i).intValue();
                             System.out.println("-----------------------Name = " + name + "Id = " + idPicture);
                             BufferedImage imageIcon = prFile.loadBufferedFace("../CIS_SProjectR2/data/facedat/",
                                     name, idPicture);
-                            iconArr[i] = new IconList(name, imageIcon, 50, 70);
+                            imageIcon = new ProcessImage().resize(imageIcon, 50, 70);
+                            iconArr[i] = new IconList("Identiy number: " + name + " like: [" + confidence + "]%", imageIcon, 50, 70);
                         }
 
 
@@ -457,17 +489,17 @@ class RecognitionListener extends MouseAdapter {
                                         //IconList icon = (IconList) personInfor.listNearestPerson.getSelectedValue();
                                         //System.out.println("icon .. " + icon.getName());
                                         System.out.println("Double me!" + tmp);
-                                        String pid = tmp.substring(0, 9);
-                                        System.out.println("PID! " + pid);
+                                        String identity = tmp.substring(0, 9);
+                                        System.out.println("Indentity number: " + identity);
                                         //System.out.println(new PersonDAL().Select(pid).getFULLNAME());
-                                        personInfor.txfFullName.setText(new PersonDAL().Select(pid).getFullname());
-                                        personInfor.txfPID.setText(new PersonDAL().Select(pid).getPid());
-                                        personInfor.txfDOB.setText(new PersonDAL().Select(pid).getDob().toString());
-                                        personInfor.txfhometown.setText(new PersonDAL().Select(pid).getHometown());
-                                        personInfor.txfResidence.setText(new PersonDAL().Select(pid).getPermanent_residence());
-                                        personInfor.txfEthnic.setText(new PersonDAL().Select(pid).getEthnic());
-                                        personInfor.txfReligion.setText(new PersonDAL().Select(pid).getReligion());
-                                        personInfor.bufferedImage = ImageIO.read(new PersonDAL().Select(pid).getImage().getBinaryStream());
+                                        personInfor.txtFullname.setText(new PersonDAL().Select(identity).getFullname());
+                                        personInfor.txtIdentity.setText(new PersonDAL().Select(identity).getIdentity_number());
+                                        personInfor.txtBirthday.setText(new PersonDAL().Select(identity).getDob().toString());
+                                        personInfor.txtHomeTown.setText(new PersonDAL().Select(identity).getHometown());
+                                        personInfor.txtResidence.setText(new PersonDAL().Select(identity).getPermanent_residence());
+                                        personInfor.txtEthnic.setText(new PersonDAL().Select(identity).getEthnic());
+                                        personInfor.txtReligious.setText(new PersonDAL().Select(identity).getReligion());
+                                        personInfor.bufferedImage = ImageIO.read(new PersonDAL().Select(identity).getImage().getBinaryStream());
                                         //resize a image
                                         int width = personInfor.bufferedImage.getWidth();
                                         int height = personInfor.bufferedImage.getHeight();
@@ -490,12 +522,7 @@ class RecognitionListener extends MouseAdapter {
                                                   
                                         }
                                         personInfor.lblImage.setIcon(new ImageIcon( personInfor.bufferedImage));
-//                                JFrame f = new JFrame();
-//                                JLabel lbl = new JLabel();
-//                                lbl.setIcon(new ImageIcon(ImageIO.read(new PersonDAL().Select(pid).getImage().getBinaryStream())));
-//                                f.add(lbl);
-//                                f.setVisible(true);
-//                                f.setSize(1000,1000);                                
+                                        personInfor.pnlShowInfor.setVisible(true);                                
                                     } catch (IOException ex) {
                                         Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);
                                     } catch (SQLException ex) {
