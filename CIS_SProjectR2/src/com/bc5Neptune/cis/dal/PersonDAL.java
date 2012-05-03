@@ -9,7 +9,6 @@ import com.bc5Neptune.cis.entity.DistrictEntity;
 import com.bc5Neptune.cis.entity.PersonEntity;
 import com.bc5Neptune.cis.entity.ProvinceEntity;
 import com.bc5Neptune.cis.entity.WardEntity;
-import com.bc5Neptune.cis.gui.PPersonInformation;
 import java.beans.Statement;
 import java.sql.CallableStatement;
 import java.sql.Connection;

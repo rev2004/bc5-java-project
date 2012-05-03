@@ -40,6 +40,7 @@ public class FaceRecognition {
     public ArrayList<String> listPerson = new ArrayList<String>();
     public ArrayList<Integer> listIDPicture = new ArrayList<Integer>();
     public ArrayList<String> listNearestPerson = new ArrayList<String>();
+    public ArrayList<Float> listConfidence = new ArrayList<Float>();
 
     public FaceRecognition() {
     }
@@ -136,6 +137,7 @@ public class FaceRecognition {
                 if (pConfidence > 0.5) {
                     System.out.printf("________________________Lan %d  co gia tri %f \n", (i + 1), pConfidence);
                     listIDPicture.add(i + 1);
+                    listConfidence.add(pConfidence);
                 }
             }
         }

@@ -38,39 +38,46 @@ public class PPersonInformation extends javax.swing.JPanel {
         try {
 
             Document document = new Document();
-            FileOutputStream fos = new FileOutputStream("/home/enclaveit/header-footer.pdf");
+            FileOutputStream fos = new FileOutputStream("../CIS_SProjectR2/person-information.pdf");
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             document.open();
             ProcessImage proImg = new ProcessImage();
-            Image image1 = Image.getInstance(proImg.bufferedImageToByteArray(bufferedImage));
-            image1.setAbsolutePosition(0, 600);
-
-            // PdfContentByte byte1 = writer.getDirectContent();
-            // PdfTemplate tp1 = byte1.createTemplate(600, 150);
-            // tp1.addImage(image1);
-
-
-
-            // byte1.addTemplate(tp1, 0, 500);
-
-            Phrase phrase1 = new Phrase("Face Recognition", FontFactory.getFont(FontFactory.TIMES_ROMAN, 7, Font.NORMAL));
-            //Phrase phrase2 = new Phrase("BC5-Neptune group, 08CNTT-DHSP", FontFactory.getFont(FontFactory.TIMES_ROMAN, 7, Font.NORMAL));
-
-            HeaderFooter header = new HeaderFooter(phrase1, true);
-            header.setAlignment(Element.ALIGN_CENTER);
-            document.setHeader(header);
+            Image image = Image.getInstance(proImg.bufferedImageToByteArray(bufferedImage));
+          //  image.setAbsolutePosition(0, 600);
             
-            //HeaderFooter footer = new HeaderFooter(phrase2, phrase1);
-           // document.setHeader(header);
-            //document.setFooter(footer);
-            //add image to pdf
-            document.add(image1);
-            document.addHeader("Test header", "test header");
+            document.add(image);
+            Phrase space = new Phrase("\n\n----------------------------------------------------" 
+                    + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(space);
             
-            Paragraph indentity = new Paragraph();
-            indentity.setSpacingBefore(300.0f);
-            indentity.add(txfPID.getText());
-            document.add(indentity );
+            Phrase identity = new Phrase("Indentity number: " 
+                    + txtIdentity.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(identity);
+            
+            Phrase fullname = new Phrase("Full name: " 
+                    + txtFullname.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(fullname);
+            
+            Phrase birthday = new Phrase("Birthday: " 
+                    + txtBirthday.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(birthday);
+            
+            Phrase hometown = new Phrase("Home Town: " 
+                    + txtHomeTown.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(hometown);
+            
+            Phrase residence = new Phrase("Place of residence: " 
+                    + txtResidence.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(residence);
+            
+            Phrase ethnic = new Phrase("Ethnic: " 
+                    + txtEthnic.getName() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(ethnic);
+            
+            Phrase religious = new Phrase("Religious: " 
+                    + txtReligious.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+            document.add(religious);
+            
             document.close();
             result = true;
             System.out.println("File is created successfully showing header and footer.");
@@ -96,31 +103,31 @@ public class PPersonInformation extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         scrollPanel = new javax.swing.JScrollPane();
         listNearestPerson = new javax.swing.JList();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
+        pnlInformation = new javax.swing.JPanel();
+        pnlShowInfor = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        txfResidence = new javax.swing.JTextArea();
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        txfhometown = new javax.swing.JTextArea();
-        jLabel4 = new javax.swing.JLabel();
-        txfReligion = new javax.swing.JTextField();
+        txtIdentity = new javax.swing.JTextField();
+        txtFullname = new javax.swing.JTextField();
+        txtBirthday = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txfEthnic = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        txtHomeTown = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        txfPID = new javax.swing.JTextField();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txtResidence = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        txtEthnic = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txfDOB = new javax.swing.JTextField();
-        txfFullName = new javax.swing.JTextField();
+        txtReligious = new javax.swing.JTextField();
         jPanel18 = new javax.swing.JPanel();
         lblImage = new javax.swing.JLabel();
-        jPanel15 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
 
         jSplitPane1.setDividerLocation(150);
+        jSplitPane1.setDividerSize(1);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         scrollPanel.setViewportView(listNearestPerson);
@@ -131,7 +138,7 @@ public class PPersonInformation extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,225 +151,208 @@ public class PPersonInformation extends javax.swing.JPanel {
 
         jSplitPane1.setTopComponent(jPanel1);
 
-        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Person Imformation "));
+        pnlShowInfor.setBackground(java.awt.Color.lightGray);
+        pnlShowInfor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Person Imformation ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
 
-        txfResidence.setColumns(10);
-        txfResidence.setRows(3);
-        txfResidence.setTabSize(5);
-        txfResidence.setEnabled(false);
-        jScrollPane8.setViewportView(txfResidence);
+        jPanel19.setBackground(java.awt.Color.lightGray);
 
-        jLabel2.setText("Full name:");
+        jLabel1.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Identidy number:");
 
-        jLabel1.setText("Person ID:");
+        txtIdentity.setBackground(java.awt.Color.lightGray);
+        txtIdentity.setEditable(false);
 
-        txfhometown.setColumns(10);
-        txfhometown.setRows(3);
-        txfhometown.setTabSize(5);
-        txfhometown.setEnabled(false);
-        jScrollPane9.setViewportView(txfhometown);
+        txtFullname.setBackground(java.awt.Color.lightGray);
+        txtFullname.setEditable(false);
 
-        jLabel4.setText("Hometown:");
+        txtBirthday.setBackground(java.awt.Color.lightGray);
+        txtBirthday.setEditable(false);
 
-        txfReligion.setBackground(java.awt.Color.lightGray);
-        txfReligion.setEnabled(false);
-
+        jLabel3.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Birthday:");
 
-        txfEthnic.setBackground(java.awt.Color.lightGray);
-        txfEthnic.setEnabled(false);
+        jLabel2.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("Full name:");
 
-        jLabel6.setText("Ethnic:");
+        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel4.setForeground(java.awt.Color.white);
+        jLabel4.setText("Hometown:");
 
+        txtHomeTown.setColumns(10);
+        txtHomeTown.setEditable(false);
+        txtHomeTown.setRows(3);
+        txtHomeTown.setTabSize(5);
+        jScrollPane9.setViewportView(txtHomeTown);
+
+        jLabel5.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText("Place of residence:");
 
-        txfPID.setBackground(java.awt.Color.lightGray);
-        txfPID.setEnabled(false);
+        txtResidence.setColumns(10);
+        txtResidence.setEditable(false);
+        txtResidence.setRows(3);
+        txtResidence.setTabSize(5);
+        jScrollPane8.setViewportView(txtResidence);
 
+        jLabel6.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel6.setForeground(java.awt.Color.white);
+        jLabel6.setText("Ethnic:");
+
+        txtEthnic.setBackground(java.awt.Color.lightGray);
+        txtEthnic.setEditable(false);
+
+        jLabel7.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel7.setForeground(java.awt.Color.white);
         jLabel7.setText("Religious:");
 
-        txfDOB.setBackground(java.awt.Color.lightGray);
-        txfDOB.setEnabled(false);
-
-        txfFullName.setBackground(java.awt.Color.lightGray);
-        txfFullName.setEnabled(false);
+        txtReligious.setBackground(java.awt.Color.lightGray);
+        txtReligious.setEditable(false);
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1)
+            .addComponent(jLabel2)
+            .addComponent(jLabel3)
+            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
             .addComponent(jLabel4)
             .addComponent(jLabel5)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(4, 4, 4)
-                        .addComponent(txfPID, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(8, 8, 8)
-                        .addComponent(txfFullName, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(txfDOB, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(25, 25, 25)
-                        .addComponent(txfEthnic, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE))
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txfReligion, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(jLabel6)
+            .addComponent(txtEthnic, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(jLabel7)
+            .addComponent(txtBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(txtFullname, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(txtIdentity, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(txtReligious, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txfPID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(txfFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(txfDOB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(21, 21, 21)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdentity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel6))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(txfEthnic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(txfReligion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEthnic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtReligious, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original Image", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel18.add(lblImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 270, 200));
+        jPanel18.setBackground(java.awt.Color.lightGray);
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original Image", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
 
-        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(6, Short.MAX_VALUE))
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jButton7.setText("Export to PDF");
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Print/Print_16x16.png"))); // NOI18N
+        jButton7.setText("   Export to PDF  ");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlShowInforLayout = new javax.swing.GroupLayout(pnlShowInfor);
+        pnlShowInfor.setLayout(pnlShowInforLayout);
+        pnlShowInforLayout.setHorizontalGroup(
+            pnlShowInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlShowInforLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton7)
-                .addContainerGap(117, Short.MAX_VALUE))
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton7)
-                .addContainerGap(46, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlShowInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
-                .addContainerGap())
+        pnlShowInforLayout.setVerticalGroup(
+            pnlShowInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlShowInforLayout.createSequentialGroup()
+                .addGroup(pnlShowInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlShowInforLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7))
+                    .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 705, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        javax.swing.GroupLayout pnlInformationLayout = new javax.swing.GroupLayout(pnlInformation);
+        pnlInformation.setLayout(pnlInformationLayout);
+        pnlInformationLayout.setHorizontalGroup(
+            pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 615, Short.MAX_VALUE)
+            .addGroup(pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(pnlShowInfor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlInformationLayout.setVerticalGroup(
+            pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 524, Short.MAX_VALUE)
+            .addGroup(pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlInformationLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(23, Short.MAX_VALUE)))
+                    .addComponent(pnlShowInfor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jSplitPane1.setRightComponent(jPanel2);
+        jSplitPane1.setRightComponent(pnlInformation);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         if (exportToPDF()) {
-            JOptionPane.showMessageDialog(this, "Export to PDF sucessfuly", "Information", 1, null);
+            File file = new File("person-information.pdf");
+            JOptionPane.showMessageDialog(this, "Export to PDF sucessfuly\n" + file.getAbsolutePath(), "Information", 1, null);
         } else {
             JOptionPane.showMessageDialog(this, "Error when export to PDF please try again", "Information", 1, null);
         }
@@ -378,24 +368,23 @@ public class PPersonInformation extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     public javax.swing.JLabel lblImage;
     public javax.swing.JList listNearestPerson;
+    public javax.swing.JPanel pnlInformation;
+    public javax.swing.JPanel pnlShowInfor;
     public javax.swing.JScrollPane scrollPanel;
-    public javax.swing.JTextField txfDOB;
-    public javax.swing.JTextField txfEthnic;
-    public javax.swing.JTextField txfFullName;
-    public javax.swing.JTextField txfPID;
-    public javax.swing.JTextField txfReligion;
-    public javax.swing.JTextArea txfResidence;
-    public javax.swing.JTextArea txfhometown;
+    public javax.swing.JTextField txtBirthday;
+    public javax.swing.JTextField txtEthnic;
+    public javax.swing.JTextField txtFullname;
+    public javax.swing.JTextArea txtHomeTown;
+    public javax.swing.JTextField txtIdentity;
+    public javax.swing.JTextField txtReligious;
+    public javax.swing.JTextArea txtResidence;
     // End of variables declaration//GEN-END:variables
 }

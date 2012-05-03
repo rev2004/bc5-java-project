@@ -23,12 +23,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="861" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="684" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jSplitPane1" alignment="0" pref="647" max="32767" attributes="0"/>
+          <Component id="jSplitPane1" alignment="0" pref="659" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -60,7 +60,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnLoadImage" min="-2" pref="36" max="-2" attributes="0"/>
-                      <EmptySpace pref="813" max="32767" attributes="0"/>
+                      <EmptySpace pref="636" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -97,12 +97,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane2" alignment="0" pref="861" max="32767" attributes="0"/>
+                  <Component id="jSplitPane2" alignment="0" pref="684" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane2" alignment="0" pref="596" max="32767" attributes="0"/>
+                  <Component id="jSplitPane2" alignment="0" pref="602" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -159,7 +159,7 @@
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="scrollPane" alignment="0" pref="570" max="32767" attributes="1"/>
+                              <Component id="scrollPane" alignment="0" pref="576" max="32767" attributes="1"/>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -202,12 +202,12 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tabFaceNearist" alignment="0" pref="710" max="32767" attributes="0"/>
+                          <Component id="tabFaceNearist" alignment="0" pref="533" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tabFaceNearist" alignment="0" pref="596" max="32767" attributes="0"/>
+                          <Component id="tabFaceNearist" alignment="0" pref="602" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
