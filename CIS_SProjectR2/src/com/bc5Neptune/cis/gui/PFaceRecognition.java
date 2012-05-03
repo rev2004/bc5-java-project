@@ -182,7 +182,7 @@ public class PFaceRecognition extends JPanel {
         jSplitPane1.setDividerSize(1);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        jPanel1.setBackground(java.awt.Color.lightGray);
+        jPanel1.setBackground(java.awt.Color.gray);
 
         btnLoadImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Picture/Picture_32x32.png"))); // NOI18N
         btnLoadImage.addActionListener(new java.awt.event.ActionListener() {
@@ -492,7 +492,7 @@ class RecognitionListener extends MouseAdapter {
                                         String identity = tmp.substring(0, 9);
                                         System.out.println("Indentity number: " + identity);
                                         //System.out.println(new PersonDAL().Select(pid).getFULLNAME());
-                                        personInfor.txtFullname.setText(new PersonDAL().Select(identity).getFullname());
+                                        personInfor.txtFullName.setText(new PersonDAL().Select(identity).getFullname());
                                         personInfor.txtIdentity.setText(new PersonDAL().Select(identity).getIdentity_number());
                                         personInfor.txtBirthday.setText(new PersonDAL().Select(identity).getDob().toString());
                                         personInfor.txtHomeTown.setText(new PersonDAL().Select(identity).getHometown());
@@ -522,6 +522,7 @@ class RecognitionListener extends MouseAdapter {
                                                   
                                         }
                                         personInfor.lblImage.setIcon(new ImageIcon( personInfor.bufferedImage));
+                                        
                                         personInfor.pnlShowInfor.setVisible(true);                                
                                     } catch (IOException ex) {
                                         Logger.getLogger(RecognitionListener.class.getName()).log(Level.SEVERE, null, ex);

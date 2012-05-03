@@ -27,6 +27,7 @@ public class PPersonInformation extends javax.swing.JPanel {
     /* image to export to pdf */
 
     public BufferedImage bufferedImage;
+    //public String pdfFileName;
 
     /** Creates new form PPersonInformation */
     public PPersonInformation() {
@@ -38,7 +39,7 @@ public class PPersonInformation extends javax.swing.JPanel {
         try {
 
             Document document = new Document();
-            FileOutputStream fos = new FileOutputStream("../CIS_SProjectR2/person-information.pdf");
+            FileOutputStream fos = new FileOutputStream("../CIS_SProjectR2/" + txtFullName.getText() + ".pdf");
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             document.open();
             ProcessImage proImg = new ProcessImage();
@@ -55,7 +56,7 @@ public class PPersonInformation extends javax.swing.JPanel {
             document.add(identity);
             
             Phrase fullname = new Phrase("Full name: " 
-                    + txtFullname.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
+                    + txtFullName.getText() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL));
             document.add(fullname);
             
             Phrase birthday = new Phrase("Birthday: " 
@@ -108,7 +109,7 @@ public class PPersonInformation extends javax.swing.JPanel {
         jPanel19 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtIdentity = new javax.swing.JTextField();
-        txtFullname = new javax.swing.JTextField();
+        txtFullName = new javax.swing.JTextField();
         txtBirthday = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -127,7 +128,7 @@ public class PPersonInformation extends javax.swing.JPanel {
         jButton7 = new javax.swing.JButton();
 
         jSplitPane1.setDividerLocation(150);
-        jSplitPane1.setDividerSize(1);
+        jSplitPane1.setDividerSize(2);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         scrollPanel.setViewportView(listNearestPerson);
@@ -136,48 +137,42 @@ public class PPersonInformation extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(scrollPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
         );
 
         jSplitPane1.setTopComponent(jPanel1);
 
-        pnlShowInfor.setBackground(java.awt.Color.lightGray);
+        pnlShowInfor.setBackground(java.awt.Color.gray);
         pnlShowInfor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Person Imformation ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
 
-        jPanel19.setBackground(java.awt.Color.lightGray);
+        jPanel19.setBackground(java.awt.Color.gray);
 
-        jLabel1.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel1.setForeground(java.awt.Color.white);
         jLabel1.setText("Identidy number:");
 
         txtIdentity.setBackground(java.awt.Color.lightGray);
         txtIdentity.setEditable(false);
 
-        txtFullname.setBackground(java.awt.Color.lightGray);
-        txtFullname.setEditable(false);
+        txtFullName.setBackground(java.awt.Color.lightGray);
+        txtFullName.setEditable(false);
 
         txtBirthday.setBackground(java.awt.Color.lightGray);
         txtBirthday.setEditable(false);
 
-        jLabel3.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Birthday:");
 
-        jLabel2.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Full name:");
 
-        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Hometown:");
 
@@ -187,7 +182,7 @@ public class PPersonInformation extends javax.swing.JPanel {
         txtHomeTown.setTabSize(5);
         jScrollPane9.setViewportView(txtHomeTown);
 
-        jLabel5.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText("Place of residence:");
 
@@ -197,14 +192,14 @@ public class PPersonInformation extends javax.swing.JPanel {
         txtResidence.setTabSize(5);
         jScrollPane8.setViewportView(txtResidence);
 
-        jLabel6.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel6.setForeground(java.awt.Color.white);
         jLabel6.setText("Ethnic:");
 
         txtEthnic.setBackground(java.awt.Color.lightGray);
         txtEthnic.setEditable(false);
 
-        jLabel7.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Cantarell", 0, 15));
         jLabel7.setForeground(java.awt.Color.white);
         jLabel7.setText("Religious:");
 
@@ -226,7 +221,7 @@ public class PPersonInformation extends javax.swing.JPanel {
             .addComponent(txtEthnic, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
             .addComponent(jLabel7)
             .addComponent(txtBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
-            .addComponent(txtFullname, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .addComponent(txtFullName, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
             .addComponent(txtIdentity, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
             .addComponent(txtReligious, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
@@ -240,7 +235,7 @@ public class PPersonInformation extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -264,7 +259,7 @@ public class PPersonInformation extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel18.setBackground(java.awt.Color.lightGray);
+        jPanel18.setBackground(java.awt.Color.gray);
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original Image", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
@@ -310,11 +305,11 @@ public class PPersonInformation extends javax.swing.JPanel {
                 .addGroup(pnlShowInforLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlShowInforLayout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton7))
                     .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlInformationLayout = new javax.swing.GroupLayout(pnlInformation);
@@ -327,11 +322,9 @@ public class PPersonInformation extends javax.swing.JPanel {
         );
         pnlInformationLayout.setVerticalGroup(
             pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
+            .addGap(0, 523, Short.MAX_VALUE)
             .addGroup(pnlInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlInformationLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(pnlShowInfor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(pnlShowInfor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(pnlInformation);
@@ -351,7 +344,7 @@ public class PPersonInformation extends javax.swing.JPanel {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         if (exportToPDF()) {
-            File file = new File("person-information.pdf");
+            File file = new File(txtFullName.getText() +".pdf");
             JOptionPane.showMessageDialog(this, "Export to PDF sucessfuly\n" + file.getAbsolutePath(), "Information", 1, null);
         } else {
             JOptionPane.showMessageDialog(this, "Error when export to PDF please try again", "Information", 1, null);
@@ -381,7 +374,7 @@ public class PPersonInformation extends javax.swing.JPanel {
     public javax.swing.JScrollPane scrollPanel;
     public javax.swing.JTextField txtBirthday;
     public javax.swing.JTextField txtEthnic;
-    public javax.swing.JTextField txtFullname;
+    public javax.swing.JTextField txtFullName;
     public javax.swing.JTextArea txtHomeTown;
     public javax.swing.JTextField txtIdentity;
     public javax.swing.JTextField txtReligious;
