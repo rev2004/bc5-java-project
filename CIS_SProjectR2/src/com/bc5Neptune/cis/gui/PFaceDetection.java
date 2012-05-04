@@ -21,16 +21,21 @@ import com.bc5Neptune.cis.bll.ProcessImage;
 import com.bc5Neptune.cis.bll.ReadFolder;
 import com.bc5Neptune.cis.bll.VerticalIconRender;
 import com.bc5Neptune.cis.dal.PersonDAL;
-import com.bc5Neptune.cis.entity.DistrictEntity;
-import com.bc5Neptune.cis.entity.ProvinceEntity;
-import com.bc5Neptune.cis.entity.WardEntity;
+import com.bc5Neptune.cis.entity.*;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -44,6 +49,9 @@ public class PFaceDetection extends JPanel {
 
     final int SORT_INCREASE = 1;
     boolean toggleRegion = false;
+    String tempPath;
+    String groupRes;
+    String groupHTown;
     /*
      * save icon for list render
      */
@@ -91,7 +99,6 @@ public class PFaceDetection extends JPanel {
         jPanel26 = new javax.swing.JPanel();
         pnlShowImage = new javax.swing.JPanel();
         pnlFaceAnotations1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
         scrollFaceImages = new javax.swing.JScrollPane();
         lstFaceImages = new javax.swing.JList();
         jPanel30 = new javax.swing.JPanel();
@@ -106,21 +113,22 @@ public class PFaceDetection extends JPanel {
         cmbTrainFace = new javax.swing.JComboBox();
         jPanel42 = new javax.swing.JPanel();
         jPanel43 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
+        lblClickToLoad = new javax.swing.JLabel();
+        lblLoadImg = new javax.swing.JLabel();
         jPanel44 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
+        txfRel = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
+        txfEthnic = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
+        txfIdNumber = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
-        jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
+        txfDOB = new javax.swing.JTextField();
+        txfFname = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txaChar = new javax.swing.JTextArea();
         jLabel27 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
@@ -136,6 +144,7 @@ public class PFaceDetection extends JPanel {
         cbbResidenceDis = new javax.swing.JComboBox();
         cbbResidenceWrd = new javax.swing.JComboBox();
         cbbResidenceGrp = new javax.swing.JComboBox();
+        jFileChooser1 = new javax.swing.JFileChooser();
 
         setName("Face Detection"); // NOI18N
 
@@ -168,7 +177,7 @@ public class PFaceDetection extends JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 778, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 843, Short.MAX_VALUE)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
@@ -183,12 +192,12 @@ public class PFaceDetection extends JPanel {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblNameAccess))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1))
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jSplitPane3.setTopComponent(jPanel10);
@@ -222,7 +231,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPanelThumb, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(scrollPanelThumb, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
@@ -238,11 +247,9 @@ public class PFaceDetection extends JPanel {
 
         jSplitPane4.setLeftComponent(jPanel22);
 
-        splMain1.setDividerLocation(450);
+        splMain1.setDividerLocation(400);
         splMain1.setDividerSize(1);
         splMain1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        splMain1.setName(""); // NOI18N
-        splMain1.setOneTouchExpandable(true);
 
         pnlShowImage.setBackground(new java.awt.Color(102, 102, 102));
         pnlShowImage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -254,11 +261,11 @@ public class PFaceDetection extends JPanel {
         pnlShowImage.setLayout(pnlShowImageLayout);
         pnlShowImageLayout.setHorizontalGroup(
             pnlShowImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 801, Short.MAX_VALUE)
+            .addGap(0, 854, Short.MAX_VALUE)
         );
         pnlShowImageLayout.setVerticalGroup(
             pnlShowImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
+            .addGap(0, 396, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
@@ -274,7 +281,7 @@ public class PFaceDetection extends JPanel {
 
         splMain1.setTopComponent(jPanel26);
 
-        pnlFaceAnotations1.setBorder(null);
+        pnlFaceAnotations1.setBorder(javax.swing.BorderFactory.createTitledBorder("Face Anotations"));
         pnlFaceAnotations1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         pnlFaceAnotations1.setMaximumSize(new java.awt.Dimension(594, 126));
 
@@ -285,31 +292,15 @@ public class PFaceDetection extends JPanel {
         lstFaceImages.setVisibleRowCount(1);
         scrollFaceImages.setViewportView(lstFaceImages);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollFaceImages, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addComponent(scrollFaceImages, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout pnlFaceAnotations1Layout = new javax.swing.GroupLayout(pnlFaceAnotations1);
         pnlFaceAnotations1.setLayout(pnlFaceAnotations1Layout);
         pnlFaceAnotations1Layout.setHorizontalGroup(
             pnlFaceAnotations1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(scrollFaceImages, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 846, Short.MAX_VALUE)
         );
         pnlFaceAnotations1Layout.setVerticalGroup(
             pnlFaceAnotations1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlFaceAnotations1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(scrollFaceImages, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
         );
 
         splMain1.setBottomComponent(pnlFaceAnotations1);
@@ -318,11 +309,11 @@ public class PFaceDetection extends JPanel {
         jPanel25.setLayout(jPanel25Layout);
         jPanel25Layout.setHorizontalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(splMain1, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
+            .addComponent(splMain1)
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(splMain1, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+            .addComponent(splMain1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
         );
 
         jSplitPane4.setRightComponent(jPanel25);
@@ -331,11 +322,11 @@ public class PFaceDetection extends JPanel {
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
+            .addComponent(jSplitPane4)
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+            .addComponent(jSplitPane4)
         );
 
         jTabbedPane3.addTab("Image Brower", jPanel21);
@@ -353,14 +344,14 @@ public class PFaceDetection extends JPanel {
         jPanel40Layout.setHorizontalGroup(
             jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel40Layout.createSequentialGroup()
-                .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollBar5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel40Layout.setVerticalGroup(
             jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTrainFace, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
-            .addComponent(jScrollBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+            .addComponent(scrollTrainFace, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+            .addComponent(jScrollBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
         );
 
         jPanel41.setBorder(javax.swing.BorderFactory.createTitledBorder("Person ID"));
@@ -408,23 +399,31 @@ public class PFaceDetection extends JPanel {
 
         jPanel43.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original Image", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabel19.setText("Click me to import a image");
+        lblClickToLoad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblClickToLoad.setText("Click me to import a image");
+        lblClickToLoad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblClickToLoadMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel43Layout.createSequentialGroup()
-                .addContainerGap(46, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addGap(38, 38, 38))
+                .addContainerGap(33, Short.MAX_VALUE)
+                .addComponent(lblClickToLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
+            .addComponent(lblLoadImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel43Layout.createSequentialGroup()
-                .addGap(124, 124, 124)
-                .addComponent(jLabel19)
-                .addContainerGap(160, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel43Layout.createSequentialGroup()
+                .addComponent(lblLoadImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblClickToLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
 
         jLabel20.setText("Full name:");
@@ -439,9 +438,9 @@ public class PFaceDetection extends JPanel {
 
         jLabel2.setText("Characteristic:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txaChar.setColumns(20);
+        txaChar.setRows(5);
+        jScrollPane1.setViewportView(txaChar);
 
         javax.swing.GroupLayout jPanel44Layout = new javax.swing.GroupLayout(jPanel44);
         jPanel44.setLayout(jPanel44Layout);
@@ -456,9 +455,9 @@ public class PFaceDetection extends JPanel {
                             .addComponent(jLabel20))
                         .addGap(4, 4, 4)
                         .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField16)
-                            .addComponent(txtID)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                            .addComponent(txfDOB)
+                            .addComponent(txfIdNumber)
+                            .addComponent(txfFname, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
                     .addComponent(jLabel24)
                     .addGroup(jPanel44Layout.createSequentialGroup()
                         .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,8 +467,8 @@ public class PFaceDetection extends JPanel {
                         .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField14, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txfEthnic, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txfRel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel44Layout.setVerticalGroup(
@@ -481,22 +480,22 @@ public class PFaceDetection extends JPanel {
                         .addComponent(jLabel21))
                     .addGroup(jPanel44Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txfIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfFname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfDOB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel23))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfEthnic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfRel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
                 .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel44Layout.createSequentialGroup()
@@ -508,7 +507,7 @@ public class PFaceDetection extends JPanel {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jLabel27.setFont(new java.awt.Font("Cantarell", 1, 18));
+        jLabel27.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         jLabel27.setText("INFORMATION");
 
         btnSave.setText("Save");
@@ -543,37 +542,17 @@ public class PFaceDetection extends JPanel {
         jLabel4.setText("Residence:");
 
         cbbHTownPrv.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select Province--" }));
-        cbbHTownPrv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbHTownPrvActionPerformed(evt);
-            }
-        });
 
         cbbHTownDis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select District--" }));
-        cbbHTownDis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbHTownDisActionPerformed(evt);
-            }
-        });
 
         cbbHTownWrd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select Ward--" }));
 
         cbbHTownGrp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select Group--" }));
 
         cbbResidencePrv.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select Province--" }));
-        cbbResidencePrv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbResidencePrvActionPerformed(evt);
-            }
-        });
 
         cbbResidenceDis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select District--" }));
         cbbResidenceDis.setName(""); // NOI18N
-        cbbResidenceDis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbResidenceDisActionPerformed(evt);
-            }
-        });
 
         cbbResidenceWrd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Select Ward--" }));
 
@@ -671,11 +650,11 @@ public class PFaceDetection extends JPanel {
         jPanel38.setLayout(jPanel38Layout);
         jPanel38Layout.setHorizontalGroup(
             jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
+            .addComponent(jSplitPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
         );
         jPanel38Layout.setVerticalGroup(
             jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane6)
+            .addComponent(jSplitPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
@@ -695,11 +674,20 @@ public class PFaceDetection extends JPanel {
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jSplitPane3.setRightComponent(jPanel20);
@@ -708,17 +696,70 @@ public class PFaceDetection extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 968, Short.MAX_VALUE)
+            .addGap(0, 1033, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE))
+                .addComponent(jSplitPane3))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 717, Short.MAX_VALUE)
+            .addGap(0, 1105, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE))
+                .addComponent(jSplitPane3))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public void loadImageToLabelEvent() {
+
+        /*
+         * empty icon lable
+         */
+        lblLoadImg.setIcon(null);
+        jFileChooser1.setDialogTitle("Choose a file");
+        //this.getContentPane().add(jFileChooser1);
+        jFileChooser1.setVisible(true);
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = jFileChooser1.getSelectedFile();
+            tempPath = selectedFile.getAbsolutePath();
+            int ind = tempPath.lastIndexOf(".");
+            if (ind == -1) { // no file type
+                JOptionPane.showConfirmDialog(this,
+                        "Please choose .jpg or .jpeg type!", "Warning",
+                        JOptionPane.CLOSED_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String tmp = tempPath.substring(ind);
+            if (tmp.equalsIgnoreCase(".jpg") == false // .jpg or jpeg
+                    || tmp.equalsIgnoreCase(".jpeg")) {
+                JOptionPane.showConfirmDialog(this,
+                        "Please choose .jpg or .jpeg type!", "Warning",
+                        JOptionPane.CLOSED_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            //App.objImage.setPath(tempPath);
+            BufferedImage image = null;
+            File file = new File(tempPath);
+            System.out.println(file.getAbsolutePath());
+            try {
+                image = javax.imageio.ImageIO.read(file);
+            } catch (IOException ex) {
+                System.out.println("Can't load image " + tempPath);
+                JOptionPane.showConfirmDialog(this, "Please reload image!",
+                        "Warning", JOptionPane.CLOSED_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+            }
+            BufferedImage resizeImage = null;
+            ProcessImage objImage = new ProcessImage();
+            resizeImage = objImage.resize(image, 300, 200);
+            lblLoadImg.setIcon(new ImageIcon(resizeImage));
+            /*
+             * resize image
+             */
+            //objImage.resizeImage(tempPath, 500, 500, Config.PATH_TMP_DETECT);
+        }
+    }
 
     public void choseFolder() {
         fileChooseFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -835,106 +876,256 @@ public class PFaceDetection extends JPanel {
         // TODO add your handling code here:
         System.out.println("Hele");
     }//GEN-LAST:event_lstThumbnailsValueChanged
+    E2 ee2 = new E2();
+    E3 ee3 = new E3();
+    E4 ee4 = new E4();
+    //------------------------
+    E6 ee6 = new E6();
+    E7 ee7 = new E7();
+    E8 ee8 = new E8();
 
     private void initialInformationForm() {
-        //initialize list entity of CountryEntity
+        // initialize list entity of CountryEntity
         PersonDAL prsDal = new PersonDAL();
         List<ProvinceEntity> listEntity = prsDal.getListProvince();
         for (ProvinceEntity Province : listEntity) {
             cbbHTownPrv.addItem(Province);
             cbbResidencePrv.addItem(Province);
         }
+        FilterProvinceHTown ee1 = new FilterProvinceHTown();
+        cbbHTownPrv.addActionListener(ee1);
+
+        cbbHTownDis.addActionListener(ee2);
+
+        cbbHTownWrd.addActionListener(ee3);
+
+        cbbHTownGrp.addActionListener(ee4);
+
+        FilterProvinceRes ee5 = new FilterProvinceRes();
+        cbbResidencePrv.addActionListener(ee5);
+        cbbResidenceDis.addActionListener(ee6);
+        cbbResidenceWrd.addActionListener(ee7);
+        cbbResidenceGrp.addActionListener(ee8);
+
     }
-    HashSet<DistrictEntity> listDistrict = null;
-
-    private void FilterProvinceHtown(java.awt.event.ActionEvent evt) {
-        System.out.println("===========");
-        PersonDAL prsDal = new PersonDAL();
-        List<ProvinceEntity> listProvince = null;
-
-        listProvince = prsDal.getListProvince();
-        //set with each entity country corresponds province.
-        for (ProvinceEntity Province : listProvince) {
-            if (cbbHTownPrv.getSelectedIndex() == 0) {
+     public int removeE2() {
+        int i = 0;
+        if (cbbHTownPrv.getSelectedIndex() == 0) {
+            cbbHTownDis.removeActionListener(ee2);
+            cbbHTownDis.removeAllItems();
+            cbbHTownDis.addItem("--Select District--");
+            cbbHTownDis.addActionListener(ee2);
+        } else {
+            if (cbbHTownDis.getItemAt(1) != null) {
+                cbbHTownDis.removeActionListener(ee2);
                 cbbHTownDis.removeAllItems();
                 cbbHTownDis.addItem("--Select District--");
-                break;
-            } else {
-                ProvinceEntity province = null;
-                Province = (ProvinceEntity) cbbHTownPrv.getSelectedItem();
-                listDistrict = prsDal.getListDistrict(Province.getProvinceID());
-                cbbHTownDis.removeAllItems();
+                cbbHTownDis.addActionListener(ee2);
+                //i =1;
+            }
+            i = 1;
+        }
+
+        return i;
+    }
+
+    public void removeE3() {
+        if (cbbHTownWrd.getItemAt(1) != null) {
+            cbbHTownWrd.removeActionListener(ee3);
+            cbbHTownWrd.removeAllItems();
+            cbbHTownWrd.addItem("--Select Ward--");
+            cbbHTownWrd.addActionListener(ee3);
+        }
+    }
+
+    public void removeE4() {
+        if (cbbHTownGrp.getItemAt(1) != null) {
+            cbbHTownGrp.removeActionListener(ee4);
+            cbbHTownGrp.removeAllItems();
+            cbbHTownGrp.addItem("--Select group--");
+            cbbHTownGrp.addActionListener(ee4);
+        }
+    }
+
+    public int removeE6() {
+        int i = 0;
+        if (cbbResidencePrv.getSelectedIndex() == 0) {
+            cbbResidenceDis.removeActionListener(ee6);
+            cbbResidenceDis.removeAllItems();
+            cbbResidenceDis.addItem("--Select District--");
+            cbbResidenceDis.addActionListener(ee6);
+        } else {
+            if (cbbResidenceDis.getItemAt(1) != null) {
+                cbbResidenceDis.removeActionListener(ee6);
+                cbbResidenceDis.removeAllItems();
+                cbbResidenceDis.addItem("--Select District--");
+                cbbResidenceDis.addActionListener(ee6);
+                //i =1;
+            }
+            i = 1;
+        }
+
+        return i;
+    }
+
+    public void removeE7() {
+        if (cbbResidenceWrd.getItemAt(1) != null) {
+            cbbResidenceWrd.removeActionListener(ee7);
+            cbbResidenceWrd.removeAllItems();
+            cbbResidenceWrd.addItem("--Select Ward--");
+            cbbResidenceWrd.addActionListener(ee7);
+        }
+    }
+
+    public void removeE8() {
+        if (cbbResidenceGrp.getItemAt(1) != null) {
+            cbbResidenceGrp.removeActionListener(ee8);
+            cbbResidenceGrp.removeAllItems();
+            cbbResidenceGrp.addItem("--Select group--");
+            cbbResidenceGrp.addActionListener(ee8);
+        }
+    }
+
+    public class FilterProvinceHTown implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e1) {
+            System.out.println("Clicking Province Home Town");
+            PersonDAL prsDal = new PersonDAL();
+//                if (cbbHTownDis.getSelectedIndex() == 0) {
+//                    cbbHTownDis.removeAllItems();
+//                    cbbHTownDis.addItem("--Select District--");
+            ProvinceEntity Province = (ProvinceEntity) cbbHTownPrv.getSelectedItem();
+            System.out.println("ID of province: " + Province.getProvinceID().toString());
+            HashSet<DistrictEntity> listDistrict = prsDal.getListDistrict(Province.getProvinceID());
+            int i = removeE2();
+            if (i == 1) {
                 for (DistrictEntity district : listDistrict) {
                     cbbHTownDis.addItem(district);
                 }
             }
+
         }
     }
 
-    private void FilterDisHtown(java.awt.event.ActionEvent evt) {
-        //set with each entity country corresponds province.
-        PersonDAL prsDal = new PersonDAL();
-        HashSet<WardEntity> listward = null;
-        for (DistrictEntity District : listDistrict) {
-            if (cbbHTownDis.getSelectedIndex() == 0) {
-                cbbHTownWrd.removeAllItems();
-                cbbHTownWrd.addItem("--Select Ward--");
-                break;
-            } else {
-                //District district = null;
-                District = (DistrictEntity) cbbHTownDis.getSelectedItem();
-                listward = prsDal.getListward(District.getProvinceID());
-                cbbHTownWrd.removeAllItems();
-                for (WardEntity ward : listward) {
-                    cbbHTownDis.addItem(ward);
-                }
+    public class E2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e2) {
+            System.out.println("Clicking District");
+            //cbbHTownWrd.removeAllItems();
+            // cbbHTownWrd.addItem("--Choose Ward--");
+            PersonDAL prsDal = new PersonDAL();
+            // if (e2.getSource() == cbbHTownDis.getSelectedItem()) {
+            DistrictEntity District = (DistrictEntity) cbbHTownDis.getSelectedItem();
+            System.out.println("ID of district: " + District.getDistricID().toString());
+            HashSet<WardEntity> listWard = prsDal.getListWard(District.getDistricID());
+            //
+            removeE3();
+            for (WardEntity ward : listWard) {
+//                    if(cbbHTownWrd!=null & i ==0){
+//                            cbbHTownWrd.removeAllItems();
+//                            i=1;
+//                        }
+                cbbHTownWrd.addItem(ward);
             }
+            // }
         }
     }
 
-    private void FilterProvinceRes(java.awt.event.ActionEvent evt) {
-        System.out.println("===========");
-        PersonDAL prsDal = new PersonDAL();
-        List<ProvinceEntity> listProvince = null;
-        HashSet<DistrictEntity> listDistrict = null;
-        listProvince = prsDal.getListProvince();
-        for (ProvinceEntity Province : listProvince) {
-            if (cbbResidencePrv.getSelectedIndex() == 0) {
-                cbbResidenceDis.removeAllItems();
-                cbbResidenceDis.addItem("--Select District--");
-                break;
-            } else {
-                ProvinceEntity province = null;
-                Province = (ProvinceEntity) cbbResidencePrv.getSelectedItem();
-                listDistrict = prsDal.getListDistrict(Province.getProvinceID());
-                cbbResidenceDis.removeAllItems();
+    public class E3 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e3) {
+
+            System.out.println("Clicking Ward");
+            PersonDAL prsDal = new PersonDAL();
+            // if (e3.getSource() == cbbHTownWrd.getSelectedItem()) {/
+            WardEntity Ward = (WardEntity) cbbHTownWrd.getSelectedItem();
+            System.out.println("Id of Ward: " + Ward.getWardID().toString());
+            //JOptionPane.showMessageDialog(null,Ward.getWardID());
+            HashSet<PopulationGroupEntity> listGroup = prsDal.getListGroup(Ward.getWardID());
+            removeE4();
+            for (PopulationGroupEntity group : listGroup) {
+                cbbHTownGrp.addItem(group);
+            }
+            //  }
+        }
+    }
+
+    public class E4 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Click Group");
+            PopulationGroupEntity group = (PopulationGroupEntity) cbbHTownGrp.getSelectedItem();
+            System.out.println("ID group se duoc luu vao csdl....hehehe:  " + group.getPgroupID().toString());
+            groupHTown = group.getPgroupID().toString();
+        }
+    }
+
+    public class FilterProvinceRes implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e1) {
+            System.out.println("Clicking Province District");
+            PersonDAL prsDal = new PersonDAL();
+//                if (cbbHTownDis.getSelectedIndex() == 0) {
+//                    cbbHTownDis.removeAllItems();
+//                    cbbHTownDis.addItem("--Select District--");
+            ProvinceEntity Province = (ProvinceEntity) cbbResidencePrv.getSelectedItem();
+            System.out.println("ID of province: " + Province.getProvinceID().toString());
+            HashSet<DistrictEntity> listDistrict = prsDal.getListDistrict(Province.getProvinceID());
+            int i = removeE6();
+            if (i == 1) {
                 for (DistrictEntity district : listDistrict) {
                     cbbResidenceDis.addItem(district);
                 }
             }
+
         }
     }
 
-    private void FilterDisRes(java.awt.event.ActionEvent evt) {
-        System.out.println("===========");
-        PersonDAL prsDal = new PersonDAL();
-        List<ProvinceEntity> listProvince = null;
-        HashSet<DistrictEntity> listDistrict = null;
-        listProvince = prsDal.getListProvince();
-        for (ProvinceEntity Province : listProvince) {
-            if (cbbResidencePrv.getSelectedIndex() == 0) {
-                cbbResidenceDis.removeAllItems();
-                cbbResidenceDis.addItem("--Select District--");
-                break;
-            } else {
-                ProvinceEntity province = null;
-                Province = (ProvinceEntity) cbbResidencePrv.getSelectedItem();
-                listDistrict = prsDal.getListDistrict(Province.getProvinceID());
-                cbbResidenceDis.removeAllItems();
-                for (DistrictEntity district : listDistrict) {
-                    cbbResidenceDis.addItem(district);
-                }
+    public class E6 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Clicking District Residence");
+            PersonDAL prsDal = new PersonDAL();
+            DistrictEntity District = (DistrictEntity) cbbResidenceDis.getSelectedItem();
+            System.out.println("ID of district: " + District.getDistricID().toString());
+            HashSet<WardEntity> listWard = prsDal.getListWard(District.getDistricID());
+            removeE7();
+            for (WardEntity ward : listWard) {
+                cbbResidenceWrd.addItem(ward);
             }
+        }
+    }
+
+    public class E7 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Clicking Ward Residence");
+            PersonDAL prsDal = new PersonDAL();
+            WardEntity Ward = (WardEntity) cbbResidenceWrd.getSelectedItem();
+            System.out.println("Id of Ward: " + Ward.getWardID());
+            HashSet<PopulationGroupEntity> listGroup = prsDal.getListGroup(Ward.getWardID());
+            removeE8();
+            for (PopulationGroupEntity group : listGroup) {
+                cbbResidenceGrp.addItem(group);
+            }
+        }
+    }
+
+    public class E8 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Click Group Residence");
+            PopulationGroupEntity group = (PopulationGroupEntity) cbbResidenceGrp.getSelectedItem();
+            System.out.println("ID group of Residence se duoc luu vao csdl....hehehe:  " + group.getPgroupID());
+            groupRes = group.getPgroupID().toString();
         }
     }
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -961,33 +1152,52 @@ public class PFaceDetection extends JPanel {
                 cvSaveImage("../CIS_SProjectR2/data/tmp/" + (i + 1) + ".pgm", cvImage);
             }
             //for(int i = 0; i <)
-            proFile.createDatFile(txtID.getText());
+            //proFile.createDatFile(txtID.getText());
             proFile.deleteFolder("../CIS_SProjectR2/data/tmp/");
 
             //proFile.saveBuffImageToDAT(imagesArr, txtID.getText(),"../CIS_SProjectR2/data/facedat/");
             System.out.println("Save array of images to dat successfully");
+             //do on db2
+        DateFormat formatter;
+        formatter = new SimpleDateFormat("yyyy-mm-dd");
+        Calendar currentDate = Calendar.getInstance();
+        PersonEntity prsEnt = new PersonEntity();
+        PersonDAL prsDal = new PersonDAL();
+//        //prsEnt.setPid(txfIdNumber.getText());auto
+        prsEnt.setIdentity_number(txfIdNumber.getText());
+        prsEnt.setFullname(txfFname.getText());
+        try {
+            prsEnt.setDob(formatter.parse(txfDOB.getText().toString()));
+//            JOptionPane.showMessageDialog(this, txfDOB.getText().toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(PFaceDetection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        prsEnt.setHometown(groupHTown);
+        JOptionPane.showMessageDialog(this, groupRes);
+        prsEnt.setPermanent_residence(groupRes);
+        prsEnt.setEthnic(txfEthnic.getText());
+        prsEnt.setReligion(txfRel.getText());
+        prsEnt.setCharacteristic(txaChar.getText());
+        prsEnt.setSaveImg(tempPath);
+//        try {
+//            prsEnt.setDate(formatter.parse(DateFormat.getDateInstance(Calendar.SHORT).format(currentDate.getTime())));
+//        } catch (ParseException ex) {
+//            Logger.getLogger(PFaceDetection.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        //JOptionPane.showMessageDialog(this, formatter.getDateInstance().format(currentDate.getTime()));
+        
+//        //prsEnt.setImage(null);
+//        prsEnt.setSaveImg(tempPath);
+//        prsEnt.setReligion(txfRel.getText());
+        prsDal.insertnewPerson(prsEnt);
+        }  
     }//GEN-LAST:event_btnSaveActionPerformed
 
-private void cbbHTownPrvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbHTownPrvActionPerformed
-// TODO add your handling code here:
-    FilterProvinceHtown(evt);
-}//GEN-LAST:event_cbbHTownPrvActionPerformed
+    private void lblClickToLoadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblClickToLoadMouseClicked
+        // TODO add your handling code here:
+        loadImageToLabelEvent();
+    }//GEN-LAST:event_lblClickToLoadMouseClicked
 
-private void cbbResidencePrvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbResidencePrvActionPerformed
-// TODO add your handling code here:
-    FilterProvinceRes(evt);
-}//GEN-LAST:event_cbbResidencePrvActionPerformed
-
-private void cbbHTownDisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbHTownDisActionPerformed
-// TODO add your handling code here:
-    FilterDisHtown(evt);
-}//GEN-LAST:event_cbbHTownDisActionPerformed
-
-private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbResidenceDisActionPerformed
-// TODO add your handling code here:
-    FilterDisRes(evt);
-}//GEN-LAST:event_cbbResidenceDisActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenFolder;
     private javax.swing.JButton btnSave;
@@ -1003,8 +1213,8 @@ private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JFileChooser fileChooseFolder;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton17;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -1023,7 +1233,6 @@ private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel38;
     private javax.swing.JPanel jPanel39;
@@ -1038,11 +1247,8 @@ private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JSplitPane jSplitPane4;
     private javax.swing.JSplitPane jSplitPane6;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
+    private javax.swing.JLabel lblClickToLoad;
+    private javax.swing.JLabel lblLoadImg;
     private javax.swing.JLabel lblNameAccess;
     public javax.swing.JList lstFaceImages;
     public javax.swing.JList lstThumbnails;
@@ -1053,7 +1259,12 @@ private void cbbResidenceDisActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane scrollPanelThumb;
     public javax.swing.JScrollPane scrollTrainFace;
     private javax.swing.JSplitPane splMain1;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JTextArea txaChar;
+    private javax.swing.JTextField txfDOB;
+    private javax.swing.JTextField txfEthnic;
+    private javax.swing.JTextField txfFname;
+    private javax.swing.JTextField txfIdNumber;
+    private javax.swing.JTextField txfRel;
     // End of variables declaration//GEN-END:variables
 }
 
