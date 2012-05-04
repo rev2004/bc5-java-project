@@ -317,18 +317,6 @@ public class PersonDAL {
             cstmtInsert.setString(6, prsEnt.getEthnic());
             cstmtInsert.setString(7, prsEnt.getReligion());
             cstmtInsert.setString(8, prsEnt.getCharacteristic());
-            //cstmtInsert.setDate(9,new java.sql.Date(prsEnt.getDate().getTime()));
-//            cstmtInsert.setString(4,prsEnt.getHometown());
-//            cstmtInsert.setString(5,prsEnt.getPermanent_residence());
-//            //cstmt.setI(6,prsEnt.getIdentity_number());
-//            cstmtInsert.setString(6,prsEnt.getEthnic());
-//            cstmtInsert.setString(7,prsEnt.getReligion());
-//            cstmtInsert.setString(8,prsEnt.getCharacteristic());
-//            cstmt.setDate(9,new Date(2012,05,03));//new java.sql.Date(prsEnt.getDate().getTime())
-            ///
-            ///
-
-            //+update Image
             cstmtInsert.execute();
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,6 +324,24 @@ public class PersonDAL {
 
         updateImg(prsEnt);
         //return affR;
+    }
+    public void updatePerson(PersonEntity prsEnt){
+        try {
+            connection = ConnectDB2.getConnection();
+                cstmtInsert = connection.prepareCall("Call SPD_UPDATE_PERSON(?,?,?,?,?,?,?,?,?)");
+                cstmtInsert.setString(1, prsEnt.getIdentity_number());
+                cstmtInsert.setString(2, prsEnt.getFullname());
+                cstmtInsert.setDate(3, new java.sql.Date(prsEnt.getDob().getTime()));
+                cstmtInsert.setString(4, prsEnt.getHometown());
+                cstmtInsert.setString(5, prsEnt.getPermanent_residence());
+                cstmtInsert.setString(6, prsEnt.getEthnic());
+                cstmtInsert.setString(7, prsEnt.getReligion());
+                cstmtInsert.setString(8, prsEnt.getCharacteristic());
+                cstmtInsert.setString(9, prsEnt.getPid());
+                cstmtInsert.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void updateImg(PersonEntity prsEnt) {
@@ -383,7 +389,7 @@ public class PersonDAL {
         try {
             prsHTownGroup = connection.prepareStatement(sqlGroup);
             prsHTownGroup.setString(1,GroupID);
-            prsH
+            
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
