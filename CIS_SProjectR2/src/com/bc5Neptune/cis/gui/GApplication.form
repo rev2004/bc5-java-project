@@ -226,8 +226,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jToolBar1" alignment="0" pref="897" max="32767" attributes="0"/>
-          <Component id="mainTab" alignment="0" pref="897" max="32767" attributes="0"/>
+          <Component id="jToolBar1" alignment="0" pref="1047" max="32767" attributes="0"/>
+          <Component id="mainTab" alignment="0" pref="1047" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -467,7 +467,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="604" max="32767" attributes="0"/>
+                      <EmptySpace pref="754" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
