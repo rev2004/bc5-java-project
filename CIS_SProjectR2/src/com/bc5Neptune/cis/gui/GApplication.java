@@ -15,6 +15,9 @@ import com.nilo.plaf.nimrod.NimRODLookAndFeel;
 import com.nilo.plaf.nimrod.NimRODTheme;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,10 +29,12 @@ import javax.swing.border.EmptyBorder;
 import static com.bc5Neptune.cis.bll.GlobalObject.*;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import javax.swing.*;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -753,7 +758,8 @@ public class GApplication extends JFrame {
 
     private void menuHelpActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuHelpActionPerformed
         // TODO add your handling code here:
-        addTab("Help Contents", "Open Help Contents", new PHelp(), mainTab);
+        //addTab("Help Contents", "Open Help Contents", new PHelp(), mainTab);
+        helpInformation();
     }//GEN-LAST:event_menuHelpActionPerformed
 
     private void menuAboutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
@@ -853,10 +859,25 @@ public class GApplication extends JFrame {
     }//GEN-LAST:event_toolChangePasswordActionPerformed
 
     private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
-        // TODO add your handling code here:
-        addTab("Help Contents", "Open Help Contents", new PHelp(), mainTab);
+       helpInformation();
+        
     }//GEN-LAST:event_lblHelpMouseClicked
 
+    public void helpInformation(){
+        try {
+            // TODO add your handling code here:
+           // addTab("Help Contents", "Open Help Contents", new PHelp(), mainTab);
+            Desktop desktop = null;
+       if (Desktop.isDesktopSupported()) 
+       {
+         desktop = Desktop.getDesktop();
+       }
+
+       desktop.open(new File("../CIS_SProjectR2/data/Help.doc"));
+        } catch (IOException ex) {
+            Logger.getLogger(GApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void menuTutorialsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuTutorialsMouseClicked
         // TODO add your handling code here:
         addTab("Tutorials", "Open Tutorials", new PTutorials(), mainTab);
