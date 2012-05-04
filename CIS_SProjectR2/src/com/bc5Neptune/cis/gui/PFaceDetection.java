@@ -60,6 +60,7 @@ public class PFaceDetection extends JPanel {
      * save 10 faces to insert to database
      */
     public ArrayList<IconList> iconTempArr = new ArrayList<IconList>();
+    public ArrayList<Integer> indexArr = new ArrayList<Integer>();
 
     public PFaceDetection() {
         initComponents();
@@ -572,11 +573,12 @@ public class PFaceDetection extends JPanel {
         );
         jPanel49Layout.setVerticalGroup(
             jPanel49Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+            .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
         );
 
         jPanel50.setBorder(javax.swing.BorderFactory.createTitledBorder("Choose name"));
 
+        cmbTrainFace.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All image" }));
         cmbTrainFace.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTrainFaceActionPerformed(evt);
@@ -1186,16 +1188,21 @@ public class PFaceDetection extends JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void cmbTrainFaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTrainFaceActionPerformed
-        // TODO add your handling code here:
-        iconTempArr.clear();
+    public void filterFace(String name) {
+        iconTempArr.clear();//empty icon
+        indexArr.clear();//empty index
 
-        System.out.println("You chose me" + cmbTrainFace.getSelectedItem());
-        String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
+        // System.out.println("You chose me" + cmbTrainFace.getSelectedItem());
+        //String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
         for (int i = 0; i < iconTrainArr.size(); i++) {
             IconList icon = iconTrainArr.get(i);
-            if (icon.getName().equalsIgnoreCase(currentNameSelect)) {
+            //all file
+            if (name.equalsIgnoreCase("All image")) {
                 iconTempArr.add(icon);
+                indexArr.add(i);
+            } else if (icon.getName().equalsIgnoreCase(name)) {
+                iconTempArr.add(icon);
+                indexArr.add(i);
             }
         }
         //set list cell render
@@ -1203,10 +1210,131 @@ public class PFaceDetection extends JPanel {
         VerticalIconRender render = new VerticalIconRender();
         lstTrainFace.setCellRenderer(render);
         scrollTrainFace.setViewportView(lstTrainFace);
+        lstTrainFace.addMouseListener(new ListTrainngListener());
         //repaint list
         lstTrainFace.revalidate();
         lstTrainFace.repaint();
+    }
+    private void cmbTrainFaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTrainFaceActionPerformed
+        // TODO add your handling code here:
+        System.out.println("You chose me" + cmbTrainFace.getSelectedItem());
+        String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
+        if (currentNameSelect != null) {
+            filterFace(currentNameSelect);
+        }
     }//GEN-LAST:event_cmbTrainFaceActionPerformed
+
+    //add listening for list training face
+    class ListTrainngListener extends MouseAdapter {
+
+        JPopupMenu rightMenu = new JPopupMenu("Right menu");
+
+        public ListTrainngListener() {
+
+            /*
+             * delete this face menu
+             */
+            JMenuItem deleteFace = new JMenuItem("Delete this face");
+            //addMenu.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+            deleteFace.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int index = lstTrainFace.getSelectedIndex();
+                    if (index >= 0) {
+                        //get name before delete
+                        IconList tmpIcon = (IconList) lstTrainFace.getSelectedValue();
+                        String nameIcon = tmpIcon.getName();
+                        iconTempArr.remove(index);
+                        iconTrainArr.remove(indexArr.get(index).intValue());
+                        String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
+
+                        int pos = cmbTrainFace.getSelectedIndex();
+                        filterFace(currentNameSelect);
+
+                        //delete text in combo box if it no image
+                        int check = 0;
+
+                        for (int i = 0; i < iconTrainArr.size(); i++) {
+                            IconList icon = iconTrainArr.get(i);
+                            //all file
+                            if (icon.getName().equalsIgnoreCase(currentNameSelect)) {
+                                check++;
+                            }
+                        }
+
+                        if (check == 0) {
+                            for (int i = 0; i < cmbTrainFace.getItemCount(); i++) {
+                                if (cmbTrainFace.getItemAt(i).equals(nameIcon)) {
+                                    cmbTrainFace.removeItemAt(i);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            rightMenu.add(deleteFace);
+            /*
+             * delete all of face
+             */
+            JMenuItem deleteAllFace = new JMenuItem("Delete all face");
+            //disableRegion.setIcon(getIconResize("../CIS_SProjectR2/src/icon/Delete_16x16.png"));
+            deleteAllFace.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //remove all item of combo
+                    cmbTrainFace.removeAllItems();
+                    cmbTrainFace.addItem("All image");
+                    iconTrainArr = new ArrayList<IconList>();
+                    iconTempArr = new ArrayList<IconList>();
+                    filterFace("All image");
+                }
+            });
+            rightMenu.add(deleteAllFace);
+
+        }
+        /*
+         * set icon for right click menu
+         */
+
+        public ImageIcon getIcon(String path) {
+            ImageIcon icon = new ImageIcon(path);
+            return icon;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            switch (e.getModifiers()) {
+                case InputEvent.BUTTON1_MASK: {
+                    if (e.getClickCount() == 2) {
+                        /*
+                         * double click
+                         */
+                    }
+
+                    break;
+                }
+                case InputEvent.BUTTON2_MASK: {
+
+                    System.out.println("That's the MIDDLE button");
+
+                    break;
+                }
+                case InputEvent.BUTTON3_MASK: {
+                    System.out.println("That's the RIGHT button");
+                    //rightMenu.pack();
+                    int index = lstTrainFace.getSelectedIndex();
+                    if (index >= 0) {
+                        rightMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     private void jTabbedPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane3MouseClicked
         // TODO add your handling code here:
