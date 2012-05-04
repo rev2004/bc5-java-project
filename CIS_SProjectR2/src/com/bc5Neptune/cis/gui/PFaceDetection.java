@@ -66,6 +66,9 @@ public class PFaceDetection extends JPanel {
         initComponents();
         //show a person who access
         initialInformationForm();
+        
+        //set visible
+        //pnlShowAdd.setVisible(false);
 
     }
 
@@ -100,7 +103,7 @@ public class PFaceDetection extends JPanel {
         lstFaceImages = new javax.swing.JList();
         jPanel30 = new javax.swing.JPanel();
         jSplitPane5 = new javax.swing.JSplitPane();
-        jPanel45 = new javax.swing.JPanel();
+        pnlShowAdd = new javax.swing.JPanel();
         jPanel46 = new javax.swing.JPanel();
         lblClickToLoad = new javax.swing.JLabel();
         lblLoadImg = new javax.swing.JLabel();
@@ -130,7 +133,7 @@ public class PFaceDetection extends JPanel {
         cbbResidenceWrd = new javax.swing.JComboBox();
         cbbResidenceGrp = new javax.swing.JComboBox();
         btnSave = new javax.swing.JButton();
-        btnAdd = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         lblNote = new javax.swing.JLabel();
         jPanel48 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
@@ -168,7 +171,7 @@ public class PFaceDetection extends JPanel {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jSplitPane3.setTopComponent(jPanel10);
@@ -310,7 +313,7 @@ public class PFaceDetection extends JPanel {
         jSplitPane5.setDividerLocation(150);
         jSplitPane5.setDividerSize(1);
 
-        jPanel45.setBackground(java.awt.Color.gray);
+        pnlShowAdd.setBackground(java.awt.Color.gray);
 
         jPanel46.setBackground(java.awt.Color.gray);
         jPanel46.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Original Image", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.white));
@@ -337,7 +340,7 @@ public class PFaceDetection extends JPanel {
         jPanel46Layout.setVerticalGroup(
             jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel46Layout.createSequentialGroup()
-                .addComponent(lblLoadImg, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(lblLoadImg, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblClickToLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -507,10 +510,10 @@ public class PFaceDetection extends JPanel {
             }
         });
 
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Add/Add_24x24.png"))); // NOI18N
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/must_have_icon_set/Redo/Redo_24x24.png"))); // NOI18N
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnResetActionPerformed(evt);
             }
         });
 
@@ -518,47 +521,49 @@ public class PFaceDetection extends JPanel {
         lblNote.setForeground(java.awt.Color.red);
         lblNote.setText("   ");
 
-        javax.swing.GroupLayout jPanel45Layout = new javax.swing.GroupLayout(jPanel45);
-        jPanel45.setLayout(jPanel45Layout);
-        jPanel45Layout.setHorizontalGroup(
-            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel45Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlShowAddLayout = new javax.swing.GroupLayout(pnlShowAdd);
+        pnlShowAdd.setLayout(pnlShowAddLayout);
+        pnlShowAddLayout.setHorizontalGroup(
+            pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlShowAddLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNote, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                    .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel46, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel45Layout.createSequentialGroup()
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
+                .addGroup(pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlShowAddLayout.createSequentialGroup()
+                        .addGroup(pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblNote, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                            .addComponent(jPanel46, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(30, 30, 30))
+                    .addGroup(pnlShowAddLayout.createSequentialGroup()
+                        .addComponent(btnReset)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jPanel47, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel45Layout.setVerticalGroup(
-            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel45Layout.createSequentialGroup()
+        pnlShowAddLayout.setVerticalGroup(
+            pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlShowAddLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel45Layout.createSequentialGroup()
+                .addGroup(pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlShowAddLayout.createSequentialGroup()
                         .addComponent(jPanel46, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblNote, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSave, 0, 0, Short.MAX_VALUE)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 28, Short.MAX_VALUE))
-                        .addGap(59, 59, 59))
-                    .addGroup(jPanel45Layout.createSequentialGroup()
+                        .addGroup(pnlShowAddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                            .addComponent(btnReset, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(pnlShowAddLayout.createSequentialGroup()
                         .addComponent(jPanel47, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
         );
 
-        jSplitPane5.setRightComponent(jPanel45);
+        jSplitPane5.setRightComponent(pnlShowAdd);
 
         jPanel49.setBorder(javax.swing.BorderFactory.createTitledBorder("Know Faces"));
 
@@ -573,7 +578,7 @@ public class PFaceDetection extends JPanel {
         );
         jPanel49Layout.setVerticalGroup(
             jPanel49Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+            .addComponent(scrollTrainFace, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
         );
 
         jPanel50.setBorder(javax.swing.BorderFactory.createTitledBorder("Choose name"));
@@ -649,7 +654,7 @@ public class PFaceDetection extends JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+            .addComponent(jSplitPane3)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1221,6 +1226,7 @@ public class PFaceDetection extends JPanel {
         String currentNameSelect = (String) cmbTrainFace.getSelectedItem();
         if (currentNameSelect != null) {
             filterFace(currentNameSelect);
+          
         }
     }//GEN-LAST:event_cmbTrainFaceActionPerformed
 
@@ -1338,16 +1344,23 @@ public class PFaceDetection extends JPanel {
 
     private void jTabbedPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane3MouseClicked
         // TODO add your handling code here:
-        btnOpenFolder.setEnabled(false);
+        //btnOpenFolder.setEnabled(false);
+        if (jTabbedPane3.getSelectedIndex() == 1){
+            btnOpenFolder.setEnabled(false);
+        }else{
+            btnOpenFolder.setEnabled(true);
+        }
+        
     }//GEN-LAST:event_jTabbedPane3MouseClicked
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
         setNull();
-    }//GEN-LAST:event_btnAddActionPerformed
+    }//GEN-LAST:event_btnResetActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnOpenFolder;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cbbHTownDis;
     private javax.swing.JComboBox cbbHTownGrp;
@@ -1377,7 +1390,6 @@ public class PFaceDetection extends JPanel {
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel46;
     private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel48;
@@ -1395,6 +1407,7 @@ public class PFaceDetection extends JPanel {
     public javax.swing.JList lstThumbnails;
     public javax.swing.JList lstTrainFace;
     private javax.swing.JPanel pnlFaceAnotations1;
+    private javax.swing.JPanel pnlShowAdd;
     public javax.swing.JPanel pnlShowImage;
     public javax.swing.JScrollPane scrollFaceImages;
     private javax.swing.JScrollPane scrollPanelThumb;
