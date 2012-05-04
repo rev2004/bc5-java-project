@@ -7,9 +7,14 @@ package com.bc5Neptune.cis.dal;
 import com.bc5Neptune.cis.config.ConnectDB2;
 import com.bc5Neptune.cis.entity.DistrictEntity;
 import com.bc5Neptune.cis.entity.PersonEntity;
+import com.bc5Neptune.cis.entity.PopulationGroupEntity;
 import com.bc5Neptune.cis.entity.ProvinceEntity;
 import com.bc5Neptune.cis.entity.WardEntity;
 import java.beans.Statement;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,6 +43,7 @@ public class PersonDAL {
     Statement statement = null;
     PreparedStatement prstatement = null;
     CallableStatement cstmt = null;
+    CallableStatement cstmtInsert = null;
     CallableStatement cstmt1 = null;
     CallableStatement cstmtRes = null;
     CallableStatement cstmt_id = null;
@@ -187,7 +193,7 @@ public class PersonDAL {
     }
 
     public List<ProvinceEntity> getListProvince() {
-        List<ProvinceEntity> listCountry = new ArrayList<ProvinceEntity>();
+        List<ProvinceEntity> listProvince = new ArrayList<ProvinceEntity>();
         String sql = "select * from PROVINCE order by PROVINCEID asc";
         ResultSet rs = null;
         try {
@@ -199,7 +205,7 @@ public class PersonDAL {
                 Province = new ProvinceEntity();
                 Province.setProvinceID(rs.getString("ProvinceID"));
                 Province.setNameP(rs.getString("NameP"));
-                listCountry.add(Province);
+                listProvince.add(Province);
             }
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,14 +220,14 @@ public class PersonDAL {
            
         }
 
-        return listCountry;
+        return listProvince;
     }
 
     public HashSet<DistrictEntity> getListDistrict(String ProvinceID) {
         HashSet<DistrictEntity> listDistrict = null;
         try {
             listDistrict = new HashSet<DistrictEntity>();
-            String sql = "select * from DISTRICT where PROVINCEID =? order by NAMED asc";
+            String sql = "select * from DISTRICT where PROVINCEID =? order by PROVINCEID asc";
             ResultSet rs = null;
 
             connection = ConnectDB2.getConnection();
@@ -244,11 +250,11 @@ public class PersonDAL {
         }
         return listDistrict;
     }
-    public HashSet<WardEntity> getListward(String DistrictID) {
+    public HashSet<WardEntity> getListWard(String DistrictID) {
         HashSet<WardEntity> listWard = null;
         try {
             listWard = new HashSet<WardEntity>();
-            String sql = "select * from WARD where WARDID =? order by WARDW asc";
+            String sql = "select * from WARD where DistrictID =? order by DistrictID asc";
             ResultSet rs = null;
 
             connection = ConnectDB2.getConnection();
@@ -263,12 +269,87 @@ public class PersonDAL {
                 WrdE.setDistrictID(rs.getString("DISTRICTID"));
                 listWard.add(WrdE);
             }
-
-
             
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listWard;
     }
-}
+    public HashSet<PopulationGroupEntity> getListGroup(String WardID) {
+        HashSet<PopulationGroupEntity> listPGroup = null;
+        try {
+            listPGroup = new HashSet<PopulationGroupEntity>();
+            String sql = "select * from POPULATION_GROUPS where WardID =? order by WardID asc";
+            ResultSet rs = null;
+            connection = ConnectDB2.getConnection();
+            prstatement = connection.prepareStatement(sql);
+            prstatement.setString(1, WardID);
+            rs = prstatement.executeQuery();
+            PopulationGroupEntity PGrpE = null;
+            if (rs.next()) {
+                PGrpE = new PopulationGroupEntity();
+                PGrpE.setPgroupID(rs.getString("PGROUPSID"));
+                PGrpE.setNameG(rs.getString("NAMEG"));
+                PGrpE.setWardID(rs.getString("WARDID"));
+                listPGroup.add(PGrpE);
+            }
+
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listPGroup;
+    }
+    
+    public void insertnewPerson(PersonEntity prsEnt){
+        connection = ConnectDB2.getConnection();
+        int affR = 0;
+        try {
+            cstmtInsert = connection.prepareCall("Call SPD_InsertNewPerson(?,?,?,?,?,?,?,?)");
+            cstmtInsert.setString(1,prsEnt.getIdentity_number());
+            cstmtInsert.setString(2,prsEnt.getFullname());
+            cstmtInsert.setDate(3,new java.sql.Date(prsEnt.getDob().getTime()));
+            cstmtInsert.setString(4,prsEnt.getHometown());
+            cstmtInsert.setString(5,prsEnt.getPermanent_residence());
+            cstmtInsert.setString(6,prsEnt.getEthnic());
+            cstmtInsert.setString(7,prsEnt.getReligion());
+            cstmtInsert.setString(8,prsEnt.getCharacteristic());
+            //cstmtInsert.setDate(9,new java.sql.Date(prsEnt.getDate().getTime()));
+//            cstmtInsert.setString(4,prsEnt.getHometown());
+//            cstmtInsert.setString(5,prsEnt.getPermanent_residence());
+//            //cstmt.setI(6,prsEnt.getIdentity_number());
+//            cstmtInsert.setString(6,prsEnt.getEthnic());
+//            cstmtInsert.setString(7,prsEnt.getReligion());
+//            cstmtInsert.setString(8,prsEnt.getCharacteristic());
+//            cstmt.setDate(9,new Date(2012,05,03));//new java.sql.Date(prsEnt.getDate().getTime())
+            ///
+            ///
+            
+            //+update Image
+            cstmtInsert.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        updateImg(prsEnt);
+        //return affR;
+    }
+    public void updateImg(PersonEntity prsEnt){
+        try {
+            String tmpImg = prsEnt.getSaveImg();
+            FileInputStream fin;
+            File f1 = new File(tmpImg);
+            fin = new FileInputStream(f1);
+            cstmt = connection.prepareCall("Call SPD_UPDATEIMAGE(?,?) ");
+            cstmt.setBinaryStream(1,(InputStream)fin,(int)f1.length());
+            cstmt.setString(2, prsEnt.getIdentity_number());
+            cstmt.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    }

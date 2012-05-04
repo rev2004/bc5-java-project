@@ -21,25 +21,14 @@ public class PersonEntity {
     private String hometown;
     private String permanent_residence;
     private Blob image;
+    private String saveImg;
+    //private String image;
     private String ethnic;
     private String religion;
     private String characteristic;
     private Date date;
     private String active;
 
-    /**
-     * @return the FULLNAME
-     */
-//    public String getFULLNAME() {
-//        return fullname;
-//    }
-//
-//    /**
-//     * @param FULLNAME the FULLNAME to set
-//     */
-//    public void setFULLNAME(String fullname) {
-//        this.fullname=fullname;
-//    }
 
     /**
      * @return the pid
@@ -207,5 +196,19 @@ public class PersonEntity {
      */
     public void setImage(Blob image) {
         this.image = image;
+    }
+
+    /**
+     * @return the saveImg
+     */
+    public String getSaveImg() {
+        return saveImg;
+    }
+
+    /**
+     * @param saveImg the saveImg to set
+     */
+    public void setSaveImg(String saveImg) {
+        this.saveImg = saveImg;
     }
 }
