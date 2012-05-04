@@ -88,7 +88,7 @@ public class PersonDAL {
                 p.setReligion(resultSet.getString(9));
                 p.setCharacteristic(resultSet.getString(10));
                 p.setDate(resultSet.getDate(11));
-               // p.setActive(resultSet.getString(12));
+                // p.setActive(resultSet.getString(12));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,7 +217,7 @@ public class PersonDAL {
             } catch (SQLException ex) {
                 Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
+
         }
 
         return listProvince;
@@ -244,12 +244,13 @@ public class PersonDAL {
             }
 
 
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listDistrict;
     }
+
     public HashSet<WardEntity> getListWard(String DistrictID) {
         HashSet<WardEntity> listWard = null;
         try {
@@ -269,12 +270,13 @@ public class PersonDAL {
                 WrdE.setDistrictID(rs.getString("DISTRICTID"));
                 listWard.add(WrdE);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listWard;
     }
+
     public HashSet<PopulationGroupEntity> getListGroup(String WardID) {
         HashSet<PopulationGroupEntity> listPGroup = null;
         try {
@@ -295,26 +297,26 @@ public class PersonDAL {
             }
 
 
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listPGroup;
     }
-    
-    public void insertnewPerson(PersonEntity prsEnt){
+
+    public void insertnewPerson(PersonEntity prsEnt) {
         connection = ConnectDB2.getConnection();
         int affR = 0;
         try {
             cstmtInsert = connection.prepareCall("Call SPD_InsertNewPerson(?,?,?,?,?,?,?,?)");
-            cstmtInsert.setString(1,prsEnt.getIdentity_number());
-            cstmtInsert.setString(2,prsEnt.getFullname());
-            cstmtInsert.setDate(3,new java.sql.Date(prsEnt.getDob().getTime()));
-            cstmtInsert.setString(4,prsEnt.getHometown());
-            cstmtInsert.setString(5,prsEnt.getPermanent_residence());
-            cstmtInsert.setString(6,prsEnt.getEthnic());
-            cstmtInsert.setString(7,prsEnt.getReligion());
-            cstmtInsert.setString(8,prsEnt.getCharacteristic());
+            cstmtInsert.setString(1, prsEnt.getIdentity_number());
+            cstmtInsert.setString(2, prsEnt.getFullname());
+            cstmtInsert.setDate(3, new java.sql.Date(prsEnt.getDob().getTime()));
+            cstmtInsert.setString(4, prsEnt.getHometown());
+            cstmtInsert.setString(5, prsEnt.getPermanent_residence());
+            cstmtInsert.setString(6, prsEnt.getEthnic());
+            cstmtInsert.setString(7, prsEnt.getReligion());
+            cstmtInsert.setString(8, prsEnt.getCharacteristic());
             //cstmtInsert.setDate(9,new java.sql.Date(prsEnt.getDate().getTime()));
 //            cstmtInsert.setString(4,prsEnt.getHometown());
 //            cstmtInsert.setString(5,prsEnt.getPermanent_residence());
@@ -325,24 +327,25 @@ public class PersonDAL {
 //            cstmt.setDate(9,new Date(2012,05,03));//new java.sql.Date(prsEnt.getDate().getTime())
             ///
             ///
-            
+
             //+update Image
             cstmtInsert.execute();
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         updateImg(prsEnt);
         //return affR;
     }
-    public void updateImg(PersonEntity prsEnt){
+
+    public void updateImg(PersonEntity prsEnt) {
         try {
             String tmpImg = prsEnt.getSaveImg();
             FileInputStream fin;
             File f1 = new File(tmpImg);
             fin = new FileInputStream(f1);
             cstmt = connection.prepareCall("Call SPD_UPDATEIMAGE(?,?) ");
-            cstmt.setBinaryStream(1,(InputStream)fin,(int)f1.length());
+            cstmt.setBinaryStream(1, (InputStream) fin, (int) f1.length());
             cstmt.setString(2, prsEnt.getIdentity_number());
             cstmt.execute();
         } catch (SQLException ex) {
@@ -350,6 +353,42 @@ public class PersonDAL {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public PersonEntity LoadDataToEdit(String pid) {
+        PreparedStatement prsHtown;
+        PreparedStatement prsRes;
+        PreparedStatement prsHTownGroup;
+        String GroupID = null;
+        PersonEntity p = new PersonEntity();
+        String sqlHtown = "select HOMETOWN from PERSON where IDENTITY_NUMBER =?";
+        String sqlRes = "select PERMANENT_RESIDENCE from PERSON where IDENTITY_NUMBER =?";
+        ResultSet rsHtown = null;
+        ResultSet rsRes = null;
+        connection = ConnectDB2.getConnection();
+        //------------------------------------------------------------------
+        try {
+            prsHtown = connection.prepareStatement(sqlHtown);
+            prsHtown.setString(1, pid);
+            rsHtown = prsHtown.executeQuery();
+            if(rsHtown.next()){
+                GroupID = rsHtown.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //------------------------------------------------------------------
+        String sqlGroup = "select * from POPULATION_GROUPS where PGROUPSID =?";
+        try {
+            prsHTownGroup = connection.prepareStatement(sqlGroup);
+            prsHTownGroup.setString(1,GroupID);
+            prsH
+        } catch (SQLException ex) {
+            Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+ 
+        return p;
     }
-    }
+}
